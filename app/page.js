@@ -99,8 +99,8 @@ export default function Home() {
                   <span className="text-accent-300"> ChatGPT</span>
                 </h1>
                 <p className="text-xl text-gray-200 leading-relaxed">
-                  The world's first calculator with discrete AI integration. 
-                  Get advanced problem-solving assistance that's completely undetectable.
+                  The world&apos;s first calculator with discrete AI integration.
+                  Get advanced problem-solving assistance that&apos;s completely undetectable.
                 </p>
               </div>
               
@@ -217,7 +217,7 @@ export default function Home() {
               {
                 name: "Mike R.",
                 role: "Physics Major",
-                content: "The discrete mode is flawless. Even my professor couldn't tell the difference. Worth every penny.",
+                content: &quot;The discrete mode is flawless. Even my professor couldn&apos;t tell the difference. Worth every penny.&quot;,
                 rating: 5
               }
             ].map((testimonial, index) => (
@@ -245,7 +245,7 @@ export default function Home() {
             Ready to Transform Your Academic Performance?
           </h2>
           <p className="text-xl text-gray-200 mb-8">
-            Join 23+ students who've already discovered the CalcAI advantage.
+            Join 23+ students who&apos;ve already discovered the CalcAI advantage.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

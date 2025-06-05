@@ -48,7 +48,7 @@ export default function SuccessPage() {
                 </div>
                 <div className="text-left">
                   <h3 className="font-semibold text-gray-900">1. Confirmation Email</h3>
-                  <p className="text-gray-600">You'll receive an order confirmation email within 5 minutes with your receipt and order details.</p>
+                  <p className="text-gray-600">You&apos;ll receive an order confirmation email within 5 minutes with your receipt and order details.</p>
                 </div>
               </div>
 

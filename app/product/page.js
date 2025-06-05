@@ -97,7 +97,7 @@ export default function ProductPage() {
                 CalcAI - TI-84 Plus with ChatGPT
               </h1>
               <p className="text-lg text-gray-300">
-                The world's first calculator with discrete AI integration
+                The world&apos;s first calculator with discrete AI integration
               </p>
             </div>
 
@@ -117,7 +117,7 @@ export default function ProductPage() {
 
             {/* Features */}
             <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-white">What's Included:</h3>
+              <h3 className="text-lg font-semibold text-white">What&apos;s Included:</h3>
               <div className="space-y-2">
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-green-500" />
