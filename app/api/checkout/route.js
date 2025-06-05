@@ -3,7 +3,26 @@ import stripe from '../../../lib/stripe'
 
 export async function POST(request) {
   try {
+    // Check if Stripe is properly configured
+    if (!process.env.STRIPE_SECRET_KEY) {
+      console.error('STRIPE_SECRET_KEY is not set')
+      return NextResponse.json(
+        { error: 'Stripe configuration error: Missing secret key' },
+        { status: 500 }
+      )
+    }
+
+    if (!process.env.NEXT_PUBLIC_DOMAIN) {
+      console.error('NEXT_PUBLIC_DOMAIN is not set')
+      return NextResponse.json(
+        { error: 'Configuration error: Missing domain' },
+        { status: 500 }
+      )
+    }
+
     const { formData } = await request.json()
+
+    console.log('Creating Stripe session with domain:', process.env.NEXT_PUBLIC_DOMAIN)
 
     // Create a checkout session
     const session = await stripe.checkout.sessions.create({
