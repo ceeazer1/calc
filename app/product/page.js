@@ -157,14 +157,12 @@ export default function ProductPage() {
                 </select>
               </div>
 
-              <a
-                href="https://buy.stripe.com/test_00000000000000000000"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/cart"
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 text-center block"
               >
-                Buy Now - $129.99 (Secure Checkout)
-              </a>
+                Add to Cart - $129.99
+              </Link>
 
               <div className="text-center text-sm text-gray-400 mt-2">
                 <div className="flex items-center justify-center space-x-2 mb-2">
