@@ -99,8 +99,8 @@ export default function Home() {
                   <span className="text-accent-300"> ChatGPT</span>
                 </h1>
                 <p className="text-xl text-gray-200 leading-relaxed">
-                  The world&apos;s first calculator with discrete AI integration.
-                  Get advanced problem-solving assistance that&apos;s completely undetectable.
+                  The world\u2019s first calculator with discrete AI integration.
+                  Get advanced problem-solving assistance that\u2019s completely undetectable.
                 </p>
               </div>
               
@@ -217,7 +217,7 @@ export default function Home() {
               {
                 name: "Mike R.",
                 role: "Physics Major",
-                content: &quot;The discrete mode is flawless. Even my professor couldn&apos;t tell the difference. Worth every penny.&quot;,
+                content: "The discrete mode is flawless. Even my professor couldn\u2019t tell the difference. Worth every penny.",
                 rating: 5
               }
             ].map((testimonial, index) => (
@@ -227,7 +227,7 @@ export default function Home() {
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-300 mb-4 italic">"{testimonial.content}"</p>
+                <p className="text-gray-300 mb-4 italic">\u201c{testimonial.content}\u201d</p>
                 <div>
                   <div className="font-semibold text-white">{testimonial.name}</div>
                   <div className="text-sm text-gray-400">{testimonial.role}</div>
@@ -245,7 +245,7 @@ export default function Home() {
             Ready to Transform Your Academic Performance?
           </h2>
           <p className="text-xl text-gray-200 mb-8">
-            Join 23+ students who&apos;ve already discovered the CalcAI advantage.
+            Join 23+ students who\u2019ve already discovered the CalcAI advantage.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

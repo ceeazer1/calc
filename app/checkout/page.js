@@ -124,7 +124,7 @@ export default function Checkout() {
                   CalcAI - TI-84 Plus with ChatGPT
                 </h1>
                 <p className="text-lg text-gray-600">
-                  The world&apos;s first calculator with discrete AI integration
+                  The world\u2019s first calculator with discrete AI integration
                 </p>
               </div>
 
