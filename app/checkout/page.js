@@ -13,6 +13,7 @@ import {
   Lock,
   Star
 } from 'lucide-react'
+import { getStripe } from '../../lib/stripe'
 
 export default function Checkout() {
   const [formData, setFormData] = useState({
@@ -44,12 +45,33 @@ export default function Checkout() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsProcessing(true)
-    
-    // Simulate payment processing
-    setTimeout(() => {
+
+    try {
+      // Create checkout session
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ formData }),
+      })
+
+      const { sessionId } = await response.json()
+
+      // Redirect to Stripe Checkout
+      const stripe = await getStripe()
+      const { error } = await stripe.redirectToCheckout({ sessionId })
+
+      if (error) {
+        console.error('Stripe error:', error)
+        alert('Payment failed. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      alert('Something went wrong. Please try again.')
+    } finally {
       setIsProcessing(false)
-      setOrderComplete(true)
-    }, 3000)
+    }
   }
 
   if (orderComplete) {
@@ -464,10 +486,10 @@ export default function Checkout() {
                 {isProcessing ? (
                   <div className="flex items-center justify-center space-x-2">
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Processing Order...</span>
+                    <span>Redirecting to Secure Payment...</span>
                   </div>
                 ) : (
-                  `Complete Order - $129.99`
+                  `Proceed to Secure Payment - $129.99`
                 )}
               </button>
 
