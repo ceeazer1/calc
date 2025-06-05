@@ -2,6 +2,8 @@
 
 A modern, interactive website showcasing the revolutionary CalcAI product - a TI-84 Plus calculator with discrete ChatGPT integration.
 
+**Now with complete Stripe payment integration for secure e-commerce transactions!**
+
 ## 🚀 Features
 
 - **Modern Design**: Built with Next.js 14 and Tailwind CSS
