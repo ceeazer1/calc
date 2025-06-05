@@ -157,12 +157,23 @@ export default function ProductPage() {
                 </select>
               </div>
 
-              <Link
-                href="/cart"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 text-center block"
+              <button
+                onClick={handleAddToCart}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105"
               >
-                Add to Cart - $129.99
-              </Link>
+                {addedToCart ? '✓ Added to Cart!' : 'Add to Cart - $129.99'}
+              </button>
+
+              {addedToCart && (
+                <div className="text-center">
+                  <Link
+                    href="/cart"
+                    className="text-blue-400 hover:text-blue-300 underline"
+                  >
+                    View Cart & Checkout
+                  </Link>
+                </div>
+              )}
 
               <div className="text-center text-sm text-gray-400 mt-2">
                 <div className="flex items-center justify-center space-x-2 mb-2">
