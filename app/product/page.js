@@ -176,11 +176,23 @@ export default function ProductPage() {
               )}
 
               <div className="text-center text-sm text-gray-400 mt-2">
-                <div className="flex items-center justify-center space-x-2 mb-2">
-                  <span>💳 Credit Card</span>
-                  <span>📱 PayPal</span>
-                  <span>💰 Cash App</span>
-                  <span>🍎 Apple Pay</span>
+                <div className="flex items-center justify-center space-x-3 mb-2 flex-wrap">
+                  <span className="flex items-center space-x-1">
+                    <span>💳</span>
+                    <span>Cards</span>
+                  </span>
+                  <span className="flex items-center space-x-1">
+                    <span>💰</span>
+                    <span>Cash App</span>
+                  </span>
+                  <span className="flex items-center space-x-1">
+                    <span>🏦</span>
+                    <span>Bank Transfer</span>
+                  </span>
+                  <span className="flex items-center space-x-1">
+                    <span>⚡</span>
+                    <span>Link</span>
+                  </span>
                 </div>
                 <p>Secure payment powered by Stripe</p>
               </div>
