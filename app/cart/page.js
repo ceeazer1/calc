@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Trash2, Plus, Minus, ShoppingCart, ArrowLeft } from 'lucide-react'
-import { getStripe } from '../lib/stripe'
+import { getStripe } from '../../lib/stripe'
 
 export default function CartPage() {
   const [cart, setCart] = useState([])
