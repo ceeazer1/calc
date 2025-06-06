@@ -14,7 +14,8 @@ import {
   ArrowRight,
   Sparkles,
   Lock,
-  Users
+  Users,
+  MessageCircle
 } from 'lucide-react'
 
 export default function Home() {
@@ -76,9 +77,20 @@ export default function Home() {
                 className="w-32 h-32 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl"
               />
             </div>
-            <Link href="/product" className="btn-primary">
-              Buy Now - $129.99
-            </Link>
+            <div className="flex items-center space-x-4">
+              <a
+                href="https://t.me/+48P4V5dL5ShmYTQx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Support</span>
+              </a>
+              <Link href="/product" className="btn-primary">
+                Buy Now - $129.99
+              </Link>
+            </div>
           </div>
         </div>
       </nav>

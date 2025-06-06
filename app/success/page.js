@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { CheckCircle, Download, Mail, Truck } from 'lucide-react'
+import { CheckCircle, Download, Mail, Truck, MessageCircle } from 'lucide-react'
 
 export default function SuccessPage() {
   return (
@@ -18,6 +18,16 @@ export default function SuccessPage() {
                 className="w-24 h-24 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl"
               />
             </Link>
+
+            <a
+              href="https://t.me/+48P4V5dL5ShmYTQx"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Support</span>
+            </a>
           </div>
         </div>
       </header>

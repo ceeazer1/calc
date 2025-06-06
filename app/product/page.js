@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Star, CheckCircle, ShoppingCart, ArrowLeft, Shield, Truck, RotateCcw } from 'lucide-react'
+import { Star, CheckCircle, ShoppingCart, ArrowLeft, Shield, Truck, RotateCcw, MessageCircle } from 'lucide-react'
 
 export default function ProductPage() {
   const [quantity, setQuantity] = useState(1)
@@ -58,6 +58,15 @@ export default function ProductPage() {
             </Link>
             
             <div className="flex items-center space-x-4">
+              <a
+                href="https://t.me/+48P4V5dL5ShmYTQx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Support</span>
+              </a>
               <Link href="/cart" className="flex items-center space-x-2 text-gray-300 hover:text-white">
                 <ShoppingCart className="w-5 h-5" />
                 <span>Cart</span>

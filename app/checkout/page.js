@@ -11,7 +11,8 @@ import {
   CheckCircle,
   CreditCard,
   Lock,
-  Star
+  Star,
+  MessageCircle
 } from 'lucide-react'
 import { getStripe } from '../../lib/stripe'
 
@@ -107,15 +108,26 @@ export default function Checkout() {
               <ArrowLeft className="w-5 h-5" />
               <span>Back to Cart</span>
             </Link>
-            <div className="flex items-center space-x-3">
-              <Image
-                src="/logo.png"
-                alt="CalcAI Logo"
-                width={80}
-                height={80}
-                className="w-20 h-20 drop-shadow-xl"
-              />
-              <span className="text-lg font-bold text-gray-900">Checkout</span>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
+                <Image
+                  src="/logo.png"
+                  alt="CalcAI Logo"
+                  width={80}
+                  height={80}
+                  className="w-20 h-20 drop-shadow-xl"
+                />
+                <span className="text-lg font-bold text-gray-900">Checkout</span>
+              </div>
+              <a
+                href="https://t.me/+48P4V5dL5ShmYTQx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Support</span>
+              </a>
             </div>
           </div>
         </div>
