@@ -2,7 +2,7 @@
 
 A modern, interactive website showcasing the revolutionary CalcAI product - a TI-84 Plus calculator with discrete ChatGPT integration.
 
-**Now with complete Stripe payment integration for secure e-commerce transactions!**
+**Now with complete Stripe payment integration and streamlined direct checkout flow!**
 
 ## 🚀 Features
 
