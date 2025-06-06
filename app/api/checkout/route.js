@@ -20,37 +20,50 @@ export async function POST(request) {
       )
     }
 
-    const { formData } = await request.json()
+    const { cartItems, totalAmount, formData } = await request.json()
 
     console.log('Creating Stripe session with domain:', process.env.NEXT_PUBLIC_DOMAIN)
+
+    // Convert cart items to Stripe line items
+    const lineItems = cartItems ? cartItems.map(item => ({
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: item.name,
+          description: 'The world\u2019s first calculator with discrete AI integration',
+          images: [`${process.env.NEXT_PUBLIC_DOMAIN}${item.image}`],
+        },
+        unit_amount: Math.round(item.price * 100), // Convert to cents
+      },
+      quantity: item.quantity,
+    })) : [
+      {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: 'CalcAI - TI-84 Plus with ChatGPT',
+            description: 'The world\u2019s first calculator with discrete AI integration',
+            images: [`${process.env.NEXT_PUBLIC_DOMAIN}/84p.png`],
+          },
+          unit_amount: 12999, // $129.99 in cents
+        },
+        quantity: 1,
+      }
+    ]
 
     // Create a checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: [
-        {
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: 'CalcAI - TI-84 Plus with ChatGPT',
-              description: 'The world\u2019s first calculator with discrete AI integration',
-              images: [`${process.env.NEXT_PUBLIC_DOMAIN}/84p.png`],
-            },
-            unit_amount: 12999, // $129.99 in cents
-          },
-          quantity: 1,
-        },
-      ],
+      line_items: lineItems,
       mode: 'payment',
       success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/checkout`,
-      customer_email: formData.email,
+      cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/cart`,
       shipping_address_collection: {
         allowed_countries: ['US', 'CA', 'GB', 'AU', 'DE', 'FR'],
       },
       metadata: {
-        customer_name: `${formData.firstName} ${formData.lastName}`,
-        customer_email: formData.email,
+        order_type: 'calcai_purchase',
+        total_items: cartItems ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 1,
       },
     })
 
