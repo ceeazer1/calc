@@ -13,9 +13,9 @@ export default function SuccessPage() {
               <Image
                 src="/logo.png"
                 alt="CalcAI Logo"
-                width={56}
-                height={56}
-                className="w-14 h-14 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl"
+                width={100}
+                height={100}
+                className="w-24 h-24 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl"
               />
             </Link>
           </div>

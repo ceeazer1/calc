@@ -71,9 +71,9 @@ export default function Home() {
               <Image
                 src="/logo.png"
                 alt="CalcAI Logo"
-                width={64}
-                height={64}
-                className="w-16 h-16 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl"
+                width={120}
+                height={120}
+                className="w-32 h-32 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl"
               />
             </div>
             <Link href="/product" className="btn-primary">
@@ -270,9 +270,9 @@ export default function Home() {
                 <Image
                   src="/logo.png"
                   alt="CalcAI Logo"
-                  width={56}
-                  height={56}
-                  className="w-14 h-14 drop-shadow-xl"
+                  width={100}
+                  height={100}
+                  className="w-24 h-24 drop-shadow-xl"
                 />
               </div>
               <p className="text-gray-400 text-sm">

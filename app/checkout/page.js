@@ -111,9 +111,9 @@ export default function Checkout() {
               <Image
                 src="/logo.png"
                 alt="CalcAI Logo"
-                width={48}
-                height={48}
-                className="w-12 h-12 drop-shadow-xl"
+                width={80}
+                height={80}
+                className="w-20 h-20 drop-shadow-xl"
               />
               <span className="text-lg font-bold text-gray-900">Checkout</span>
             </div>
