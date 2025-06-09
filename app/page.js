@@ -97,7 +97,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="pt-20 pb-16 gradient-bg text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/10 to-black/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/30 via-purple-600/20 to-black/50"></div>
         <div className="absolute inset-0 tech-grid opacity-20"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -118,7 +118,7 @@ export default function Home() {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/product" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl text-sm sm:text-base flex items-center justify-center">
+                <Link href="/product" className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl transition-all duration-300 transform hover:scale-110 shadow-2xl hover:shadow-blue-500/25 text-base sm:text-lg flex items-center justify-center border border-blue-400">
                   Buy Now - $84.99
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
                 </Link>
@@ -150,7 +150,7 @@ export default function Home() {
                     className="w-full h-auto object-contain"
                     priority
                   />
-                  <div className="absolute top-2 right-2 bg-gradient-to-r from-green-400 to-green-500 text-black px-3 py-1 rounded-full text-xs font-bold shadow-xl animate-pulse border border-green-300">
+                  <div className="absolute top-2 right-2 bg-gradient-to-r from-green-400 via-green-500 to-emerald-500 text-black px-4 py-2 rounded-full text-sm font-black shadow-2xl animate-pulse border-2 border-green-300 backdrop-blur-sm">
                     AI MODDED
                   </div>
                 </div>
@@ -164,7 +164,7 @@ export default function Home() {
 
 
       {/* Features Section */}
-      <section className="py-24 bg-gray-800">
+      <section className="py-24 bg-gradient-to-b from-gray-800 to-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white mb-4">
@@ -180,8 +180,8 @@ export default function Home() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className={`card p-6 text-center transition-all duration-500 hover:shadow-2xl hover:scale-105 ${
-                  currentFeature === index ? 'ring-2 ring-primary-500 scale-105 shadow-2xl' : 'shadow-xl'
+                className={`bg-gradient-to-br from-gray-700 to-gray-800 p-8 rounded-2xl text-center transition-all duration-500 hover:shadow-2xl hover:scale-110 border border-gray-600 hover:border-blue-500 ${
+                  currentFeature === index ? 'ring-2 ring-blue-500 scale-110 shadow-2xl shadow-blue-500/20' : 'shadow-xl'
                 }`}
               >
                 <div className="text-primary-600 mb-4 flex justify-center">
@@ -259,7 +259,7 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/product" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl text-sm sm:text-base flex items-center justify-center">
+            <Link href="/product" className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl transition-all duration-300 transform hover:scale-110 shadow-2xl hover:shadow-blue-500/25 text-base sm:text-lg flex items-center justify-center border border-blue-400">
               Buy Now - $84.99
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
             </Link>
