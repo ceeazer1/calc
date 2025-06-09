@@ -8,18 +8,30 @@ import { Star, CheckCircle, ShoppingCart, ArrowLeft, Shield, Truck, RotateCcw, M
 export default function ProductPage() {
   const [quantity, setQuantity] = useState(1)
   const [addedToCart, setAddedToCart] = useState(false)
+  const [condition, setCondition] = useState('new') // 'new' or 'used'
+
+  const getPrice = () => {
+    return condition === 'new' ? 129.99 : 84.99
+  }
+
+  const getProductName = () => {
+    return condition === 'new'
+      ? 'CalcAI - TI-84 Plus with ChatGPT (Brand New)'
+      : 'CalcAI - TI-84 Plus with ChatGPT (Used - Excellent Condition)'
+  }
 
   const handleAddToCart = () => {
     // Get existing cart from localStorage
     const existingCart = JSON.parse(localStorage.getItem('cart') || '[]')
-    
+
     // Add product to cart
     const product = {
-      id: 'calcai-ti84',
-      name: 'CalcAI - TI-84 Plus with ChatGPT',
-      price: 129.99,
+      id: `calcai-ti84-${condition}`,
+      name: getProductName(),
+      price: getPrice(),
       quantity: quantity,
-      image: '/84p.png'
+      image: '/84p.png',
+      condition: condition
     }
     
     // Check if product already exists in cart
@@ -108,6 +120,15 @@ export default function ProductPage() {
               <p className="text-lg text-gray-300">
                 The world\u2019s first calculator with discrete AI integration
               </p>
+              <div className="mt-3">
+                <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                  condition === 'new'
+                    ? 'bg-green-600 text-white'
+                    : 'bg-blue-600 text-white'
+                }`}>
+                  {condition === 'new' ? 'Brand New' : 'Used - Excellent Condition'}
+                </span>
+              </div>
             </div>
 
             {/* Rating */}
@@ -121,8 +142,44 @@ export default function ProductPage() {
               <span className="text-gray-300">4.5 (23 reviews)</span>
             </div>
 
+            {/* Condition Selection */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-white">Choose Condition:</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <button
+                  onClick={() => setCondition('new')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 ${
+                    condition === 'new'
+                      ? 'border-green-500 bg-green-500/20 text-white'
+                      : 'border-gray-600 bg-gray-800 text-gray-300 hover:border-gray-500'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="font-bold text-lg">Brand New</div>
+                    <div className="text-2xl font-bold mt-1">$129.99</div>
+                    <div className="text-sm mt-1">Factory sealed</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => setCondition('used')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 ${
+                    condition === 'used'
+                      ? 'border-blue-500 bg-blue-500/20 text-white'
+                      : 'border-gray-600 bg-gray-800 text-gray-300 hover:border-gray-500'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="font-bold text-lg">Used</div>
+                    <div className="text-2xl font-bold mt-1">$84.99</div>
+                    <div className="text-sm mt-1">Excellent condition</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
             {/* Price */}
-            <div className="text-4xl font-bold text-white">$129.99</div>
+            <div className="text-4xl font-bold text-white">${getPrice()}</div>
 
             {/* Features */}
             <div className="space-y-3">
@@ -148,6 +205,18 @@ export default function ProductPage() {
                   <CheckCircle className="w-5 h-5 text-green-500" />
                   <span className="text-gray-300">Detailed Video Guide Included</span>
                 </div>
+                {condition === 'used' && (
+                  <div className="mt-4 p-3 bg-blue-900/30 rounded-lg border border-blue-700">
+                    <h4 className="text-blue-300 font-medium mb-2">Used Condition Details:</h4>
+                    <ul className="text-sm text-gray-300 space-y-1">
+                      <li>• Fully tested and working perfectly</li>
+                      <li>• Minor cosmetic wear (scratches/scuffs)</li>
+                      <li>• All AI features pre-installed and verified</li>
+                      <li>• Same functionality as brand new</li>
+                      <li>• 30-day money back guarantee</li>
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -170,7 +239,7 @@ export default function ProductPage() {
                 onClick={handleAddToCart}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105"
               >
-                {addedToCart ? '✓ Added to Cart!' : 'Add to Cart - $129.99'}
+                {addedToCart ? '✓ Added to Cart!' : `Add to Cart - $${getPrice()}`}
               </button>
 
               {addedToCart && (
