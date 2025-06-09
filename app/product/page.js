@@ -131,16 +131,7 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {/* Rating */}
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                {[...Array(4)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                ))}
-                <Star className="w-5 h-5 text-yellow-400 fill-current opacity-50" />
-              </div>
-              <span className="text-gray-300">4.5 (23 reviews)</span>
-            </div>
+
 
             {/* Condition Selection */}
             <div className="space-y-4">
@@ -213,7 +204,7 @@ export default function ProductPage() {
                       <li>• Minor cosmetic wear (scratches/scuffs)</li>
                       <li>• All AI features pre-installed and verified</li>
                       <li>• Same functionality as brand new</li>
-                      <li>• 30-day money back guarantee</li>
+
                     </ul>
                   </div>
                 )}
@@ -282,10 +273,7 @@ export default function ProductPage() {
                 <Truck className="w-5 h-5 text-green-500" />
                 <span className="text-sm text-gray-300">Free shipping worldwide</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <RotateCcw className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-300">30-day money back guarantee</span>
-              </div>
+
               <div className="flex items-center space-x-3">
                 <Shield className="w-5 h-5 text-green-500" />
                 <span className="text-sm text-gray-300">Secure checkout</span>

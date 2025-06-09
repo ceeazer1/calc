@@ -114,7 +114,7 @@ export default function SuccessPage() {
             <div className="space-y-2 text-sm">
               <p><strong>Email:</strong> support@calcai.com</p>
               <p><strong>Response Time:</strong> Within 24 hours</p>
-              <p><strong>Warranty:</strong> 30-day money-back guarantee</p>
+
             </div>
           </div>
 
@@ -134,17 +134,7 @@ export default function SuccessPage() {
             </a>
           </div>
 
-          {/* Social Proof */}
-          <div className="mt-12 text-center">
-            <p className="text-gray-600 mb-4">Join 23+ satisfied customers!</p>
-            <div className="flex justify-center space-x-1">
-              {[...Array(4)].map((_, i) => (
-                <span key={i} className="text-yellow-400 text-xl">⭐</span>
-              ))}
-              <span className="text-yellow-400 text-xl opacity-50">⭐</span>
-            </div>
-            <p className="text-sm text-gray-500 mt-2">4.5/5 average rating</p>
-          </div>
+
         </div>
       </div>
     </div>

@@ -162,14 +162,7 @@ export default function Checkout() {
                 </p>
               </div>
 
-              <div className="flex items-center space-x-2">
-                <div className="flex items-center space-x-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <span className="text-gray-600">(500+ reviews)</span>
-              </div>
+
 
               <div className="text-4xl font-bold text-gray-900">$129.99</div>
 
@@ -222,7 +215,7 @@ export default function Checkout() {
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                     ))}
-                    <span className="text-sm text-gray-500 ml-2">(500+ reviews)</span>
+
                   </div>
                 </div>
                 <div className="text-right">
@@ -250,10 +243,7 @@ export default function Checkout() {
               </div>
 
               <div className="mt-6 space-y-3">
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
-                  <Shield className="w-4 h-4 text-green-500" />
-                  <span>30-day money-back guarantee</span>
-                </div>
+
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
                   <Truck className="w-4 h-4 text-green-500" />
                   <span>Free worldwide shipping</span>

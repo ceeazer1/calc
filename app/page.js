@@ -129,10 +129,7 @@ export default function Home() {
                   <CheckCircle className="w-5 h-5 text-green-400" />
                   <span>Free Shipping</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>30-Day Guarantee</span>
-                </div>
+
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-5 h-5 text-green-400" />
                   <span>Lifetime Support</span>
@@ -205,47 +202,47 @@ export default function Home() {
 
 
 
-      {/* Testimonials */}
+      {/* Showcase */}
       <section className="py-20 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-center text-white mb-12">
-            What Students Are Saying
+            Showcase
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Alex M.",
-                role: "Engineering Student",
-                content: "This calculator saved my calculus grade. The AI explanations are incredible and nobody has any idea.",
-                rating: 5
-              },
-              {
-                name: "Sarah K.",
-                role: "Pre-Med Student",
-                content: "Perfect for chemistry calculations. Looks exactly like a regular TI-84 but with superpowers.",
-                rating: 5
-              },
-              {
-                name: "Mike R.",
-                role: "Physics Major",
-                content: "The discrete mode is flawless. Even my professor couldn\u2019t tell the difference. Worth every penny.",
-                rating: 5
-              }
-            ].map((testimonial, index) => (
-              <div key={index} className="card p-6">
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-300 mb-4 italic">\u201c{testimonial.content}\u201d</p>
-                <div>
-                  <div className="font-semibold text-white">{testimonial.name}</div>
-                  <div className="text-sm text-gray-400">{testimonial.role}</div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Video Section */}
+            <div className="card p-8 text-center">
+              <h3 className="text-xl font-semibold text-white mb-4">Product Demo Video</h3>
+              <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-600">
+                <div className="text-center">
+                  <div className="text-4xl mb-4">🎥</div>
+                  <div className="text-lg font-medium text-gray-300">Coming Soon</div>
+                  <div className="text-sm text-gray-400 mt-2">
+                    Watch CalcAI in action
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Photos Section */}
+            <div className="card p-8 text-center">
+              <h3 className="text-xl font-semibold text-white mb-4">Product Gallery</h3>
+              <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-600">
+                <div className="text-center">
+                  <div className="text-4xl mb-4">📸</div>
+                  <div className="text-lg font-medium text-gray-300">Coming Soon</div>
+                  <div className="text-sm text-gray-400 mt-2">
+                    Detailed product photos
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-8">
+            <p className="text-gray-400">
+              High-quality videos and photos showcasing CalcAI features will be available soon.
+            </p>
           </div>
         </div>
       </section>
@@ -257,7 +254,7 @@ export default function Home() {
             Ready to Transform Your Academic Performance?
           </h2>
           <p className="text-xl text-gray-200 mb-8">
-            Join 23+ students who\u2019ve already discovered the CalcAI advantage.
+            Experience the future of calculator technology with discrete AI integration.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -268,7 +265,7 @@ export default function Home() {
           </div>
 
           <div className="mt-8 text-sm text-gray-300">
-            ✓ 30-day money-back guarantee ✓ Free worldwide shipping ✓ Lifetime support
+            ✓ Free worldwide shipping ✓ Lifetime support
           </div>
         </div>
       </section>
