@@ -140,7 +140,7 @@ export default function Checkout() {
             <div className="relative">
               <div className="aspect-square max-w-md mx-auto">
                 <Image
-                  src="/new image.png"
+                  src="/84p.png"
                   alt="TI-84 Plus Calculator with ChatGPT Integration"
                   width={400}
                   height={400}
@@ -208,7 +208,7 @@ export default function Checkout() {
               <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg mb-6">
                 <div className="w-20 h-20 rounded-lg overflow-hidden">
                   <Image
-                    src="/new image.png"
+                    src="/84p.png"
                     alt="TI-84 Plus Calculator"
                     width={80}
                     height={80}
