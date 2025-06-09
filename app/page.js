@@ -164,7 +164,7 @@ export default function Home() {
 
 
       {/* Features Section */}
-      <section className="py-24 bg-gradient-to-b from-gray-800 to-gray-900">
+      <section className="py-24 bg-gradient-to-b from-slate-800 to-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white mb-4">
@@ -180,7 +180,7 @@ export default function Home() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className={`bg-gradient-to-br from-gray-700 to-gray-800 p-8 rounded-2xl text-center transition-all duration-500 hover:shadow-2xl hover:scale-110 border border-gray-600 hover:border-blue-500 ${
+                className={`bg-gradient-to-br from-slate-700 to-slate-800 p-8 rounded-2xl text-center transition-all duration-500 hover:shadow-2xl hover:scale-110 border border-slate-600 hover:border-blue-500 ${
                   currentFeature === index ? 'ring-2 ring-blue-500 scale-110 shadow-2xl shadow-blue-500/20' : 'shadow-xl'
                 }`}
               >
@@ -204,7 +204,7 @@ export default function Home() {
 
 
       {/* Showcase */}
-      <section className="py-24 bg-gray-900">
+      <section className="py-24 bg-gradient-to-b from-slate-900 to-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-center text-white mb-12">
             See It In Action
@@ -214,7 +214,7 @@ export default function Home() {
             {/* Video Section */}
             <div className="card p-8 text-center shadow-xl hover:shadow-2xl transition-all duration-300">
               <h3 className="text-xl font-semibold text-white mb-4">Product Demo Video</h3>
-              <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-600">
+              <div className="aspect-video bg-slate-800 rounded-lg flex items-center justify-center border-2 border-dashed border-slate-600">
                 <div className="text-center">
                   <div className="text-4xl mb-4 text-gray-500">[VIDEO]</div>
                   <div className="text-lg font-medium text-gray-300">Coming Soon</div>
@@ -228,7 +228,7 @@ export default function Home() {
             {/* Photos Section */}
             <div className="card p-8 text-center shadow-xl hover:shadow-2xl transition-all duration-300">
               <h3 className="text-xl font-semibold text-white mb-4">Product Gallery</h3>
-              <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-600">
+              <div className="aspect-video bg-slate-800 rounded-lg flex items-center justify-center border-2 border-dashed border-slate-600">
                 <div className="text-center">
                   <div className="text-4xl mb-4 text-gray-500">[PHOTOS]</div>
                   <div className="text-lg font-medium text-gray-300">Coming Soon</div>
@@ -272,7 +272,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-slate-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
@@ -317,7 +317,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+          <div className="border-t border-slate-800 mt-8 pt-8 text-center text-sm text-gray-400">
             © 2024 CalcAI. All rights reserved.
           </div>
         </div>
