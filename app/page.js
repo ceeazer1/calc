@@ -111,7 +111,7 @@ export default function Home() {
                   <span className="text-blue-400"> + AI</span>
                 </h1>
                 <p className="text-xl text-gray-200 leading-relaxed">
-                  Your calculator, but smarter. ChatGPT integration that's completely invisible.
+                  Your calculator, but smarter. ChatGPT integration that&apos;s completely invisible.
                   Same look, unlimited power.
                 </p>
               </div>
@@ -170,7 +170,7 @@ export default function Home() {
               What Makes This Different
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              It's not just a calculator with AI slapped on. This is a carefully modded TI-84 Plus
+              It&apos;s not just a calculator with AI slapped on. This is a carefully modded TI-84 Plus
               that looks and feels exactly like the original.
             </p>
           </div>
