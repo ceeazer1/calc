@@ -228,7 +228,7 @@ export default function ProductPage() {
 
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 text-sm sm:text-base"
               >
                 {addedToCart ? 'Added to Cart!' : `Add to Cart - $${getPrice()}`}
               </button>

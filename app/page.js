@@ -82,12 +82,12 @@ export default function Home() {
                 href="https://t.me/+48P4V5dL5ShmYTQx"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105"
+                className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 text-sm sm:text-base"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>Support</span>
               </a>
-              <Link href="/product" className="btn-primary">
+              <Link href="/product" className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm sm:text-base">
                 Buy Now - $84.99
               </Link>
             </div>
@@ -117,9 +117,9 @@ export default function Home() {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/product" className="btn-primary bg-white text-primary-600 hover:bg-gray-100">
+                <Link href="/product" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm sm:text-base flex items-center justify-center">
                   Buy Now - $84.99
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
                 </Link>
 
               </div>
@@ -258,9 +258,9 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/product" className="btn-primary bg-white text-primary-600 hover:bg-gray-100">
+            <Link href="/product" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm sm:text-base flex items-center justify-center">
               Buy Now - $84.99
-              <ArrowRight className="w-5 h-5 ml-2" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
             </Link>
           </div>
 

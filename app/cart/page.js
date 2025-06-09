@@ -142,7 +142,7 @@ export default function CartPage() {
             <p className="text-gray-300 mb-6">Add some products to get started!</p>
             <Link 
               href="/product"
-              className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-200 inline-block"
+              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 inline-block text-sm sm:text-base"
             >
               Continue Shopping
             </Link>
@@ -230,7 +230,7 @@ export default function CartPage() {
                 <button
                   onClick={handleCheckout}
                   disabled={isProcessing}
-                  className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 ${
+                  className={`w-full py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 text-sm sm:text-base ${
                     isProcessing
                       ? 'bg-gray-600 cursor-not-allowed'
                       : 'bg-blue-600 hover:bg-blue-700'
@@ -248,7 +248,7 @@ export default function CartPage() {
 
                 <Link
                   href="/product"
-                  className="w-full mt-3 bg-gray-100 hover:bg-gray-200 text-gray-900 py-3 px-6 rounded-lg font-semibold transition-all duration-200 text-center block"
+                  className="w-full mt-3 bg-gray-100 hover:bg-gray-200 text-gray-900 py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 text-center block text-sm sm:text-base"
                 >
                   Continue Shopping
                 </Link>
