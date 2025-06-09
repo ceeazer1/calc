@@ -33,23 +33,23 @@ export default function Home() {
   const features = [
     {
       icon: <Brain className="w-8 h-8" />,
-      title: "ChatGPT Integration",
-      description: "Advanced AI assistance built right into your calculator for instant problem solving"
+      title: "AI Assistant",
+      description: "ChatGPT built into the hardware. Get instant help with any math problem."
     },
     {
       icon: <Shield className="w-8 h-8" />,
-      title: "Store Notes",
-      description: "Save important formulas and notes directly on your calculator for easy access"
+      title: "Completely Hidden",
+      description: "Looks exactly like a regular TI-84. Teachers, proctors, nobody will know."
     },
     {
-      icon: <Users className="w-8 h-8" />,
-      title: "Chat with Other Calculators",
-      description: "Connect and communicate with other CalcAI users for collaborative problem solving"
+      icon: <Zap className="w-8 h-8" />,
+      title: "Survives Resets",
+      description: "RAM clear, factory reset, doesn't matter. The mod stays installed."
     },
     {
       icon: <Lock className="w-8 h-8" />,
-      title: "Discrete Method",
-      description: "Looks like a normal calculator from outside. Program survives RAM clear and factory reset"
+      title: "No Internet Needed",
+      description: "Works offline during tests. All the AI power without any connectivity."
     }
   ]
 
@@ -102,17 +102,17 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className={`space-y-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
               <div className="space-y-4">
-                <div className="flex items-center space-x-2 text-accent-200">
-                  <Sparkles className="w-5 h-5" />
-                  <span className="text-sm font-medium">Revolutionary Technology</span>
+                <div className="flex items-center space-x-2 text-blue-400">
+                  <Brain className="w-5 h-5" />
+                  <span className="text-sm font-medium">Modded Hardware</span>
                 </div>
                 <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-                  TI-84 Plus with
-                  <span className="text-accent-300"> ChatGPT</span>
+                  TI-84 Plus
+                  <span className="text-blue-400"> + AI</span>
                 </h1>
                 <p className="text-xl text-gray-200 leading-relaxed">
-                  The world\u2019s first calculator with discrete AI integration.
-                  Get advanced problem-solving assistance that\u2019s completely undetectable.
+                  Your calculator, but smarter. ChatGPT integration that's completely invisible.
+                  Same look, unlimited power.
                 </p>
               </div>
               
@@ -149,8 +149,8 @@ export default function Home() {
                     className="w-full h-auto object-contain"
                     priority
                   />
-                  <div className="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded text-xs font-bold shadow-lg">
-                    ChatGPT Enhanced
+                  <div className="absolute top-2 right-2 bg-green-500 text-black px-2 py-1 rounded text-xs font-bold shadow-lg animate-pulse">
+                    AI MODDED
                   </div>
                 </div>
               </div>
@@ -167,11 +167,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white mb-4">
-              Why CalcAI Changes Everything
+              What Makes This Different
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Experience the perfect fusion of traditional calculator functionality
-              with cutting-edge AI assistance.
+              It's not just a calculator with AI slapped on. This is a carefully modded TI-84 Plus
+              that looks and feels exactly like the original.
             </p>
           </div>
 
@@ -206,7 +206,7 @@ export default function Home() {
       <section className="py-20 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-center text-white mb-12">
-            Showcase
+            See It In Action
           </h2>
 
           <div className="grid md:grid-cols-2 gap-8">
@@ -251,10 +251,10 @@ export default function Home() {
       <section className="py-20 gradient-bg text-white text-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold mb-4">
-            Ready to Transform Your Academic Performance?
+            Ready to Level Up?
           </h2>
           <p className="text-xl text-gray-200 mb-8">
-            Experience the future of calculator technology with discrete AI integration.
+            Get the calculator that actually helps you learn. Discreet, powerful, undetectable.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
