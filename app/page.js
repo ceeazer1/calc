@@ -215,7 +215,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold text-white mb-4">Product Demo Video</h3>
               <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-600">
                 <div className="text-center">
-                  <div className="text-4xl mb-4">🎥</div>
+                  <div className="text-4xl mb-4 text-gray-500">[VIDEO]</div>
                   <div className="text-lg font-medium text-gray-300">Coming Soon</div>
                   <div className="text-sm text-gray-400 mt-2">
                     Watch CalcAI in action
@@ -229,7 +229,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold text-white mb-4">Product Gallery</h3>
               <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-600">
                 <div className="text-center">
-                  <div className="text-4xl mb-4">📸</div>
+                  <div className="text-4xl mb-4 text-gray-500">[PHOTOS]</div>
                   <div className="text-lg font-medium text-gray-300">Coming Soon</div>
                   <div className="text-sm text-gray-400 mt-2">
                     Detailed product photos
@@ -265,7 +265,7 @@ export default function Home() {
           </div>
 
           <div className="mt-8 text-sm text-gray-300">
-            ✓ Free worldwide shipping ✓ Lifetime support
+            • Free worldwide shipping • Lifetime support
           </div>
         </div>
       </section>

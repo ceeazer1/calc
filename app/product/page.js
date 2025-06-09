@@ -17,7 +17,7 @@ export default function ProductPage() {
   const getProductName = () => {
     return condition === 'new'
       ? 'CalcAI - TI-84 Plus with ChatGPT (Brand New)'
-      : 'CalcAI - TI-84 Plus with ChatGPT (Used - Excellent Condition)'
+      : 'CalcAI - TI-84 Plus with ChatGPT (Used - Good Condition)'
   }
 
   const handleAddToCart = () => {
@@ -118,7 +118,7 @@ export default function ProductPage() {
                 CalcAI - TI-84 Plus with ChatGPT
               </h1>
               <p className="text-lg text-gray-300">
-                The world\u2019s first calculator with discrete AI integration
+                TI-84 Plus calculator with discrete AI integration
               </p>
               <div className="mt-3">
                 <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
@@ -126,7 +126,7 @@ export default function ProductPage() {
                     ? 'bg-green-600 text-white'
                     : 'bg-blue-600 text-white'
                 }`}>
-                  {condition === 'new' ? 'Brand New' : 'Used - Excellent Condition'}
+                  {condition === 'new' ? 'Brand New' : 'Used - Good Condition'}
                 </span>
               </div>
             </div>
@@ -163,7 +163,7 @@ export default function ProductPage() {
                   <div className="text-center">
                     <div className="font-bold text-lg">Used</div>
                     <div className="text-2xl font-bold mt-1">$84.99</div>
-                    <div className="text-sm mt-1">Excellent condition</div>
+                    <div className="text-sm mt-1">Good condition</div>
                   </div>
                 </button>
               </div>
@@ -174,7 +174,7 @@ export default function ProductPage() {
 
             {/* Features */}
             <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-white">What\u2019s Included:</h3>
+              <h3 className="text-lg font-semibold text-white">What&apos;s Included:</h3>
               <div className="space-y-2">
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-green-500" />
@@ -230,7 +230,7 @@ export default function ProductPage() {
                 onClick={handleAddToCart}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105"
               >
-                {addedToCart ? '✓ Added to Cart!' : `Add to Cart - $${getPrice()}`}
+                {addedToCart ? 'Added to Cart!' : `Add to Cart - $${getPrice()}`}
               </button>
 
               {addedToCart && (
@@ -246,22 +246,13 @@ export default function ProductPage() {
 
               <div className="text-center text-sm text-gray-400 mt-2">
                 <div className="flex items-center justify-center space-x-3 mb-2 flex-wrap">
-                  <span className="flex items-center space-x-1">
-                    <span>💳</span>
-                    <span>Cards</span>
-                  </span>
-                  <span className="flex items-center space-x-1">
-                    <span>💰</span>
-                    <span>Cash App</span>
-                  </span>
-                  <span className="flex items-center space-x-1">
-                    <span>🏦</span>
-                    <span>Bank Transfer</span>
-                  </span>
-                  <span className="flex items-center space-x-1">
-                    <span>⚡</span>
-                    <span>Link</span>
-                  </span>
+                  <span className="text-gray-400">Cards</span>
+                  <span className="text-gray-400">•</span>
+                  <span className="text-gray-400">Cash App</span>
+                  <span className="text-gray-400">•</span>
+                  <span className="text-gray-400">Bank Transfer</span>
+                  <span className="text-gray-400">•</span>
+                  <span className="text-gray-400">Link</span>
                 </div>
                 <p>Secure payment powered by Stripe</p>
               </div>
