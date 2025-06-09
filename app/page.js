@@ -87,7 +87,7 @@ export default function Home() {
                 <MessageCircle className="w-4 h-4" />
                 <span>Support</span>
               </a>
-              <Link href="/product" className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm sm:text-base">
+              <Link href="/product" className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl text-sm sm:text-base">
                 Buy Now - $84.99
               </Link>
             </div>
@@ -97,6 +97,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="pt-20 pb-16 gradient-bg text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/10 to-black/30"></div>
         <div className="absolute inset-0 tech-grid opacity-20"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -117,7 +118,7 @@ export default function Home() {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/product" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm sm:text-base flex items-center justify-center">
+                <Link href="/product" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl text-sm sm:text-base flex items-center justify-center">
                   Buy Now - $84.99
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
                 </Link>
@@ -140,7 +141,7 @@ export default function Home() {
             {/* Calculator Image */}
             <div className={`relative ${isVisible ? 'animate-slide-up' : 'opacity-0'}`}>
               <div className="relative mx-auto w-full max-w-sm">
-                <div className="relative w-full transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                <div className="relative w-full transform rotate-3 hover:rotate-0 transition-transform duration-500 drop-shadow-2xl">
                   <Image
                     src="/NEWTI84.png"
                     alt="TI-84 Plus Calculator with ChatGPT Integration"
@@ -149,7 +150,7 @@ export default function Home() {
                     className="w-full h-auto object-contain"
                     priority
                   />
-                  <div className="absolute top-2 right-2 bg-green-500 text-black px-2 py-1 rounded text-xs font-bold shadow-lg animate-pulse">
+                  <div className="absolute top-2 right-2 bg-gradient-to-r from-green-400 to-green-500 text-black px-3 py-1 rounded-full text-xs font-bold shadow-xl animate-pulse border border-green-300">
                     AI MODDED
                   </div>
                 </div>
@@ -163,7 +164,7 @@ export default function Home() {
 
 
       {/* Features Section */}
-      <section className="py-20 bg-gray-800">
+      <section className="py-24 bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white mb-4">
@@ -179,8 +180,8 @@ export default function Home() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className={`card p-6 text-center transition-all duration-500 ${
-                  currentFeature === index ? 'ring-2 ring-primary-500 scale-105' : ''
+                className={`card p-6 text-center transition-all duration-500 hover:shadow-2xl hover:scale-105 ${
+                  currentFeature === index ? 'ring-2 ring-primary-500 scale-105 shadow-2xl' : 'shadow-xl'
                 }`}
               >
                 <div className="text-primary-600 mb-4 flex justify-center">
@@ -203,7 +204,7 @@ export default function Home() {
 
 
       {/* Showcase */}
-      <section className="py-20 bg-gray-900">
+      <section className="py-24 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-center text-white mb-12">
             See It In Action
@@ -211,7 +212,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Video Section */}
-            <div className="card p-8 text-center">
+            <div className="card p-8 text-center shadow-xl hover:shadow-2xl transition-all duration-300">
               <h3 className="text-xl font-semibold text-white mb-4">Product Demo Video</h3>
               <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-600">
                 <div className="text-center">
@@ -225,7 +226,7 @@ export default function Home() {
             </div>
 
             {/* Photos Section */}
-            <div className="card p-8 text-center">
+            <div className="card p-8 text-center shadow-xl hover:shadow-2xl transition-all duration-300">
               <h3 className="text-xl font-semibold text-white mb-4">Product Gallery</h3>
               <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-600">
                 <div className="text-center">
@@ -248,7 +249,7 @@ export default function Home() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 gradient-bg text-white text-center">
+      <section className="py-24 gradient-bg text-white text-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold mb-4">
             Ready to Level Up?
@@ -258,7 +259,7 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/product" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm sm:text-base flex items-center justify-center">
+            <Link href="/product" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl text-sm sm:text-base flex items-center justify-center">
               Buy Now - $84.99
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
             </Link>
