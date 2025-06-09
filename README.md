@@ -1,4 +1,4 @@
-# CalcAI - TI-84 Plus with ChatGPT Integration
+# CalcAI 
 
 A modern, interactive website showcasing the revolutionary CalcAI product - a TI-84 Plus calculator with discrete ChatGPT integration.
 
