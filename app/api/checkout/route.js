@@ -43,7 +43,7 @@ export async function POST(request) {
           product_data: {
             name: 'CalcAI - TI-84 Plus with ChatGPT',
             description: 'The world\u2019s first calculator with discrete AI integration',
-            images: [`${process.env.NEXT_PUBLIC_DOMAIN}/84p.png`],
+            images: [`${process.env.NEXT_PUBLIC_DOMAIN}/NEWTI84.png`],
           },
           unit_amount: 12999, // $129.99 in cents
         },
