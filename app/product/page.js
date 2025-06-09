@@ -63,9 +63,9 @@ export default function ProductPage() {
               <Image
                 src="/logo.png"
                 alt="CalcAI Logo"
-                width={100}
-                height={100}
-                className="w-24 h-24 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl"
+                width={120}
+                height={120}
+                className="w-32 h-32 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl"
               />
             </Link>
             
