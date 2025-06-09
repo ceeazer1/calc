@@ -97,7 +97,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="pt-20 pb-16 gradient-bg text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/30 via-purple-600/20 to-black/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-slate-900/30 to-black/60"></div>
         <div className="absolute inset-0 tech-grid opacity-20"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -140,13 +140,13 @@ export default function Home() {
 
             {/* Calculator Image */}
             <div className={`relative ${isVisible ? 'animate-slide-up' : 'opacity-0'}`}>
-              <div className="relative mx-auto w-full max-w-sm">
+              <div className="relative mx-auto w-full max-w-xs">
                 <div className="relative w-full transform rotate-3 hover:rotate-0 transition-transform duration-500 drop-shadow-2xl">
                   <Image
                     src="/NEWTI84.png"
                     alt="TI-84 Plus Calculator with ChatGPT Integration"
-                    width={320}
-                    height={480}
+                    width={280}
+                    height={420}
                     className="w-full h-auto object-contain"
                     priority
                   />
