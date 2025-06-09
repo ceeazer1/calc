@@ -30,7 +30,7 @@ export default function ProductPage() {
       name: getProductName(),
       price: getPrice(),
       quantity: quantity,
-      image: '/84p.png',
+      image: '/new image.png',
       condition: condition
     }
     
@@ -101,7 +101,7 @@ export default function ProductPage() {
           <div className="space-y-4">
             <div className="aspect-square bg-gray-900 rounded-xl shadow-lg p-8 border border-gray-800">
               <Image
-                src="/84p.png"
+                src="/new image.png"
                 alt="TI-84 Plus Calculator with ChatGPT Integration"
                 width={500}
                 height={500}
