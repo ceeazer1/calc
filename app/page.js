@@ -88,7 +88,7 @@ export default function Home() {
                 <span>Support</span>
               </a>
               <Link href="/product" className="btn-primary">
-                Buy Now - $129.99
+                Buy Now - $84.99
               </Link>
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function Home() {
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/product" className="btn-primary bg-white text-primary-600 hover:bg-gray-100">
-                  Buy Now - $129.99
+                  Buy Now - $84.99
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
 
@@ -262,7 +262,7 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/product" className="btn-primary bg-white text-primary-600 hover:bg-gray-100">
-              Buy Now - $129.99
+              Buy Now - $84.99
               <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </div>
