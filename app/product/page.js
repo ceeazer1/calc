@@ -54,9 +54,9 @@ export default function ProductPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white">
       {/* Header */}
-      <header className="bg-gray-900 shadow-sm border-b border-gray-800">
+      <header className="bg-slate-900/80 backdrop-blur-md shadow-xl border-b border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center">
@@ -90,34 +90,38 @@ export default function ProductPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
-        <div className="flex items-center space-x-2 text-sm text-gray-400 mb-8">
-          <Link href="/" className="hover:text-gray-200">Home</Link>
-          <span>/</span>
-          <span className="text-white">CalcAI TI-84 Plus</span>
+        <div className="flex items-center space-x-2 text-sm text-blue-400 mb-8">
+          <Link href="/" className="hover:text-blue-300 transition-colors">Home</Link>
+          <span className="text-slate-500">/</span>
+          <span className="text-white font-medium">CalcAI TI-84 Plus</span>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Product Images */}
           <div className="space-y-4">
-            <div className="aspect-square bg-gray-900 rounded-xl shadow-lg p-8 border border-gray-800">
+            <div className="aspect-square bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl shadow-2xl p-8 border border-slate-700 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent"></div>
               <Image
                 src="/NEWTI84.png"
                 alt="TI-84 Plus Calculator with ChatGPT Integration"
                 width={500}
                 height={500}
-                className="w-full h-full object-contain transform hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-contain transform hover:scale-105 transition-transform duration-300 relative z-10"
                 priority
               />
+              <div className="absolute top-4 right-4 bg-gradient-to-r from-green-400 to-green-500 text-black px-3 py-1 rounded-full text-xs font-bold shadow-lg animate-pulse">
+                AI MODDED
+              </div>
             </div>
           </div>
 
           {/* Product Info */}
           <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold text-white mb-2">
+            <div className="bg-gradient-to-r from-slate-800/50 to-transparent p-6 rounded-2xl border border-slate-700">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-3">
                 CalcAI - TI-84 Plus with ChatGPT
               </h1>
-              <p className="text-lg text-gray-300">
+              <p className="text-xl text-blue-200">
                 TI-84 Plus calculator with discrete AI integration
               </p>
               <div className="mt-3">
@@ -134,15 +138,15 @@ export default function ProductPage() {
 
 
             {/* Condition Selection */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-white">Choose Condition:</h3>
+            <div className="bg-slate-800/30 p-6 rounded-2xl border border-slate-700 space-y-4">
+              <h3 className="text-xl font-semibold text-white">Choose Condition:</h3>
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => setCondition('new')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 ${
+                  className={`p-6 rounded-xl border-2 transition-all duration-300 transform hover:scale-105 ${
                     condition === 'new'
-                      ? 'border-green-500 bg-green-500/20 text-white'
-                      : 'border-gray-600 bg-gray-800 text-gray-300 hover:border-gray-500'
+                      ? 'border-green-500 bg-gradient-to-br from-green-500/20 to-green-600/10 text-white shadow-lg shadow-green-500/20'
+                      : 'border-slate-600 bg-gradient-to-br from-slate-700 to-slate-800 text-gray-300 hover:border-slate-500 hover:shadow-lg'
                   }`}
                 >
                   <div className="text-center">
@@ -154,10 +158,10 @@ export default function ProductPage() {
 
                 <button
                   onClick={() => setCondition('used')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 ${
+                  className={`p-6 rounded-xl border-2 transition-all duration-300 transform hover:scale-105 ${
                     condition === 'used'
-                      ? 'border-blue-500 bg-blue-500/20 text-white'
-                      : 'border-gray-600 bg-gray-800 text-gray-300 hover:border-gray-500'
+                      ? 'border-blue-500 bg-gradient-to-br from-blue-500/20 to-blue-600/10 text-white shadow-lg shadow-blue-500/20'
+                      : 'border-slate-600 bg-gradient-to-br from-slate-700 to-slate-800 text-gray-300 hover:border-slate-500 hover:shadow-lg'
                   }`}
                 >
                   <div className="text-center">
@@ -170,7 +174,10 @@ export default function ProductPage() {
             </div>
 
             {/* Price */}
-            <div className="text-4xl font-bold text-white">${getPrice()}</div>
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 rounded-2xl border border-blue-500 shadow-lg shadow-blue-500/20">
+              <div className="text-5xl font-bold text-white">${getPrice()}</div>
+              <div className="text-blue-200 text-lg">Free worldwide shipping included</div>
+            </div>
 
             {/* Features */}
             <div className="space-y-3">
@@ -228,7 +235,7 @@ export default function ProductPage() {
 
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 text-sm sm:text-base"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-6 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-blue-500/25 text-lg border border-blue-500"
               >
                 {addedToCart ? 'Added to Cart!' : `Add to Cart - $${getPrice()}`}
               </button>
