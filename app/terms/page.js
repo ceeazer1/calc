@@ -38,7 +38,7 @@ export default function Terms() {
               Terms of Service
             </h1>
             <p className="text-xl text-gray-300">
-              Coming soon - We're preparing comprehensive terms to protect both you and CalcAI
+              Coming soon - We&apos;re preparing comprehensive terms to protect both you and CalcAI
             </p>
           </div>
 
@@ -48,7 +48,7 @@ export default function Terms() {
               Under Construction
             </h2>
             <p className="text-gray-300 mb-8">
-              We're working on creating clear and fair terms of service for CalcAI users.
+              We&apos;re working on creating clear and fair terms of service for CalcAI users.
               Our legal team is ensuring everything is transparent and user-friendly.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

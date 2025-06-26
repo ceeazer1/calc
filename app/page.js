@@ -249,7 +249,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white mb-4">
-              What's Inside
+              What&apos;s Inside
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Discover the sophisticated hardware modifications that make ChatGPT integration possible.

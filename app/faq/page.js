@@ -38,7 +38,7 @@ export default function FAQ() {
               Frequently Asked Questions
             </h1>
             <p className="text-xl text-gray-300">
-              Coming soon - We're preparing comprehensive answers to help you get the most out of CalcAI
+              Coming soon - We&apos;re preparing comprehensive answers to help you get the most out of CalcAI
             </p>
           </div>
 
@@ -48,7 +48,7 @@ export default function FAQ() {
               Under Construction
             </h2>
             <p className="text-gray-300 mb-8">
-              We're working on creating detailed FAQ content to address all your questions about CalcAI.
+              We&apos;re working on creating detailed FAQ content to address all your questions about CalcAI.
               In the meantime, feel free to reach out to our support team on Discord.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
