@@ -27,7 +27,34 @@ export default function Home() {
     const interval = setInterval(() => {
       setCurrentFeature((prev) => (prev + 1) % 4)
     }, 3000)
-    return () => clearInterval(interval)
+
+    // Scroll animation for What's Inside section
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const calculator = entry.target.querySelector('.calculator-animate')
+            const components = entry.target.querySelectorAll('[class*="component-"]')
+            const labels = entry.target.querySelectorAll('[class*="label-"]')
+
+            if (calculator) calculator.classList.add('animate-in')
+            components.forEach(component => component.classList.add('animate-in'))
+            labels.forEach(label => label.classList.add('animate-in'))
+          }
+        })
+      },
+      { threshold: 0.3 }
+    )
+
+    const whatsInsideSection = document.getElementById('whats-inside')
+    if (whatsInsideSection) {
+      observer.observe(whatsInsideSection)
+    }
+
+    return () => {
+      clearInterval(interval)
+      observer.disconnect()
+    }
   }, [])
 
   const features = [
@@ -77,16 +104,30 @@ export default function Home() {
                 className="w-32 h-32 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl"
               />
             </div>
-            <div className="flex items-center space-x-4">
-              <a
-                href="https://t.me/+48P4V5dL5ShmYTQx"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 text-sm sm:text-base"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>Support</span>
-              </a>
+            <div className="flex items-center space-x-6">
+              {/* Navigation Links */}
+              <div className="hidden md:flex items-center space-x-6">
+                <a
+                  href="#support"
+                  className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
+                >
+                  Support
+                </a>
+                <Link
+                  href="/faq"
+                  className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
+                >
+                  FAQ
+                </Link>
+                <a
+                  href="#whats-inside"
+                  className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
+                >
+                  Specifications
+                </a>
+              </div>
+
+              {/* Buy Now Button */}
               <Link href="/product" className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl text-sm sm:text-base">
                 Buy Now - $84.99
               </Link>
@@ -101,40 +142,45 @@ export default function Home() {
         <div className="absolute inset-0 tech-grid opacity-20"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className={`space-y-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-2 text-blue-400">
-                  <Brain className="w-5 h-5" />
-                  <span className="text-sm font-medium">Modded Hardware</span>
+            <div className={`space-y-12 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
+              <div className="space-y-8">
+                {/* Logo and Title */}
+                <div className="flex flex-col items-start space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <Image
+                      src="/logo.png"
+                      alt="CalcAI Logo"
+                      width={80}
+                      height={80}
+                      className="w-20 h-20 drop-shadow-2xl"
+                    />
+                    <div>
+                      <h1 className="text-6xl lg:text-7xl font-black tracking-tight">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-blue-300">
+                          TI-84 Plus
+                        </span>
+                      </h1>
+                    </div>
+                  </div>
                 </div>
-                <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-                  TI-84 Plus
-                  <span className="text-blue-400"> + AI</span>
-                </h1>
-                <p className="text-xl text-gray-200 leading-relaxed">
-                  Your calculator, but smarter. ChatGPT integration that&apos;s completely invisible.
-                  Same look, unlimited power.
-                </p>
+
+                {/* Description */}
+                <div className="max-w-2xl">
+                  <p className="text-3xl lg:text-4xl font-light text-gray-200 leading-relaxed tracking-wide">
+                    Normal calculator with <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">AI assistance</span>
+                  </p>
+                </div>
               </div>
-              
+
+              {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/product" className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl transition-all duration-300 transform hover:scale-110 shadow-2xl hover:shadow-blue-500/25 text-base sm:text-lg flex items-center justify-center border border-blue-400">
+                <Link href="/product" className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-blue-500/25 text-base flex items-center justify-center border border-blue-400 w-fit">
                   Buy Now - $84.99
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+                  <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
-
-              </div>
-
-              <div className="flex items-center space-x-6 text-sm">
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Free Shipping</span>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>Lifetime Support</span>
-                </div>
+                <a href="#features" className="bg-transparent border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 text-base w-fit inline-flex items-center justify-center">
+                  Learn More
+                </a>
               </div>
             </div>
 
@@ -164,7 +210,7 @@ export default function Home() {
 
 
       {/* Features Section */}
-      <section className="py-24 bg-gradient-to-b from-slate-800 to-slate-900">
+      <section className="py-24 bg-gradient-to-b from-slate-800 to-slate-900" id="features">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white mb-4">
@@ -195,6 +241,98 @@ export default function Home() {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+      {/* What's Inside Section */}
+      <section className="py-24 bg-gradient-to-b from-gray-900 to-slate-900" id="whats-inside">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              What's Inside
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Discover the sophisticated hardware modifications that make ChatGPT integration possible.
+            </p>
+          </div>
+
+          <div className="relative max-w-4xl mx-auto">
+            <div className="exploded-calculator-container">
+              {/* Main Calculator */}
+              <div className="relative mx-auto w-80 h-96 transition-all duration-1000 calculator-animate">
+                <Image
+                  src="/NEWTI84.png"
+                  alt="TI-84 Plus Calculator"
+                  width={320}
+                  height={384}
+                  className="w-full h-full object-contain relative z-10"
+                  priority
+                />
+
+                {/* Component 1: Custom PCB - Top Left */}
+                <div className="absolute top-12 left-6 w-16 h-12 bg-gradient-to-br from-blue-800 to-blue-900 rounded-lg opacity-0 transition-all duration-1000 delay-500 component-1 shadow-2xl border border-blue-600 z-30">
+                  <div className="w-full h-full bg-gradient-to-br from-blue-700/20 to-transparent rounded-lg flex items-center justify-center">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                  </div>
+                </div>
+
+                {/* Component 2: ESP32-C3 Chip - Top Right */}
+                <div className="absolute top-12 right-4 w-16 h-12 opacity-0 transition-all duration-1000 delay-700 component-2 shadow-2xl z-30">
+                  <Image
+                    src="/esp32-c3-chip.svg"
+                    alt="ESP32-C3 Microcontroller Chip"
+                    width={64}
+                    height={48}
+                    className="w-full h-full object-contain filter drop-shadow-lg"
+                  />
+                </div>
+
+                {/* Component 3: Memory Module - Bottom Left */}
+                <div className="absolute bottom-16 left-8 w-14 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded opacity-0 transition-all duration-1000 delay-900 component-3 shadow-2xl border border-slate-400 z-30">
+                  <div className="w-full h-full bg-gradient-to-br from-slate-500/20 to-transparent rounded"></div>
+                </div>
+
+                {/* Component 4: Power Management - Bottom Right */}
+                <div className="absolute bottom-16 right-6 w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full opacity-0 transition-all duration-1000 delay-1100 component-4 shadow-2xl border border-blue-300 z-30">
+                  <div className="w-full h-full bg-gradient-to-br from-blue-400/20 to-transparent rounded-full"></div>
+                </div>
+              </div>
+
+              {/* Component Labels */}
+              <div className="absolute inset-0 pointer-events-none">
+                {/* PCB Label */}
+                <div className="absolute top-0 left-0 opacity-0 transition-all duration-1000 delay-1300 label-1">
+                  <div className="bg-slate-800 text-white px-3 py-2 rounded-lg shadow-xl border border-blue-600">
+                    <h4 className="font-bold text-sm text-blue-400">Custom PCB</h4>
+                    <p className="text-xs text-gray-300">Main circuit board with AI processing</p>
+                  </div>
+                </div>
+
+                {/* ESP32 Label */}
+                <div className="absolute top-0 right-0 opacity-0 transition-all duration-1000 delay-1400 label-2">
+                  <div className="bg-slate-800 text-white px-3 py-2 rounded-lg shadow-xl border border-blue-400">
+                    <h4 className="font-bold text-sm text-blue-300">ESP32-C3 Chip</h4>
+                    <p className="text-xs text-gray-300">WiFi & Bluetooth microcontroller</p>
+                  </div>
+                </div>
+
+                {/* Memory Label */}
+                <div className="absolute bottom-0 left-0 opacity-0 transition-all duration-1000 delay-1500 label-3">
+                  <div className="bg-slate-800 text-white px-3 py-2 rounded-lg shadow-xl border border-slate-400">
+                    <h4 className="font-bold text-sm text-slate-300">Memory Module</h4>
+                    <p className="text-xs text-gray-300">Stores AI responses & data</p>
+                  </div>
+                </div>
+
+                {/* Power Label */}
+                <div className="absolute bottom-0 right-0 opacity-0 transition-all duration-1000 delay-1600 label-4">
+                  <div className="bg-slate-800 text-white px-3 py-2 rounded-lg shadow-xl border border-blue-300">
+                    <h4 className="font-bold text-sm text-blue-200">Power Management</h4>
+                    <p className="text-xs text-gray-300">Efficient power distribution</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -248,25 +386,52 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-24 gradient-bg text-white text-center">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold mb-4">
-            Ready to Level Up?
-          </h2>
-          <p className="text-xl text-gray-200 mb-8">
-            Get the calculator that actually helps you learn. Discreet, powerful, undetectable.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/product" className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl transition-all duration-300 transform hover:scale-110 shadow-2xl hover:shadow-blue-500/25 text-base sm:text-lg flex items-center justify-center border border-blue-400">
-              Buy Now - $84.99
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-            </Link>
+      {/* Support/Contact Section */}
+      <section className="py-24 bg-slate-800" id="support">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Need Support?
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Get help with your CalcAI device, ask questions, or connect with our community
+            </p>
           </div>
 
-          <div className="mt-8 text-sm text-gray-300">
-            • Free worldwide shipping • Lifetime support
+          <div className="max-w-2xl mx-auto">
+            {/* Discord Support */}
+            <div className="bg-gradient-to-br from-slate-700 to-slate-800 p-8 rounded-2xl text-center transition-all duration-300 hover:shadow-2xl hover:scale-105 border border-slate-600 hover:border-blue-500">
+              <div className="mb-6 flex justify-center">
+                <Image
+                  src="/discord-logo.svg"
+                  alt="Discord Logo"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12"
+                />
+              </div>
+              <h3 className="text-2xl font-semibold text-white mb-4">
+                Discord Community
+              </h3>
+              <p className="text-gray-300 mb-6">
+                Join our Discord server for instant support, community discussions, and the latest updates
+              </p>
+              <a
+                href="https://discord.gg/83ZwJcPWJ6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-blue-500/25 inline-flex items-center"
+              >
+                Join Discord
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </a>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-gray-400">
+              Our community is here to help you get the most out of your CalcAI device
+            </p>
           </div>
         </div>
       </section>
@@ -274,7 +439,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center mb-4">
                 <Image
@@ -292,27 +457,33 @@ export default function Home() {
 
             <div>
               <h3 className="font-semibold mb-4">Product</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li>Features</li>
-                <li>Specifications</li>
-                <li>Support</li>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="#whats-inside" className="text-gray-400 hover:text-white transition-colors duration-200">
+                    Specifications
+                  </a>
+                </li>
+                <li>
+                  <a href="#support" className="text-gray-400 hover:text-white transition-colors duration-200">
+                    Support
+                  </a>
+                </li>
               </ul>
             </div>
 
             <div>
               <h3 className="font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li>About</li>
-                <li>Privacy Policy</li>
-                <li>Terms of Service</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4">Contact</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li>support@calcai.com</li>
-                <li>1-800-CALC-AI</li>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <Link href="/faq" className="text-gray-400 hover:text-white transition-colors duration-200">
+                    FAQ
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="text-gray-400 hover:text-white transition-colors duration-200">
+                    Terms of Service
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
