@@ -198,7 +198,6 @@ export default function ProductPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-4xl font-bold text-white mb-1">$129.99</div>
-                    <div className="text-blue-100 text-sm font-medium">Free worldwide shipping included</div>
                   </div>
                   <div className="text-blue-200/60">
                     <Calculator className="w-8 h-8" />
@@ -253,13 +252,10 @@ export default function ProductPage() {
               )}
 
               <div className="text-center text-sm text-gray-400 mt-2">
-                <div className="flex items-center justify-center space-x-3 mb-2 flex-wrap">
+                <div className="flex items-center justify-center space-x-4 mb-2 flex-wrap">
                   <span className="text-gray-400">Cards</span>
-                  <span className="text-gray-400">•</span>
                   <span className="text-gray-400">Cash App</span>
-                  <span className="text-gray-400">•</span>
                   <span className="text-gray-400">Bank Transfer</span>
-                  <span className="text-gray-400">•</span>
                   <span className="text-gray-400">Link</span>
                 </div>
                 <p>Secure payment powered by Stripe</p>
@@ -268,11 +264,6 @@ export default function ProductPage() {
 
             {/* Guarantees */}
             <div className="border-t border-gray-700 pt-6 space-y-3">
-              <div className="flex items-center space-x-3">
-                <Truck className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-300">Free shipping worldwide</span>
-              </div>
-
               <div className="flex items-center space-x-3">
                 <Shield className="w-5 h-5 text-green-500" />
                 <span className="text-sm text-gray-300">Secure checkout</span>

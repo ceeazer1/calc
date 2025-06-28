@@ -213,10 +213,7 @@ export default function CartPage() {
                     <span className="text-gray-300">Subtotal ({getTotalItems()} items)</span>
                     <span className="font-semibold text-white">${getTotalPrice()}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-300">Shipping</span>
-                    <span className="font-semibold text-green-400">FREE</span>
-                  </div>
+
                   <div className="flex justify-between">
                     <span className="text-gray-300">Tax</span>
                     <span className="font-semibold text-white">$0.00</span>
