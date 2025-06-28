@@ -61,11 +61,6 @@ export default function Home() {
       icon: <Zap className="w-8 h-8" />,
       title: "Survives Resets",
       description: "RAM clear, factory reset, doesn't matter. The mod stays installed."
-    },
-    {
-      icon: <Lock className="w-8 h-8" />,
-      title: "No Internet Needed",
-      description: "Works offline during tests. All the AI power without any connectivity."
     }
   ]
 
@@ -74,7 +69,6 @@ export default function Home() {
     "Get step-by-step explanations",
     "Works in any testing environment",
     "Completely undetectable",
-    "No internet required during use",
     "Full TI-84 Plus functionality preserved"
   ]
 
