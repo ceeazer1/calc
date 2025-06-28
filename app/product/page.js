@@ -109,9 +109,6 @@ export default function ProductPage() {
                 className="w-full h-full object-contain transform hover:scale-105 transition-transform duration-300 relative z-10"
                 priority
               />
-              <div className="absolute top-4 right-4 bg-gradient-to-r from-green-400 to-green-500 text-black px-3 py-1 rounded-full text-xs font-bold shadow-lg animate-pulse">
-                AI MODDED
-              </div>
             </div>
           </div>
 

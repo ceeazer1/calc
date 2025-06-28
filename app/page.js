@@ -170,9 +170,6 @@ export default function Home() {
                     className="w-full h-auto object-contain"
                     priority
                   />
-                  <div className="absolute top-2 right-2 bg-gradient-to-r from-green-400 via-green-500 to-emerald-500 text-black px-4 py-2 rounded-full text-sm font-black shadow-2xl animate-pulse border-2 border-green-300 backdrop-blur-sm">
-                    AI MODDED
-                  </div>
                 </div>
               </div>
             </div>
