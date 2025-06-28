@@ -8,7 +8,6 @@ import { Star, CheckCircle, ShoppingCart, ArrowLeft, Shield, Truck, RotateCcw, M
 export default function ProductPage() {
   const [quantity, setQuantity] = useState(1)
   const [addedToCart, setAddedToCart] = useState(false)
-  const [condition, setCondition] = useState('new') // 'new' or 'used'
   const [cartItemCount, setCartItemCount] = useState(0)
 
   // Update cart count on component mount and when cart changes
@@ -30,13 +29,11 @@ export default function ProductPage() {
   }, [])
 
   const getPrice = () => {
-    return condition === 'new' ? 129.99 : 84.99
+    return 129.99
   }
 
   const getProductName = () => {
-    return condition === 'new'
-      ? 'CalcAI - TI-84 Plus with ChatGPT (Brand New)'
-      : 'CalcAI - TI-84 Plus with ChatGPT (Used - Good Condition)'
+    return 'CalcAI - TI-84 Plus with ChatGPT'
   }
 
   const handleAddToCart = () => {
@@ -45,12 +42,11 @@ export default function ProductPage() {
 
     // Add product to cart
     const product = {
-      id: `calcai-ti84-${condition}`,
+      id: 'calcai-ti84',
       name: getProductName(),
       price: getPrice(),
       quantity: quantity,
-      image: '/NEWTI84.png',
-      condition: condition
+      image: '/NEWTI84.png'
     }
     
     // Check if product already exists in cart
@@ -164,99 +160,19 @@ export default function ProductPage() {
               <p className="text-xl text-blue-200">
                 TI-84 Plus calculator with discrete AI integration
               </p>
-              <div className="mt-3">
-                <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
-                  condition === 'new'
-                    ? 'bg-green-600 text-white'
-                    : 'bg-blue-600 text-white'
-                }`}>
-                  {condition === 'new' ? 'Brand New' : 'Used - Good Condition'}
-                </span>
-              </div>
             </div>
 
 
 
-            {/* Condition Selection */}
-            <div className="bg-slate-800/30 p-4 rounded-xl border border-slate-700 space-y-3">
-              <h3 className="text-lg font-semibold text-white">Choose Condition:</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  onClick={() => setCondition('new')}
-                  className={`p-4 rounded-lg border transition-all duration-200 ${
-                    condition === 'new'
-                      ? 'border-green-500 bg-green-500/10 text-white shadow-md'
-                      : 'border-slate-600 bg-slate-700/50 text-gray-300 hover:border-slate-500'
-                  }`}
-                >
-                  <div className="text-center">
-                    <div className="font-semibold text-base">Brand New</div>
-                    <div className="text-xl font-bold mt-1">$129.99</div>
-                    <div className="text-xs mt-1 text-gray-400">Factory sealed</div>
-                  </div>
-                </button>
 
-                <button
-                  onClick={() => setCondition('used')}
-                  className={`p-4 rounded-lg border transition-all duration-200 ${
-                    condition === 'used'
-                      ? 'border-blue-500 bg-blue-500/10 text-white shadow-md'
-                      : 'border-slate-600 bg-slate-700/50 text-gray-300 hover:border-slate-500'
-                  }`}
-                >
-                  <div className="text-center">
-                    <div className="font-semibold text-base">Used</div>
-                    <div className="text-xl font-bold mt-1">$84.99</div>
-                    <div className="text-xs mt-1 text-gray-400">Good condition</div>
-                  </div>
-                </button>
-              </div>
-            </div>
 
             {/* Price */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 rounded-lg border border-blue-500 shadow-md">
-              <div className="text-3xl font-bold text-white">${getPrice()}</div>
+              <div className="text-3xl font-bold text-white">$129.99</div>
               <div className="text-blue-200 text-sm">Free worldwide shipping included</div>
             </div>
 
-            {/* Features */}
-            <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-white">What&apos;s Included:</h3>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span className="text-gray-300">ChatGPT Integration</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span className="text-gray-300">Store Notes Feature</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span className="text-gray-300">Chat with Other Calculators</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span className="text-gray-300">Discrete Method (Survives Factory Reset)</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span className="text-gray-300">Detailed Video Guide Included</span>
-                </div>
-                {condition === 'used' && (
-                  <div className="mt-4 p-3 bg-blue-900/30 rounded-lg border border-blue-700">
-                    <h4 className="text-blue-300 font-medium mb-2">Used Condition Details:</h4>
-                    <ul className="text-sm text-gray-300 space-y-1">
-                      <li>• Fully tested and working perfectly</li>
-                      <li>• Minor cosmetic wear (scratches/scuffs)</li>
-                      <li>• All AI features pre-installed and verified</li>
-                      <li>• Same functionality as brand new</li>
 
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </div>
 
             {/* Quantity and Add to Cart */}
             <div className="space-y-4">
