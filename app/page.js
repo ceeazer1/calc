@@ -15,12 +15,14 @@ import {
   Sparkles,
   Lock,
   Users,
-  MessageCircle
+  MessageCircle,
+  ShoppingCart
 } from 'lucide-react'
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false)
   const [currentFeature, setCurrentFeature] = useState(0)
+  const [cartItemCount, setCartItemCount] = useState(0)
 
   useEffect(() => {
     setIsVisible(true)
@@ -28,7 +30,20 @@ export default function Home() {
       setCurrentFeature((prev) => (prev + 1) % 4)
     }, 3000)
 
-    return () => clearInterval(interval)
+    // Update cart count
+    const updateCartCount = () => {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]')
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0)
+      setCartItemCount(totalItems)
+    }
+
+    updateCartCount()
+    window.addEventListener('storage', updateCartCount)
+
+    return () => {
+      clearInterval(interval)
+      window.removeEventListener('storage', updateCartCount)
+    }
   }, [])
 
   const features = [
@@ -100,6 +115,17 @@ export default function Home() {
                   Specifications
                 </a>
               </div>
+
+              {/* Cart Icon */}
+              <Link href="/cart" className="relative flex items-center space-x-2 text-gray-300 hover:text-white transition-colors duration-200">
+                <ShoppingCart className="w-5 h-5" />
+                <span className="hidden sm:inline">Cart</span>
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                    {cartItemCount}
+                  </span>
+                )}
+              </Link>
 
               {/* Buy Now Button */}
               <Link href="/product" className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl text-sm sm:text-base">

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Star, CheckCircle, ShoppingCart, ArrowLeft, Shield, Truck, RotateCcw, MessageCircle } from 'lucide-react'
@@ -9,6 +9,25 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1)
   const [addedToCart, setAddedToCart] = useState(false)
   const [condition, setCondition] = useState('new') // 'new' or 'used'
+  const [cartItemCount, setCartItemCount] = useState(0)
+
+  // Update cart count on component mount and when cart changes
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]')
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0)
+      setCartItemCount(totalItems)
+    }
+
+    updateCartCount()
+
+    // Listen for storage changes (when cart is updated from other tabs/components)
+    window.addEventListener('storage', updateCartCount)
+
+    return () => {
+      window.removeEventListener('storage', updateCartCount)
+    }
+  }, [])
 
   const getPrice = () => {
     return condition === 'new' ? 129.99 : 84.99
@@ -47,7 +66,11 @@ export default function ProductPage() {
     
     // Save to localStorage
     localStorage.setItem('cart', JSON.stringify(existingCart))
-    
+
+    // Update cart count
+    const totalItems = existingCart.reduce((total, item) => total + item.quantity, 0)
+    setCartItemCount(totalItems)
+
     // Show success message
     setAddedToCart(true)
     setTimeout(() => setAddedToCart(false), 3000)
@@ -55,40 +78,60 @@ export default function ProductPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white">
-      {/* Header */}
-      <header className="bg-slate-900/80 backdrop-blur-md shadow-xl border-b border-slate-700">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full bg-gray-900/90 backdrop-blur-md z-50 border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/logo.png"
-                alt="CalcAI Logo"
-                width={120}
-                height={120}
-                className="w-32 h-32 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl"
-              />
-            </Link>
-            
-            <div className="flex items-center space-x-4">
-              <a
-                href="https://t.me/+48P4V5dL5ShmYTQx"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>Support</span>
-              </a>
-              <Link href="/cart" className="flex items-center space-x-2 text-gray-300 hover:text-white">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <Link href="/">
+                <Image
+                  src="/logo.png"
+                  alt="CalcAI Logo"
+                  width={120}
+                  height={120}
+                  className="w-32 h-32 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl cursor-pointer"
+                />
+              </Link>
+            </div>
+            <div className="flex items-center space-x-6">
+              {/* Navigation Links */}
+              <div className="hidden md:flex items-center space-x-6">
+                <a
+                  href="/#support"
+                  className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
+                >
+                  Support
+                </a>
+                <Link
+                  href="/faq"
+                  className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
+                >
+                  FAQ
+                </Link>
+                <a
+                  href="/#features"
+                  className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
+                >
+                  Specifications
+                </a>
+              </div>
+
+              {/* Cart Icon with Count */}
+              <Link href="/cart" className="relative flex items-center space-x-2 text-gray-300 hover:text-white transition-colors duration-200">
                 <ShoppingCart className="w-5 h-5" />
-                <span>Cart</span>
+                <span className="hidden sm:inline">Cart</span>
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                    {cartItemCount}
+                  </span>
+                )}
               </Link>
             </div>
           </div>
         </div>
-      </header>
+      </nav>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
         {/* Breadcrumb */}
         <div className="flex items-center space-x-2 text-sm text-blue-400 mb-8">
           <Link href="/" className="hover:text-blue-300 transition-colors">Home</Link>
