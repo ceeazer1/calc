@@ -28,33 +28,7 @@ export default function Home() {
       setCurrentFeature((prev) => (prev + 1) % 4)
     }, 3000)
 
-    // Scroll animation for What's Inside section
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const calculator = entry.target.querySelector('.calculator-animate')
-            const components = entry.target.querySelectorAll('[class*="component-"]')
-            const labels = entry.target.querySelectorAll('[class*="label-"]')
-
-            if (calculator) calculator.classList.add('animate-in')
-            components.forEach(component => component.classList.add('animate-in'))
-            labels.forEach(label => label.classList.add('animate-in'))
-          }
-        })
-      },
-      { threshold: 0.3 }
-    )
-
-    const whatsInsideSection = document.getElementById('whats-inside')
-    if (whatsInsideSection) {
-      observer.observe(whatsInsideSection)
-    }
-
-    return () => {
-      clearInterval(interval)
-      observer.disconnect()
-    }
+    return () => clearInterval(interval)
   }, [])
 
   const features = [
@@ -120,7 +94,7 @@ export default function Home() {
                   FAQ
                 </Link>
                 <a
-                  href="#whats-inside"
+                  href="#features"
                   className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
                 >
                   Specifications
@@ -244,101 +218,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* What's Inside Section */}
-      <section className="py-24 bg-gradient-to-b from-gray-900 to-slate-900" id="whats-inside">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">
-              What&apos;s Inside
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Discover the sophisticated hardware modifications that make ChatGPT integration possible.
-            </p>
-          </div>
-
-          <div className="relative max-w-4xl mx-auto">
-            <div className="exploded-calculator-container">
-              {/* Main Calculator */}
-              <div className="relative mx-auto w-80 h-96 transition-all duration-1000 calculator-animate">
-                <Image
-                  src="/NEWTI84.png"
-                  alt="TI-84 Plus Calculator"
-                  width={320}
-                  height={384}
-                  className="w-full h-full object-contain relative z-10"
-                  priority
-                />
-
-                {/* Component 1: Custom PCB - Top Left */}
-                <div className="absolute top-12 left-6 w-16 h-12 bg-gradient-to-br from-blue-800 to-blue-900 rounded-lg opacity-0 transition-all duration-1000 delay-500 component-1 shadow-2xl border border-blue-600 z-30">
-                  <div className="w-full h-full bg-gradient-to-br from-blue-700/20 to-transparent rounded-lg flex items-center justify-center">
-                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                  </div>
-                </div>
-
-                {/* Component 2: ESP32-C3 Chip - Top Right */}
-                <div className="absolute top-12 right-4 w-16 h-12 opacity-0 transition-all duration-1000 delay-700 component-2 shadow-2xl z-30">
-                  <Image
-                    src="/esp32-c3-chip.svg"
-                    alt="ESP32-C3 Microcontroller Chip"
-                    width={64}
-                    height={48}
-                    className="w-full h-full object-contain filter drop-shadow-lg"
-                  />
-                </div>
-
-                {/* Component 3: Memory Module - Bottom Left */}
-                <div className="absolute bottom-16 left-8 w-14 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded opacity-0 transition-all duration-1000 delay-900 component-3 shadow-2xl border border-slate-400 z-30">
-                  <div className="w-full h-full bg-gradient-to-br from-slate-500/20 to-transparent rounded"></div>
-                </div>
-
-                {/* Component 4: Power Management - Bottom Right */}
-                <div className="absolute bottom-16 right-6 w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full opacity-0 transition-all duration-1000 delay-1100 component-4 shadow-2xl border border-blue-300 z-30">
-                  <div className="w-full h-full bg-gradient-to-br from-blue-400/20 to-transparent rounded-full"></div>
-                </div>
-              </div>
-
-              {/* Component Labels */}
-              <div className="absolute inset-0 pointer-events-none">
-                {/* PCB Label */}
-                <div className="absolute top-0 left-0 opacity-0 transition-all duration-1000 delay-1300 label-1">
-                  <div className="bg-slate-800 text-white px-3 py-2 rounded-lg shadow-xl border border-blue-600">
-                    <h4 className="font-bold text-sm text-blue-400">Custom PCB</h4>
-                    <p className="text-xs text-gray-300">Main circuit board with AI processing</p>
-                  </div>
-                </div>
-
-                {/* ESP32 Label */}
-                <div className="absolute top-0 right-0 opacity-0 transition-all duration-1000 delay-1400 label-2">
-                  <div className="bg-slate-800 text-white px-3 py-2 rounded-lg shadow-xl border border-blue-400">
-                    <h4 className="font-bold text-sm text-blue-300">ESP32-C3 Chip</h4>
-                    <p className="text-xs text-gray-300">WiFi & Bluetooth microcontroller</p>
-                  </div>
-                </div>
-
-                {/* Memory Label */}
-                <div className="absolute bottom-0 left-0 opacity-0 transition-all duration-1000 delay-1500 label-3">
-                  <div className="bg-slate-800 text-white px-3 py-2 rounded-lg shadow-xl border border-slate-400">
-                    <h4 className="font-bold text-sm text-slate-300">Memory Module</h4>
-                    <p className="text-xs text-gray-300">Stores AI responses & data</p>
-                  </div>
-                </div>
-
-                {/* Power Label */}
-                <div className="absolute bottom-0 right-0 opacity-0 transition-all duration-1000 delay-1600 label-4">
-                  <div className="bg-slate-800 text-white px-3 py-2 rounded-lg shadow-xl border border-blue-300">
-                    <h4 className="font-bold text-sm text-blue-200">Power Management</h4>
-                    <p className="text-xs text-gray-300">Efficient power distribution</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-
 
 
       {/* Showcase */}
@@ -459,7 +338,7 @@ export default function Home() {
               <h3 className="font-semibold mb-4">Product</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="#whats-inside" className="text-gray-400 hover:text-white transition-colors duration-200">
+                  <a href="#features" className="text-gray-400 hover:text-white transition-colors duration-200">
                     Specifications
                   </a>
                 </li>

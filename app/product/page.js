@@ -138,45 +138,45 @@ export default function ProductPage() {
 
 
             {/* Condition Selection */}
-            <div className="bg-slate-800/30 p-6 rounded-2xl border border-slate-700 space-y-4">
-              <h3 className="text-xl font-semibold text-white">Choose Condition:</h3>
-              <div className="grid grid-cols-2 gap-4">
+            <div className="bg-slate-800/30 p-4 rounded-xl border border-slate-700 space-y-3">
+              <h3 className="text-lg font-semibold text-white">Choose Condition:</h3>
+              <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => setCondition('new')}
-                  className={`p-6 rounded-xl border-2 transition-all duration-300 transform hover:scale-105 ${
+                  className={`p-4 rounded-lg border transition-all duration-200 ${
                     condition === 'new'
-                      ? 'border-green-500 bg-gradient-to-br from-green-500/20 to-green-600/10 text-white shadow-lg shadow-green-500/20'
-                      : 'border-slate-600 bg-gradient-to-br from-slate-700 to-slate-800 text-gray-300 hover:border-slate-500 hover:shadow-lg'
+                      ? 'border-green-500 bg-green-500/10 text-white shadow-md'
+                      : 'border-slate-600 bg-slate-700/50 text-gray-300 hover:border-slate-500'
                   }`}
                 >
                   <div className="text-center">
-                    <div className="font-bold text-lg">Brand New</div>
-                    <div className="text-2xl font-bold mt-1">$129.99</div>
-                    <div className="text-sm mt-1">Factory sealed</div>
+                    <div className="font-semibold text-base">Brand New</div>
+                    <div className="text-xl font-bold mt-1">$129.99</div>
+                    <div className="text-xs mt-1 text-gray-400">Factory sealed</div>
                   </div>
                 </button>
 
                 <button
                   onClick={() => setCondition('used')}
-                  className={`p-6 rounded-xl border-2 transition-all duration-300 transform hover:scale-105 ${
+                  className={`p-4 rounded-lg border transition-all duration-200 ${
                     condition === 'used'
-                      ? 'border-blue-500 bg-gradient-to-br from-blue-500/20 to-blue-600/10 text-white shadow-lg shadow-blue-500/20'
-                      : 'border-slate-600 bg-gradient-to-br from-slate-700 to-slate-800 text-gray-300 hover:border-slate-500 hover:shadow-lg'
+                      ? 'border-blue-500 bg-blue-500/10 text-white shadow-md'
+                      : 'border-slate-600 bg-slate-700/50 text-gray-300 hover:border-slate-500'
                   }`}
                 >
                   <div className="text-center">
-                    <div className="font-bold text-lg">Used</div>
-                    <div className="text-2xl font-bold mt-1">$84.99</div>
-                    <div className="text-sm mt-1">Good condition</div>
+                    <div className="font-semibold text-base">Used</div>
+                    <div className="text-xl font-bold mt-1">$84.99</div>
+                    <div className="text-xs mt-1 text-gray-400">Good condition</div>
                   </div>
                 </button>
               </div>
             </div>
 
             {/* Price */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 rounded-2xl border border-blue-500 shadow-lg shadow-blue-500/20">
-              <div className="text-5xl font-bold text-white">${getPrice()}</div>
-              <div className="text-blue-200 text-lg">Free worldwide shipping included</div>
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 rounded-lg border border-blue-500 shadow-md">
+              <div className="text-3xl font-bold text-white">${getPrice()}</div>
+              <div className="text-blue-200 text-sm">Free worldwide shipping included</div>
             </div>
 
             {/* Features */}
@@ -235,7 +235,7 @@ export default function ProductPage() {
 
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-6 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-blue-500/25 text-lg border border-blue-500"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-200 shadow-md hover:shadow-lg text-base border border-blue-500"
               >
                 {addedToCart ? 'Added to Cart!' : `Add to Cart - $${getPrice()}`}
               </button>
