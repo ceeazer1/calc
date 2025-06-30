@@ -183,7 +183,7 @@ export default function Home() {
               <div className="relative mx-auto w-full max-w-xs">
                 <div className="relative w-full transform rotate-3 hover:rotate-0 transition-transform duration-500 drop-shadow-2xl">
                   <Image
-                    src="/ti84plus.png"
+                    src="/newti84plus.png"
                     alt="TI-84 Plus Calculator with ChatGPT Integration"
                     width={280}
                     height={420}
