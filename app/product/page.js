@@ -46,7 +46,7 @@ export default function ProductPage() {
       name: getProductName(),
       price: getPrice(),
       quantity: quantity,
-      image: '/NEWTI84.png'
+      image: '/newti84plus.png'
     }
     
     // Check if product already exists in cart
@@ -93,7 +93,9 @@ export default function ProductPage() {
               {/* Navigation Links */}
               <div className="hidden md:flex items-center space-x-6">
                 <a
-                  href="/#support"
+                  href="https://discord.gg/83ZwJcPWJ6"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
                 >
                   Support
@@ -148,7 +150,7 @@ export default function ProductPage() {
               {/* Product Image */}
               <div className="relative z-10 w-full h-full flex items-center justify-center">
                 <Image
-                  src="/NEWTI84.png"
+                  src="/newti84plus.png"
                   alt="TI-84 Plus Calculator with ChatGPT Integration"
                   width={500}
                   height={500}
