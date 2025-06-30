@@ -9,7 +9,7 @@ export default function InteractiveCalculator() {
       <div className="relative w-full">
         {/* Background Image */}
         <Image
-          src="/84p.png"
+          src="/ti84.png"
           alt="TI-84 Plus Calculator with ChatGPT Integration"
           width={320}
           height={480}

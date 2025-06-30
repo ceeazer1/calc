@@ -90,7 +90,7 @@ export default function SuccessPage() {
             <div className="flex items-center space-x-4">
               <div className="w-16 h-16 rounded-lg overflow-hidden">
                 <Image
-                  src="/84p.png"
+                  src="/ti84.png"
                   alt="CalcAI TI-84 Plus"
                   width={64}
                   height={64}

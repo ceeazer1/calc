@@ -108,7 +108,7 @@ export default function CartPage() {
             
             <div className="flex items-center space-x-4">
               <a
-                href="https://t.me/+48P4V5dL5ShmYTQx"
+                href="https://discord.gg/83ZwJcPWJ6"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105"
