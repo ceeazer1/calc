@@ -46,7 +46,7 @@ export default function ProductPage() {
       name: getProductName(),
       price: getPrice(),
       quantity: quantity,
-      image: '/newti84plus.png'
+      image: '/ti84.png'
     }
     
     // Check if product already exists in cart
@@ -150,7 +150,7 @@ export default function ProductPage() {
               {/* Product Image */}
               <div className="relative z-10 w-full h-full flex items-center justify-center">
                 <Image
-                  src="/newti84plus.png"
+                  src="/ti84.png"
                   alt="TI-84 Plus Calculator with ChatGPT Integration"
                   width={500}
                   height={500}
