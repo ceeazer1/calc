@@ -54,9 +54,17 @@ export default function Home() {
 
   const features = [
     {
-      icon: <Brain className="w-6 h-6" />,
-      title: "AI Assistant",
-      description: "ChatGPT built into the hardware. Get instant help with any math problem."
+      icon: <div className="flex items-center justify-center w-6 h-6">
+        <Image
+          src="/chatgpt-logo.svg"
+          alt="ChatGPT"
+          width={24}
+          height={24}
+          className="w-6 h-6"
+        />
+      </div>,
+      title: "ChatGPT Integration",
+      description: "Powered by OpenAI's ChatGPT. Get instant AI assistance with any math problem or calculation."
     },
     {
       icon: <Shield className="w-6 h-6" />,
@@ -144,7 +152,7 @@ export default function Home() {
 
               {/* Buy Now Button */}
               <Link href="/product" className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm">
-                Buy Now - $84.99
+                Buy Now
               </Link>
             </div>
           </div>
@@ -152,41 +160,50 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-16 pb-20 bg-black text-white relative">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center min-h-[80vh] flex flex-col justify-center">
+      <section className="pt-8 pb-20 bg-gradient-to-b from-black via-gray-900 to-black text-white relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 20% 80%, #3b82f6 0%, transparent 50%),
+                             radial-gradient(circle at 80% 20%, #1e40af 0%, transparent 50%),
+                             radial-gradient(circle at 40% 40%, #2563eb 0%, transparent 50%)`,
+            backgroundSize: '150px 150px'
+          }}></div>
+        </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center min-h-[70vh] flex flex-col justify-start">
             {/* Logo */}
-            <div className={`mb-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
-              <div className="flex justify-center mb-6">
-                <Image
-                  src="/logo.png"
-                  alt="CalcAI Logo"
-                  width={120}
-                  height={120}
-                  className="w-32 h-32"
-                  priority
-                />
+            <div className={`mb-12 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
+              <div className="flex justify-center mb-0">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl"></div>
+                  <Image
+                    src="/logo.png"
+                    alt="CalcAI Logo"
+                    width={240}
+                    height={240}
+                    className="w-56 h-56 relative z-10 drop-shadow-2xl"
+                    priority
+                  />
+                </div>
               </div>
-              <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4">
-                CalcAI
-              </h1>
-              <h2 className="text-xl lg:text-2xl font-light text-gray-300 mb-6">
-                Multi-tool Device for Students
+              <h2 className="text-xl lg:text-2xl font-light text-gray-300 mb-6 -mt-12">
+                Smart Calculator for Students
               </h2>
               <p className="text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
-                CalcAI is a portable multi-tool for students in a familiar TI-84 body. It features discrete AI integration, advanced functionality, and maintains full calculator compatibility.
+                CalcAI is an advanced calculator for students in a familiar TI-84 body. It features discrete AI integration, enhanced functionality, and maintains full calculator compatibility.
               </p>
             </div>
 
             {/* Calculator Image */}
             <div className={`mb-8 ${isVisible ? 'animate-slide-up' : 'opacity-0'}`}>
               <div className="flex justify-center">
-                <div className="relative w-full max-w-sm">
+                <div className="relative w-full max-w-xs">
                   <Image
-                    src="/84p.png"
+                    src="/ti84.png"
                     alt="CalcAI - TI-84 Plus with AI Integration"
-                    width={300}
-                    height={450}
+                    width={240}
+                    height={360}
                     className="w-full h-auto object-contain"
                     priority
                   />
@@ -197,7 +214,7 @@ export default function Home() {
             {/* CTA Buttons */}
             <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
               <Link href="/product" className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 text-base flex items-center justify-center">
-                Buy Now - $84.99
+                Buy Now
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
               <a href="#features" className="border border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 text-base inline-flex items-center justify-center">
@@ -218,7 +235,7 @@ export default function Home() {
             <div className="space-y-8">
               <div>
                 <h2 className="text-3xl font-bold text-white mb-4">
-                  Portable multi-tool for students
+                  Advanced calculator for students
                 </h2>
                 <p className="text-lg text-gray-400">
                   CalcAI combines the familiar TI-84 Plus interface with advanced AI capabilities, creating the perfect tool for modern students.
@@ -299,51 +316,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Showcase */}
-      <section className="py-20 bg-gray-900">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-white mb-12">
-            See It In Action
-          </h2>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Video Section */}
-            <div className="bg-gray-800 p-6 text-center rounded-lg border border-gray-700">
-              <h3 className="text-lg font-semibold text-white mb-4">Product Demo Video</h3>
-              <div className="aspect-video bg-gray-900 rounded-lg flex items-center justify-center border border-gray-700">
-                <div className="text-center">
-                  <div className="text-2xl mb-2 text-gray-500">[VIDEO]</div>
-                  <div className="text-base font-medium text-gray-300">Coming Soon</div>
-                  <div className="text-sm text-gray-400 mt-1">
-                    Watch CalcAI in action
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Photos Section */}
-            <div className="bg-gray-800 p-6 text-center rounded-lg border border-gray-700">
-              <h3 className="text-lg font-semibold text-white mb-4">Product Gallery</h3>
-              <div className="aspect-video bg-gray-900 rounded-lg flex items-center justify-center border border-gray-700">
-                <div className="text-center">
-                  <div className="text-2xl mb-2 text-gray-500">[PHOTOS]</div>
-                  <div className="text-base font-medium text-gray-300">Coming Soon</div>
-                  <div className="text-sm text-gray-400 mt-1">
-                    Detailed product photos
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center mt-8">
-            <p className="text-gray-400 text-sm">
-              High-quality videos and photos showcasing CalcAI features will be available soon.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-20 bg-gray-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -358,7 +330,7 @@ export default function Home() {
               href="/product"
               className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 inline-flex items-center justify-center"
             >
-              Order Now - $84.99
+              Order Now
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
             <Link
