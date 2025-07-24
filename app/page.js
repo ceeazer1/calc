@@ -153,47 +153,40 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="pt-16 pb-20 bg-black text-white relative">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[80vh]">
-            <div className={`space-y-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
-              {/* Title */}
-              <div className="space-y-4">
-                <h1 className="text-5xl lg:text-6xl font-bold tracking-tight text-white">
-                  CalcAI
-                </h1>
-                <h2 className="text-2xl lg:text-3xl font-light text-gray-300">
-                  Multi-tool Device for Students
-                </h2>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="text-center min-h-[80vh] flex flex-col justify-center">
+            {/* Logo */}
+            <div className={`mb-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
+              <div className="flex justify-center mb-6">
+                <Image
+                  src="/logo.png"
+                  alt="CalcAI Logo"
+                  width={120}
+                  height={120}
+                  className="w-32 h-32"
+                  priority
+                />
               </div>
-
-              {/* Description */}
-              <div className="max-w-lg">
-                <p className="text-lg text-gray-400 leading-relaxed">
-                  CalcAI is a portable multi-tool for students in a familiar TI-84 body. It features discrete AI integration, advanced functionality, and maintains full calculator compatibility.
-                </p>
-              </div>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/product" className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 text-base flex items-center justify-center w-fit">
-                  Buy Now - $84.99
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-                <a href="#features" className="border border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 text-base w-fit inline-flex items-center justify-center">
-                  Learn More
-                </a>
-              </div>
+              <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4">
+                CalcAI
+              </h1>
+              <h2 className="text-xl lg:text-2xl font-light text-gray-300 mb-6">
+                Multi-tool Device for Students
+              </h2>
+              <p className="text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
+                CalcAI is a portable multi-tool for students in a familiar TI-84 body. It features discrete AI integration, advanced functionality, and maintains full calculator compatibility.
+              </p>
             </div>
 
             {/* Calculator Image */}
-            <div className={`relative ${isVisible ? 'animate-slide-up' : 'opacity-0'}`}>
-              <div className="relative mx-auto w-full max-w-xs">
-                <div className="relative w-full">
+            <div className={`mb-8 ${isVisible ? 'animate-slide-up' : 'opacity-0'}`}>
+              <div className="flex justify-center">
+                <div className="relative w-full max-w-sm">
                   <Image
                     src="/84p.png"
                     alt="CalcAI - TI-84 Plus with AI Integration"
-                    width={240}
-                    height={360}
+                    width={300}
+                    height={450}
                     className="w-full h-auto object-contain"
                     priority
                   />
@@ -201,6 +194,16 @@ export default function Home() {
               </div>
             </div>
 
+            {/* CTA Buttons */}
+            <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
+              <Link href="/product" className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 text-base flex items-center justify-center">
+                Buy Now - $84.99
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+              <a href="#features" className="border border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 text-base inline-flex items-center justify-center">
+                Learn More
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -243,12 +246,12 @@ export default function Home() {
 
             {/* Right side - Calculator showcase */}
             <div className="relative">
-              <div className="relative mx-auto w-full max-w-md">
+              <div className="relative mx-auto w-full max-w-lg">
                 <Image
                   src="/Calcimg.png"
                   alt="Modified TI-84 Plus with AI Integration"
-                  width={320}
-                  height={400}
+                  width={400}
+                  height={500}
                   className="w-full h-auto object-contain"
                 />
               </div>
