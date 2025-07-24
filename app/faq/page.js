@@ -4,24 +4,24 @@ import { ArrowLeft } from 'lucide-react'
 
 export default function FAQ() {
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-black">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-gray-900/90 backdrop-blur-md z-50 border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+      <nav className="fixed top-0 w-full bg-black/95 backdrop-blur-sm z-50 border-b border-gray-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-14">
             <div className="flex items-center">
               <Link href="/">
                 <Image
                   src="/logo.png"
                   alt="CalcAI Logo"
-                  width={120}
-                  height={120}
-                  className="w-32 h-32 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl cursor-pointer"
+                  width={80}
+                  height={80}
+                  className="w-20 h-20 transform hover:scale-105 transition-transform duration-200 cursor-pointer"
                 />
               </Link>
             </div>
             <div className="flex items-center space-x-4">
-              <Link href="/" className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors duration-200">
+              <Link href="/" className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200 text-sm">
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back to Home</span>
               </Link>
@@ -31,23 +31,23 @@ export default function FAQ() {
       </nav>
 
       {/* Main Content */}
-      <main className="pt-24 pb-16">
+      <main className="pt-20 pb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold text-white mb-4">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-white mb-4">
               Frequently Asked Questions
             </h1>
-            <p className="text-xl text-gray-300">
+            <p className="text-lg text-gray-400">
               Coming soon - We&apos;re preparing comprehensive answers to help you get the most out of CalcAI
             </p>
           </div>
 
-          <div className="bg-slate-800 rounded-2xl p-12 text-center border border-slate-700">
-            <div className="text-6xl mb-6">🚧</div>
-            <h2 className="text-2xl font-semibold text-white mb-4">
+          <div className="bg-gray-900 rounded-lg p-8 text-center border border-gray-800">
+            <div className="text-4xl mb-4">🚧</div>
+            <h2 className="text-xl font-semibold text-white mb-3">
               Under Construction
             </h2>
-            <p className="text-gray-300 mb-8">
+            <p className="text-gray-400 mb-6">
               We&apos;re working on creating detailed FAQ content to address all your questions about CalcAI.
               In the meantime, feel free to reach out to our support team on Discord.
             </p>

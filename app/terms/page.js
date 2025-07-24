@@ -4,24 +4,24 @@ import { ArrowLeft } from 'lucide-react'
 
 export default function Terms() {
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-black">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-gray-900/90 backdrop-blur-md z-50 border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+      <nav className="fixed top-0 w-full bg-black/95 backdrop-blur-sm z-50 border-b border-gray-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-14">
             <div className="flex items-center">
               <Link href="/">
                 <Image
                   src="/logo.png"
                   alt="CalcAI Logo"
-                  width={120}
-                  height={120}
-                  className="w-32 h-32 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl cursor-pointer"
+                  width={80}
+                  height={80}
+                  className="w-20 h-20 transform hover:scale-105 transition-transform duration-200 cursor-pointer"
                 />
               </Link>
             </div>
             <div className="flex items-center space-x-4">
-              <Link href="/" className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors duration-200">
+              <Link href="/" className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200 text-sm">
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back to Home</span>
               </Link>

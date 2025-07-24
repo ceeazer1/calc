@@ -93,32 +93,30 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-gray-900 shadow-sm border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+      <header className="bg-black border-b border-gray-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14">
             <Link href="/" className="flex items-center">
               <Image
                 src="/logo.png"
                 alt="CalcAI Logo"
-                width={120}
-                height={120}
-                className="w-32 h-32 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl"
+                width={80}
+                height={80}
+                className="w-20 h-20 transform hover:scale-105 transition-transform duration-200"
               />
             </Link>
-            
-            <div className="flex items-center space-x-4">
-              <a
-                href="https://discord.gg/83ZwJcPWJ6"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105"
+
+            <div className="flex items-center space-x-6">
+              <Link
+                href="/community"
+                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200 text-sm"
               >
                 <MessageCircle className="w-4 h-4" />
-                <span>Support</span>
-              </a>
+                <span>Community</span>
+              </Link>
               <div className="flex items-center space-x-2 text-gray-300">
-                <ShoppingCart className="w-5 h-5" />
-                <span>{getTotalItems()} items</span>
+                <ShoppingCart className="w-4 h-4" />
+                <span className="text-sm">{getTotalItems()} items</span>
               </div>
             </div>
           </div>
