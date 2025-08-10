@@ -1,7 +1,9 @@
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { Space_Grotesk } from 'next/font/google'
+import ThemeBackground from '../components/ThemeBackground'
 
-const inter = Inter({ subsets: ['latin'] })
+// Display-forward, modern font inspired by OrbAI aesthetics
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'CalcAI - TI-84 Plus with ChatGPT Integration',
@@ -23,8 +25,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div className="min-h-screen">
+      <body className={spaceGrotesk.className}>
+        <ThemeBackground />
+        <div className="min-h-screen relative">
           {children}
         </div>
       </body>

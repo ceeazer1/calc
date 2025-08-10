@@ -6,7 +6,7 @@ export default function FAQ() {
   return (
     <div className="min-h-screen bg-black">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-black/95 backdrop-blur-sm z-50 border-b border-gray-800">
+      <nav className="fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             <div className="flex items-center">
@@ -31,7 +31,7 @@ export default function FAQ() {
       </nav>
 
       {/* Main Content */}
-      <main className="pt-20 pb-16">
+      <main className="pt-24 pb-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-white mb-4">
@@ -42,7 +42,7 @@ export default function FAQ() {
             </p>
           </div>
 
-          <div className="bg-gray-900 rounded-lg p-8 text-center border border-gray-800">
+          <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-12 text-center">
             <div className="text-4xl mb-4">🚧</div>
             <h2 className="text-xl font-semibold text-white mb-3">
               Under Construction

@@ -6,7 +6,7 @@ export default function Terms() {
   return (
     <div className="min-h-screen bg-black">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-black/95 backdrop-blur-sm z-50 border-b border-gray-800">
+      <nav className="fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             <div className="flex items-center">
@@ -42,7 +42,7 @@ export default function Terms() {
             </p>
           </div>
 
-          <div className="bg-slate-800 rounded-2xl p-12 text-center border border-slate-700">
+          <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-12 text-center">
             <div className="text-6xl mb-6">📋</div>
             <h2 className="text-2xl font-semibold text-white mb-4">
               Under Construction

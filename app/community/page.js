@@ -59,7 +59,7 @@ export default function Community() {
   return (
     <div className="min-h-screen bg-black">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-black/95 backdrop-blur-sm z-50 border-b border-gray-800">
+      <nav className="fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             <div className="flex items-center">
@@ -113,9 +113,9 @@ export default function Community() {
                 )}
               </Link>
 
-              {/* Buy Now Button */}
+              {/* Preorder Button */}
               <Link href="/product" className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm">
-                Buy Now - $84.99
+                Preorder Now
               </Link>
             </div>
           </div>
@@ -143,9 +143,7 @@ export default function Community() {
             {socialLinks.map((social, index) => (
               <div
                 key={index}
-                className={`bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-gray-600 transition-all duration-300 ${
-                  social.primary ? 'ring-2 ring-blue-500' : ''
-                }`}
+                className={`rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-6 hover:border-white/20 transition-all duration-300 ${social.primary ? 'ring-2 ring-blue-500' : ''}`}
               >
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0">

@@ -93,7 +93,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-black border-b border-gray-800">
+      <header className="bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 border-b border-white/10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14">
             <Link href="/" className="flex items-center">
@@ -150,7 +150,7 @@ export default function CartPage() {
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
               {cart.map((item) => (
-                <div key={item.id} className="bg-gray-900 rounded-lg shadow-sm p-6 border border-gray-800">
+                <div key={item.id} className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-6">
                   <div className="flex items-center space-x-4">
                     <div className="w-20 h-20 rounded-lg overflow-hidden">
                       <Image
@@ -203,7 +203,7 @@ export default function CartPage() {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-gray-900 rounded-lg shadow-sm p-6 sticky top-8 border border-gray-800">
+              <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-6 sticky top-8">
                 <h2 className="text-xl font-semibold text-white mb-4">Order Summary</h2>
                 
                 <div className="space-y-3 mb-6">
