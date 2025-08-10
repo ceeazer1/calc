@@ -114,7 +114,7 @@ export default function Community() {
               </Link>
 
               {/* Preorder Button */}
-              <Link href="/product" className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm">
+              <Link href="/product" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 text-sm shadow-md">
                 Preorder Now
               </Link>
             </div>
@@ -126,7 +126,7 @@ export default function Community() {
       <section className="pt-20 pb-16 bg-black text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-white mb-4">
+            <h1 className="text-4xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-purple-400">
               Community
             </h1>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">

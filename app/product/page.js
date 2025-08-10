@@ -75,7 +75,7 @@ export default function ProductPage() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-black/95 backdrop-blur-sm z-50 border-b border-gray-800">
+      <nav className="fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             <div className="flex items-center">
@@ -139,7 +139,7 @@ export default function ProductPage() {
           {/* Product Images */}
           <div className="relative">
             {/* Main Product Image */}
-            <div className="relative aspect-square bg-gray-900 rounded-lg shadow-lg p-6 border border-gray-800 overflow-hidden group">
+            <div className="relative aspect-square rounded-lg overflow-hidden group">
               {/* Product Image */}
               <div className="relative z-10 w-full h-full flex items-center justify-center">
                 <Image
@@ -158,7 +158,7 @@ export default function ProductPage() {
           <div className="space-y-8">
             {/* Header Section */}
             <div className="space-y-3">
-              <h1 className="text-4xl font-bold text-white">
+              <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-purple-400">
                 CalcAI
               </h1>
               <h2 className="text-xl text-gray-300">

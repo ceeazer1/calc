@@ -91,7 +91,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
       <header className="bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 border-b border-white/10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -131,7 +131,7 @@ export default function CartPage() {
           <span className="text-white">Shopping Cart</span>
         </div>
 
-        <h1 className="text-3xl font-bold text-white mb-8">Shopping Cart</h1>
+        <h1 className="text-3xl font-extrabold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-purple-400">Shopping Cart</h1>
 
         {cart.length === 0 ? (
           <div className="text-center py-12">
@@ -140,7 +140,7 @@ export default function CartPage() {
             <p className="text-gray-300 mb-6">Add some products to get started!</p>
             <Link 
               href="/product"
-              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 inline-block text-sm sm:text-base"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 inline-block text-sm sm:text-base shadow-md"
             >
               Continue Shopping
             </Link>
@@ -228,7 +228,7 @@ export default function CartPage() {
                   className={`w-full py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 text-sm sm:text-base ${
                     isProcessing
                       ? 'bg-gray-600 cursor-not-allowed'
-                      : 'bg-blue-600 hover:bg-blue-700'
+                      : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md'
                   } text-white`}
                 >
                   {isProcessing ? (

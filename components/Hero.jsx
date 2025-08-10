@@ -56,18 +56,12 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.15 }}
               className="relative w-full max-w-sm mx-auto"
             >
-              <div className="absolute -inset-8 bg-gradient-to-tr from-blue-600/20 via-purple-600/10 to-sky-500/20 blur-2xl rounded-3xl" />
-              <div className="relative rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl p-6">
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  <Image src="/ti84.png" alt="CalcAI TI-84" width={400} height={600} className="w-full h-auto object-contain" priority />
-                </motion.div>
-                <div className="absolute top-3 right-3 bg-blue-600 text-white px-2 py-1 rounded text-xs font-semibold">
-                  ChatGPT Enhanced
-                </div>
-              </div>
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Image src="/ti84.png" alt="CalcAI TI-84" width={400} height={600} className="w-full h-auto object-contain" priority />
+              </motion.div>
             </motion.div>
           </div>
         </div>
