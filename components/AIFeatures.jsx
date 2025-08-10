@@ -15,10 +15,10 @@ export default function AIFeatures() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl font-bold mb-4">AI features built‑in</h2>
+            <h2 className="text-3xl font-bold mb-4">AI features built in</h2>
             <p className="text-gray-300 mb-6">
-              CalcAI includes ChatGPT out of the box. Type a question and get the answer right on the calculator. Don’t feel like typing?
-              Use the discreet camera on the back — take a picture of a problem and let ChatGPT analyze and respond seamlessly.
+              CalcAI works with ChatGPT out of the box. Type a question and read the answer on the calculator. Prefer not to type?
+              Open the back camera, take a quick photo, and let it solve or explain the steps for you.
             </p>
 
             <div className="grid sm:grid-cols-2 gap-4">

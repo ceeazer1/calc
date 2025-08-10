@@ -19,9 +19,9 @@ export default function WhatIsCalcAI() {
             What is CalcAI?
           </h2>
           <p className="text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            CalcAI is a TI‑84 Plus that’s been quietly upgraded to connect to the internet and modern AI services.
-            Think of it like an old phone — but built into a calculator. It can send prompts, fetch answers, interact with
-            APIs like ChatGPT and DeepSeek, post to Discord, and more — all while staying focused and distraction‑free.
+            CalcAI is a TI‑84 Plus quietly upgraded to connect to the internet and modern AI services. It feels familiar,
+            just way more helpful. Ask questions, snap a photo of a problem, and get clear answers right on the screen — no extra apps,
+            no distractions.
           </p>
         </motion.div>
 
