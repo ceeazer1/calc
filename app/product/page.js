@@ -171,7 +171,7 @@ export default function ProductPage() {
 
             {/* What's Included */}
             <div className="bg-gray-900/50 border border-white/10 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-white mb-3">What's included</h3>
+              <h3 className="text-lg font-semibold text-white mb-3">What&apos;s included</h3>
               <ul className="space-y-2 text-sm text-gray-300">
                 <li className="flex items-center space-x-2">
                   <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
