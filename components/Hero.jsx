@@ -24,6 +24,15 @@ export default function Hero() {
               <span className="text-gray-100">Smart calculator for students</span>
             </motion.h1>
 
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.05 }}
+              className="mt-4 inline-block bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-full px-4 py-2"
+            >
+              <span className="text-sm font-medium text-blue-300">First AI camera integration into a TI-84 Plus</span>
+            </motion.div>
+
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
