@@ -169,9 +169,32 @@ export default function ProductPage() {
               </p>
             </div>
 
-
-
-
+            {/* What's Included */}
+            <div className="bg-gray-900/50 border border-white/10 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-white mb-3">What's included</h3>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li className="flex items-center space-x-2">
+                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                  <span>CalcAI TI-84 Plus with integrated PCB</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                  <span>Built-in camera module</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                  <span>2-week free warranty</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                  <span>Free unlimited support</span>
+                </li>
+                <li className="flex items-center space-x-2 text-gray-400">
+                  <div className="w-1.5 h-1.5 bg-gray-500 rounded-full"></div>
+                  <span>Batteries not included</span>
+                </li>
+              </ul>
+            </div>
 
             {/* Price Section */}
             <div className="bg-gray-900 p-4 rounded-lg border border-gray-800">
