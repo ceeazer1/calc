@@ -29,7 +29,7 @@ export default function ProductPage() {
   }, [])
 
   const getPrice = () => {
-    return 129.99
+    return 174.99
   }
 
   const getProductName = () => {
@@ -198,7 +198,12 @@ export default function ProductPage() {
 
             {/* Price Section */}
             <div className="bg-gray-900 p-4 rounded-lg border border-gray-800">
-              <div className="text-2xl font-bold text-white">$129.99</div>
+              <div className="text-2xl font-bold text-white flex items-center gap-3">
+                <span className="text-gray-400 line-through">$199.99</span>
+                <span>$174.99</span>
+                <span className="text-xs font-semibold text-green-300 bg-green-500/10 border border-green-400/20 rounded-full px-2 py-0.5">On Sale</span>
+              </div>
+              <div className="text-xs text-yellow-300 mt-2">Limited stock available</div>
             </div>
 
 

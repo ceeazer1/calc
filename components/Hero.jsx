@@ -45,11 +45,25 @@ export default function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="mt-4 flex items-center gap-3"
+            >
+              <span className="text-xs font-semibold tracking-wide bg-yellow-500/20 text-yellow-300 border border-yellow-400/30 rounded-full px-3 py-1">
+                BACK TO SCHOOL SALE
+              </span>
+              <Link href="/product" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold text-xs py-2 px-3 rounded-lg shadow-md">
+                Order Now
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-10 flex flex-col sm:flex-row gap-4"
             >
               <Link href="/product" className="btn-primary text-base py-3 px-6">
-                Preorder Now
+                Order Now
               </Link>
               <a href="#features" className="btn-secondary text-base py-3 px-6">
                 Learn More

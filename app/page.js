@@ -71,7 +71,7 @@ export default function Home() {
           <p className="text-lg text-gray-300 mb-8">Join thousands of students who have enhanced their toolkit with CalcAI.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/product" className="btn-primary inline-flex items-center justify-center">
-              Preorder Now
+              Order Now
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
             <Link href="/community" className="btn-secondary">Join Community</Link>

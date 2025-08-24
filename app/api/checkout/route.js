@@ -45,7 +45,7 @@ export async function POST(request) {
             description: 'The world\u2019s first calculator with discrete AI integration',
             images: [`${process.env.NEXT_PUBLIC_DOMAIN}/NEWTI84.png`],
           },
-          unit_amount: 12999, // $129.99 in cents
+          unit_amount: 17499, // $174.99 in cents (on sale from $199.99)
         },
         quantity: 1,
       }

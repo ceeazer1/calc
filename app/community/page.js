@@ -113,9 +113,9 @@ export default function Community() {
                 )}
               </Link>
 
-              {/* Preorder Button */}
+              {/* Order Button */}
               <Link href="/product" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 text-sm shadow-md">
-                Preorder Now
+                Order Now
               </Link>
             </div>
           </div>

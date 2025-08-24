@@ -17,7 +17,7 @@ export default function AIFeatures() {
           >
             <h2 className="text-3xl font-bold mb-4">AI features built in</h2>
             <p className="text-gray-300 mb-6">
-              CalcAI works with ChatGPT out of the box. Type a question and read the answer on the calculator. Prefer not to type?
+              Powered by the latest GPT model, <span className="font-semibold">gpt5-io</span>. Type a question and read the answer on the calculator. Prefer not to type?
               Open the back camera, take a quick photo, and let it solve or explain the steps for you.
             </p>
 
