@@ -42,22 +42,7 @@ export default function Hero() {
               A familiar TI-84 body with discreet AI superpowers. Animated, fast, and built for real use.
             </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="mt-6 rounded-2xl border border-yellow-400/30 bg-gradient-to-r from-yellow-500/15 via-orange-500/10 to-pink-500/15 p-4 sm:p-5 shadow-lg"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                  <div className="text-xl sm:text-2xl font-extrabold text-yellow-200 tracking-wide">BACK TO SCHOOL SALE</div>
-                  <div className="text-sm sm:text-base text-yellow-300/90">Limited time only • Limited stock</div>
-                </div>
-                <Link href="/product" className="self-start sm:self-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2.5 px-5 rounded-lg shadow-md">
-                  Order Now
-                </Link>
-              </div>
-            </motion.div>
+
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}

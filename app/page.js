@@ -50,11 +50,26 @@ export default function Home() {
                   </span>
                 )}
               </Link>
-              <Link href="/product" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg text-sm shadow-md">Preorder Now</Link>
+              <Link href="/product" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg text-sm shadow-md">Order Now</Link>
             </div>
           </div>
         </div>
       </nav>
+      {/* Global Sale Banner */}
+      <div className="sticky top-14 z-40 border-y border-yellow-400/30 bg-gradient-to-r from-yellow-500/15 via-orange-500/10 to-pink-500/15">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-3">
+            <div>
+              <div className="text-lg sm:text-2xl font-extrabold text-yellow-200 tracking-wide">BACK TO SCHOOL SALE</div>
+              <div className="text-xs sm:text-sm text-yellow-300/90">Limited time only • Limited stock</div>
+            </div>
+            <Link href="/product" className="self-start sm:self-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2.5 px-5 rounded-lg shadow-md">
+              Order Now
+            </Link>
+          </div>
+        </div>
+      </div>
+
 
       <Hero />
       <WhatIsCalcAI />
