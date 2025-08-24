@@ -46,14 +46,17 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="mt-4 flex items-center gap-3"
+              className="mt-6 rounded-2xl border border-yellow-400/30 bg-gradient-to-r from-yellow-500/15 via-orange-500/10 to-pink-500/15 p-4 sm:p-5 shadow-lg"
             >
-              <span className="text-xs font-semibold tracking-wide bg-yellow-500/20 text-yellow-300 border border-yellow-400/30 rounded-full px-3 py-1">
-                BACK TO SCHOOL SALE
-              </span>
-              <Link href="/product" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold text-xs py-2 px-3 rounded-lg shadow-md">
-                Order Now
-              </Link>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <div className="text-xl sm:text-2xl font-extrabold text-yellow-200 tracking-wide">BACK TO SCHOOL SALE</div>
+                  <div className="text-sm sm:text-base text-yellow-300/90">Limited time only • Limited stock</div>
+                </div>
+                <Link href="/product" className="self-start sm:self-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2.5 px-5 rounded-lg shadow-md">
+                  Order Now
+                </Link>
+              </div>
             </motion.div>
 
             <motion.div
