@@ -56,7 +56,7 @@ export default function Home() {
         </div>
       </nav>
       {/* Global Sale Banner */}
-      <div className="sticky top-14 z-40 border-y border-yellow-400/30 bg-gradient-to-r from-yellow-500/15 via-orange-500/10 to-pink-500/15">
+      <div className="relative border-y border-yellow-400/30 bg-gradient-to-r from-yellow-500/15 via-orange-500/10 to-pink-500/15">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-3 text-center">
             <div className="text-lg sm:text-2xl font-extrabold text-yellow-200 tracking-wide">BACK TO SCHOOL SALE</div>
