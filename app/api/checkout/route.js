@@ -12,17 +12,17 @@ export async function POST(request) {
       )
     }
 
-    if (!process.env.NEXT_PUBLIC_DOMAIN) {
-      console.error('NEXT_PUBLIC_DOMAIN is not set')
-      return NextResponse.json(
-        { error: 'Configuration error: Missing domain' },
-        { status: 500 }
-      )
+    // Determine our domain for success/cancel URLs
+    let domain = process.env.NEXT_PUBLIC_DOMAIN
+    if (!domain) {
+      const proto = request.headers.get('x-forwarded-proto') || 'https'
+      const host = request.headers.get('host')
+      domain = host ? `${proto}://${host}` : 'http://localhost:3000'
     }
 
     const { cartItems, totalAmount, formData } = await request.json()
 
-    console.log('Creating Stripe session with domain:', process.env.NEXT_PUBLIC_DOMAIN)
+    console.log('Creating Stripe session with domain:', domain)
 
     // Convert cart items to Stripe line items
     const lineItems = cartItems ? cartItems.map(item => ({
@@ -31,7 +31,7 @@ export async function POST(request) {
         product_data: {
           name: item.name,
           description: 'The world\u2019s first calculator with discrete AI integration',
-          images: [`${process.env.NEXT_PUBLIC_DOMAIN}${item.image}`],
+          images: [`${domain}${item.image}`],
         },
         unit_amount: Math.round(item.price * 100), // Convert to cents
       },
@@ -43,7 +43,7 @@ export async function POST(request) {
           product_data: {
             name: 'CalcAI - TI-84 Plus with ChatGPT',
             description: 'The world\u2019s first calculator with discrete AI integration',
-            images: [`${process.env.NEXT_PUBLIC_DOMAIN}/NEWTI84.png`],
+            images: [`${domain}/NEWTI84.png`],
           },
           unit_amount: 17499, // $174.99 in cents (on sale from $199.99)
         },
@@ -64,8 +64,8 @@ export async function POST(request) {
       },
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/cart`,
+      success_url: `${domain}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${domain}/cart`,
       shipping_address_collection: {
         allowed_countries: ['US', 'CA', 'GB', 'AU', 'DE', 'FR'],
       },
