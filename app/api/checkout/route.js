@@ -69,6 +69,42 @@ export async function POST(request) {
       shipping_address_collection: {
         allowed_countries: ['US', 'CA', 'GB', 'AU', 'DE', 'FR'],
       },
+      // Offer three delivery options at Checkout
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: { amount: 1200, currency: 'usd' },
+            display_name: 'Economy – USPS Ground Advantage',
+            delivery_estimate: {
+              minimum: { unit: 'business_day', value: 2 },
+              maximum: { unit: 'business_day', value: 5 },
+            },
+          },
+        },
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: { amount: 2000, currency: 'usd' },
+            display_name: 'Fast – USPS Priority Mail',
+            delivery_estimate: {
+              minimum: { unit: 'business_day', value: 1 },
+              maximum: { unit: 'business_day', value: 3 },
+            },
+          },
+        },
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: { amount: 5500, currency: 'usd' },
+            display_name: 'Express – Priority Mail Express',
+            delivery_estimate: {
+              minimum: { unit: 'business_day', value: 1 },
+              maximum: { unit: 'business_day', value: 2 },
+            },
+          },
+        },
+      ],
       metadata: {
         order_type: 'calcai_purchase',
         total_items: cartItems ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 1,

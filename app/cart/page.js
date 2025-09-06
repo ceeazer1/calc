@@ -205,6 +205,7 @@ export default function CartPage() {
             <div className="lg:col-span-1">
               <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-6 sticky top-8">
                 <h2 className="text-xl font-semibold text-white mb-4">Order Summary</h2>
+<p className="text-xs text-gray-400 mb-3">Shipping: see options at checkout</p>
                 
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between">

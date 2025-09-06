@@ -203,7 +203,7 @@ export default function ProductPage() {
                 <span>$174.99</span>
                 <span className="text-xs font-semibold text-green-300 bg-green-500/10 border border-green-400/20 rounded-full px-2 py-0.5">On Sale</span>
               </div>
-              <div className="text-xs text-yellow-300 mt-2">Limited stock available</div>
+              <div className="text-xs text-yellow-300 mt-2">Limited stock available • Shipping: see options at checkout</div>
             </div>
 
 
