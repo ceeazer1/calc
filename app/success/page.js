@@ -19,90 +19,30 @@ export default function SuccessPage() {
               />
             </Link>
 
-            <a
-              href="https://t.me/+48P4V5dL5ShmYTQx"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105"
-            >
-              <MessageCircle className="w-4 h-4" />
-              <span>Support</span>
-            </a>
+
           </div>
         </div>
       </header>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center">
-          {/* Success Icon */}
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle className="w-12 h-12 text-green-600" />
-          </div>
-
           {/* Success Message */}
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            🎉 Order Confirmed!
-          </h1>
-          <p className="text-xl text-gray-600 mb-8">
-            Thank you for purchasing CalcAI! Your order has been successfully processed.
-          </p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2 text-center">Order Confirmed</h1>
+          <p className="text-base text-gray-600 mb-8 text-center">Thanks for your purchase. You’ll get a confirmation email shortly.</p>
 
-          {/* Order Details */}
-          <div className="bg-white rounded-xl shadow-lg p-8 mb-8 max-w-2xl mx-auto">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-6">What Happens Next?</h2>
-            
-            <div className="space-y-6">
-              <div className="flex items-start space-x-4">
-                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-4 h-4 text-blue-600" />
-                </div>
-                <div className="text-left">
-                  <h3 className="font-semibold text-gray-900">1. Confirmation Email</h3>
-                  <p className="text-gray-600">You\u2019ll receive an order confirmation email within 5 minutes with your receipt and order details.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Download className="w-4 h-4 text-green-600" />
-                </div>
-                <div className="text-left">
-                  <h3 className="font-semibold text-gray-900">2. Video Guide Access</h3>
-                  <p className="text-gray-600">Download link for the detailed installation video guide will be sent to your email immediately.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Truck className="w-4 h-4 text-purple-600" />
-                </div>
-                <div className="text-left">
-                  <h3 className="font-semibold text-gray-900">3. Fast Shipping</h3>
-                  <p className="text-gray-600">Your CalcAI will be carefully packaged and shipped within 24 hours. Free worldwide shipping included!</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Product Summary */}
-          <div className="bg-white rounded-xl shadow-lg p-6 mb-8 max-w-md mx-auto">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Order</h3>
-            <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 rounded-lg overflow-hidden">
-                <Image
-                  src="/ti84.png"
-                  alt="CalcAI TI-84 Plus"
-                  width={64}
-                  height={64}
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <div className="flex-1 text-left">
-                <h4 className="font-semibold text-gray-900">CalcAI - TI-84 Plus</h4>
-                <p className="text-gray-600">with ChatGPT Integration</p>
-                <p className="font-bold text-gray-900">$129.99</p>
-              </div>
-            </div>
+          {/* Support / Next steps */}
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-10 max-w-xl mx-auto text-center">
+            <h2 className="text-xl font-semibold text-gray-900 mb-3">Need help or have questions?</h2>
+            <p className="text-gray-600 mb-5">Join our Discord for support and updates.</p>
+            <a
+              href="https://discord.gg/83ZwJcPWJ6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Join Discord</span>
+            </a>
           </div>
 
           {/* Support Info */}
