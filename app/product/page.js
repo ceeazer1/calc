@@ -12,6 +12,7 @@ export default function ProductPage() {
   const [price, setPrice] = useState(174.99)
   const [compareAt, setCompareAt] = useState(199.99)
   const [inStock, setInStock] = useState(true)
+  const [stockCount, setStockCount] = useState(null)
 
   // Update cart count on component mount and when cart changes
   useEffect(() => {
@@ -87,6 +88,7 @@ export default function ProductPage() {
         if (typeof j.price === 'number') setPrice(Number(j.price))
         if (typeof j.compareAt === 'number') setCompareAt(Number(j.compareAt))
         if (typeof j.inStock === 'boolean') setInStock(j.inStock)
+        if (typeof j.stockCount === 'number') setStockCount(Number(j.stockCount))
       })
       .catch(() => {})
   }, [])
@@ -228,7 +230,12 @@ export default function ProductPage() {
                   <span>${price.toFixed(2)}</span>
                 )}
               </div>
-              <div className="text-xs text-yellow-300 mt-2">{inStock ? 'Limited stock available' : 'Out of stock'} • Shipping: see options at checkout</div>
+              <div className="text-xs mt-2">
+                <span className={inStock && (stockCount === null || stockCount > 0) ? 'text-green-300' : 'text-red-300'}>
+                  {inStock && (stockCount === null || stockCount > 0) ? `In stock${typeof stockCount === 'number' ? `: ${stockCount}` : ''}` : 'Out of stock'}
+                </span>
+                <span className="text-gray-400"> • Shipping: see options at checkout</span>
+              </div>
             </div>
 
 
@@ -254,8 +261,8 @@ export default function ProductPage() {
               {/* Add to Cart Button */}
               <button
                 onClick={handleAddToCart}
-                disabled={!inStock}
-                className={`w-full ${inStock ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-700 cursor-not-allowed'} text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm`}
+                disabled={!inStock || (typeof stockCount === 'number' && stockCount <= 0)}
+                className={`w-full ${inStock && !(typeof stockCount === 'number' && stockCount <= 0) ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-700 cursor-not-allowed'} text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm`}
               >
                 <div className="flex items-center justify-center space-x-2">
                   <ShoppingCart className="w-4 h-4" />

@@ -37,7 +37,9 @@ export async function POST(request) {
       console.warn('Could not load dashboard settings:', e?.message || e)
     }
 
-    if (remoteSettings && remoteSettings.inStock === false) {
+    const stockCountNum = remoteSettings && remoteSettings.stockCount !== undefined && remoteSettings.stockCount !== null
+      ? Number(remoteSettings.stockCount) : undefined
+    if (remoteSettings && (remoteSettings.inStock === false || (Number.isFinite(stockCountNum) && stockCountNum <= 0))) {
       return NextResponse.json({ error: 'Out of stock' }, { status: 400 })
     }
 
