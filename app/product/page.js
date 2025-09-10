@@ -9,6 +9,9 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1)
   const [addedToCart, setAddedToCart] = useState(false)
   const [cartItemCount, setCartItemCount] = useState(0)
+  const [price, setPrice] = useState(174.99)
+  const [compareAt, setCompareAt] = useState(199.99)
+  const [inStock, setInStock] = useState(true)
 
   // Update cart count on component mount and when cart changes
   useEffect(() => {
@@ -29,7 +32,7 @@ export default function ProductPage() {
   }, [])
 
   const getPrice = () => {
-    return 174.99
+    return price
   }
 
   const getProductName = () => {
@@ -71,6 +74,22 @@ export default function ProductPage() {
     setAddedToCart(true)
     setTimeout(() => setAddedToCart(false), 3000)
   }
+
+  // Load price/stock from dashboard if configured
+  useEffect(() => {
+    const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL
+    if (!DASHBOARD_URL) return
+    const base = DASHBOARD_URL.replace(/\/+$/, '')
+    fetch(`${base}/api/website-public/settings`)
+      .then(r => r.ok ? r.json() : null)
+      .then(j => {
+        if (!j) return
+        if (typeof j.price === 'number') setPrice(Number(j.price))
+        if (typeof j.compareAt === 'number') setCompareAt(Number(j.compareAt))
+        if (typeof j.inStock === 'boolean') setInStock(j.inStock)
+      })
+      .catch(() => {})
+  }, [])
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -199,11 +218,17 @@ export default function ProductPage() {
             {/* Price Section */}
             <div className="bg-gray-900 p-4 rounded-lg border border-gray-800">
               <div className="text-2xl font-bold text-white flex items-center gap-3">
-                <span className="text-gray-400 line-through">$199.99</span>
-                <span>$174.99</span>
-                <span className="text-xs font-semibold text-green-300 bg-green-500/10 border border-green-400/20 rounded-full px-2 py-0.5">On Sale</span>
+                {compareAt && compareAt > price ? (
+                  <>
+                    <span className="text-gray-400 line-through">${compareAt.toFixed(2)}</span>
+                    <span>${price.toFixed(2)}</span>
+                    <span className="text-xs font-semibold text-green-300 bg-green-500/10 border border-green-400/20 rounded-full px-2 py-0.5">On Sale</span>
+                  </>
+                ) : (
+                  <span>${price.toFixed(2)}</span>
+                )}
               </div>
-              <div className="text-xs text-yellow-300 mt-2">Limited stock available • Shipping: see options at checkout</div>
+              <div className="text-xs text-yellow-300 mt-2">{inStock ? 'Limited stock available' : 'Out of stock'} • Shipping: see options at checkout</div>
             </div>
 
 
@@ -229,11 +254,12 @@ export default function ProductPage() {
               {/* Add to Cart Button */}
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm"
+                disabled={!inStock}
+                className={`w-full ${inStock ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-700 cursor-not-allowed'} text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm`}
               >
                 <div className="flex items-center justify-center space-x-2">
                   <ShoppingCart className="w-4 h-4" />
-                  <span>{addedToCart ? 'Added to Cart!' : `Add to Cart - $${getPrice()}`}</span>
+                  <span>{inStock ? (addedToCart ? 'Added to Cart!' : `Add to Cart - $${getPrice().toFixed(2)}`) : 'Out of Stock'}</span>
                 </div>
               </button>
 

@@ -24,8 +24,27 @@ export async function POST(request) {
 
     console.log('Creating Stripe session with domain:', domain)
 
-    // Convert cart items to Stripe line items
-    const lineItems = cartItems ? cartItems.map(item => ({
+    // Fetch dynamic price/stock from dashboard (public endpoint)
+    let remoteSettings = null
+    try {
+      const dashURL = process.env.DASHBOARD_URL || process.env.NEXT_PUBLIC_DASHBOARD_URL
+      if (dashURL) {
+        const base = dashURL.replace(/\/+$/, '')
+        const r = await fetch(`${base}/api/website-public/settings`, { cache: 'no-store' })
+        if (r.ok) remoteSettings = await r.json()
+      }
+    } catch (e) {
+      console.warn('Could not load dashboard settings:', e?.message || e)
+    }
+
+    if (remoteSettings && remoteSettings.inStock === false) {
+      return NextResponse.json({ error: 'Out of stock' }, { status: 400 })
+    }
+
+    const unitAmountCents = Math.round(((remoteSettings?.price ?? 174.99) * 100))
+
+    // Convert cart items to Stripe line items (authoritative price from dashboard)
+    const lineItems = cartItems && cartItems.length ? cartItems.map(item => ({
       price_data: {
         currency: 'usd',
         product_data: {
@@ -33,7 +52,7 @@ export async function POST(request) {
           description: 'The world\u2019s first calculator with discrete AI integration',
           images: [`${domain}${item.image}`],
         },
-        unit_amount: Math.round(item.price * 100), // Convert to cents
+        unit_amount: unitAmountCents,
       },
       quantity: item.quantity,
     })) : [
@@ -45,7 +64,7 @@ export async function POST(request) {
             description: 'The world\u2019s first calculator with discrete AI integration',
             images: [`${domain}/NEWTI84.png`],
           },
-          unit_amount: 17499, // $174.99 in cents (on sale from $199.99)
+          unit_amount: unitAmountCents,
         },
         quantity: 1,
       }
