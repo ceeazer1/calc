@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10">
+      <nav className="sticky top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             <div className="flex items-center">
@@ -56,11 +56,11 @@ export default function Home() {
         </div>
       </nav>
       {/* Global Sale Banner */}
-      <div className="relative mt-14 border-y border-yellow-400/30 bg-gradient-to-r from-yellow-500/15 via-orange-500/10 to-pink-500/15">
+      <div className="w-full border-b border-blue-400/20 bg-gradient-to-r from-blue-500/10 via-sky-500/10 to-purple-500/10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="py-3 text-center">
-            <div className="text-lg sm:text-2xl font-extrabold text-yellow-200 tracking-wide">BACK TO SCHOOL SALE</div>
-            <div className="text-xs sm:text-sm text-yellow-300/90">Limited time only • Limited stock</div>
+          <div className="py-1.5 text-center">
+            <div className="text-sm sm:text-base font-semibold text-blue-200 tracking-wide">BACK TO SCHOOL SALE</div>
+            <div className="text-[11px] sm:text-xs text-blue-300/90">Limited time only • Limited stock</div>
           </div>
         </div>
       </div>
