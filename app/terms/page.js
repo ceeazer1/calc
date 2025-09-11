@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft } from 'lucide-react'
+import { TERMS_HTML } from '../../content/terms'
+
 
 export default function Terms() {
   return (
@@ -39,29 +41,7 @@ export default function Terms() {
 
           {/* Terms content goes here. Replace the placeholder text with the actual terms text. */}
           <article className="prose prose-invert max-w-none">
-            <h2>Introduction</h2>
-            <p>These Terms of Service (&quot;Terms&quot;) govern your access to and use of CalcAI products, services, and websites. By accessing or using CalcAI, you agree to be bound by these Terms.</p>
-
-            <h2>Use of Service</h2>
-            <p>You agree to use the Services only for lawful purposes and in compliance with applicable laws and regulations. You will not misuse or interfere with the proper functioning of the Services.</p>
-
-            <h2>Purchases and Refunds</h2>
-            <p>All purchases made through our website are subject to our refund and return policies as stated at the time of purchase. Shipping options and costs are presented during checkout.</p>
-
-            <h2>Warranty</h2>
-            <p>Products may include a limited warranty as described on the product page. Warranty does not cover misuse, unauthorized modifications, or damage caused by external factors.</p>
-
-            <h2>Limitation of Liability</h2>
-            <p>To the maximum extent permitted by law, CalcAI is not liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues.</p>
-
-            <h2>Privacy</h2>
-            <p>Your use of the Services is also governed by our Privacy Policy.</p>
-
-            <h2>Changes to Terms</h2>
-            <p>We may update these Terms from time to time. Continued use of the Services after changes take effect constitutes acceptance of the revised Terms.</p>
-
-            <h2>Contact</h2>
-            <p>For questions, please open a ticket in our Discord community.</p>
+            <div dangerouslySetInnerHTML={{ __html: TERMS_HTML }} />
           </article>
 
           <div className="mt-8">
