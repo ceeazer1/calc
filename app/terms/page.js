@@ -40,7 +40,7 @@ export default function Terms() {
           {/* Terms content goes here. Replace the placeholder text with the actual terms text. */}
           <article className="prose prose-invert max-w-none">
             <h2>Introduction</h2>
-            <p>These Terms of Service ("Terms") govern your access to and use of CalcAI products, services, and websites. By accessing or using CalcAI, you agree to be bound by these Terms.</p>
+            <p>These Terms of Service (&quot;Terms&quot;) govern your access to and use of CalcAI products, services, and websites. By accessing or using CalcAI, you agree to be bound by these Terms.</p>
 
             <h2>Use of Service</h2>
             <p>You agree to use the Services only for lawful purposes and in compliance with applicable laws and regulations. You will not misuse or interfere with the proper functioning of the Services.</p>
