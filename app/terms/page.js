@@ -32,39 +32,27 @@ export default function Terms() {
 
       {/* Main Content */}
       <main className="pt-24 pb-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold text-white mb-4">
-              Terms of Service
-            </h1>
-            <p className="text-xl text-gray-300">
-              Coming soon - We&apos;re preparing comprehensive terms to protect both you and CalcAI
-            </p>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6">
+            <h1 className="text-4xl font-bold text-white">Terms of Service</h1>
+            <p className="text-sm text-gray-400 mt-2">If the PDF doesn't display, use the download link below.</p>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-12 text-center">
-            <div className="text-6xl mb-6">📋</div>
-            <h2 className="text-2xl font-semibold text-white mb-4">
-              Under Construction
-            </h2>
-            <p className="text-gray-300 mb-8">
-              We&apos;re working on creating clear and fair terms of service for CalcAI users.
-              Our legal team is ensuring everything is transparent and user-friendly.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                href="/#support" 
-                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-blue-500/25"
-              >
-                Contact Support
-              </Link>
-              <Link 
-                href="/" 
-                className="bg-transparent border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105"
-              >
-                Back to Home
-              </Link>
-            </div>
+          <div className="rounded-xl border border-white/10 bg-gray-900/50">
+            <object data="/terms.pdf#view=FitH" type="application/pdf" className="w-full h-[80vh] rounded-xl">
+              <div className="p-6 text-center text-gray-300">
+                <p className="mb-4">Unable to display the PDF inline.</p>
+                <a href="/terms.pdf" target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">Open Terms (PDF)</a>
+              </div>
+            </object>
+          </div>
+
+          <div className="mt-4 flex items-center justify-between">
+            <Link href="/" className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors text-sm">
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Home</span>
+            </Link>
+            <a href="/terms.pdf" target="_blank" rel="noopener noreferrer" className="text-sm text-blue-400 hover:text-blue-300 underline">Download Terms (PDF)</a>
           </div>
         </div>
       </main>
