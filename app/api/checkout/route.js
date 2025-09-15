@@ -13,10 +13,8 @@ export async function POST(request) {
     }
 
     // Force stable domain for success/cancel URLs so Stripe "Back/Cancel" always returns to cart
-    // Primary: hardcoded production domain. Optional override via env if you ever change domains.
-    const PRODUCTION_DOMAIN = 'https://calcai.cc'
-    const envDomain = process.env.NEXT_PUBLIC_DOMAIN
-    const domain = envDomain || PRODUCTION_DOMAIN
+    // Always use primary production domain.
+    const domain = 'https://calcai.cc'
 
     const { cartItems, totalAmount, formData } = await request.json()
 
