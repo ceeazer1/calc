@@ -12,13 +12,11 @@ export async function POST(request) {
       )
     }
 
-    // Determine our domain for success/cancel URLs
-    let domain = process.env.NEXT_PUBLIC_DOMAIN
-    if (!domain) {
-      const proto = request.headers.get('x-forwarded-proto') || 'https'
-      const host = request.headers.get('host')
-      domain = host ? `${proto}://${host}` : 'http://localhost:3000'
-    }
+    // Force stable domain for success/cancel URLs so Stripe "Back/Cancel" always returns to cart
+    // Primary: hardcoded production domain. Optional override via env if you ever change domains.
+    const PRODUCTION_DOMAIN = 'https://calcai.cc'
+    const envDomain = process.env.NEXT_PUBLIC_DOMAIN
+    const domain = envDomain || PRODUCTION_DOMAIN
 
     const { cartItems, totalAmount, formData } = await request.json()
 
