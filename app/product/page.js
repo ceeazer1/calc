@@ -6,6 +6,12 @@ import Link from 'next/link'
 import { Star, CheckCircle, ShoppingCart, ArrowLeft, Shield, Truck, RotateCcw, MessageCircle, Calculator } from 'lucide-react'
 
 export default function ProductPage() {
+  // Optional overrides via env for emergencies
+  const FORCE_OOS = process.env.NEXT_PUBLIC_FORCE_OUT_OF_STOCK === 'true'
+  const FORCED_STOCK_COUNT_RAW = process.env.NEXT_PUBLIC_FORCED_STOCK_COUNT || ''
+  const FORCED_STOCK_COUNT = Number(FORCED_STOCK_COUNT_RAW)
+  const HAS_FORCED_COUNT = Number.isFinite(FORCED_STOCK_COUNT)
+
   const [quantity, setQuantity] = useState(1)
   const [addedToCart, setAddedToCart] = useState(false)
   const [cartItemCount, setCartItemCount] = useState(0)
@@ -13,6 +19,7 @@ export default function ProductPage() {
   const [compareAt, setCompareAt] = useState(199.99)
   const [inStock, setInStock] = useState(true)
   const [stockCount, setStockCount] = useState(null)
+  const [loaded, setLoaded] = useState(false)
 
   // Update cart count on component mount and when cart changes
   useEffect(() => {
@@ -76,12 +83,12 @@ export default function ProductPage() {
     setTimeout(() => setAddedToCart(false), 3000)
   }
 
-  // Load price/stock from dashboard if configured
+  // Load price/stock from dashboard if configured and then mark loaded
   useEffect(() => {
     const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL
-    if (!DASHBOARD_URL) return
+    if (!DASHBOARD_URL) { setLoaded(true); return }
     const base = DASHBOARD_URL.replace(/\/+$/, '')
-    fetch(`${base}/api/website-public/settings`)
+    fetch(`${base}/api/website-public/settings`, { cache: 'no-store' })
       .then(r => r.ok ? r.json() : null)
       .then(j => {
         if (!j) return
@@ -91,7 +98,11 @@ export default function ProductPage() {
         if (typeof j.stockCount === 'number') setStockCount(Number(j.stockCount))
       })
       .catch(() => {})
+      .finally(() => setLoaded(true))
   }, [])
+
+  const effectiveInStock = FORCE_OOS ? false : inStock
+  const effectiveStockCount = FORCE_OOS ? (HAS_FORCED_COUNT ? FORCED_STOCK_COUNT : 0) : stockCount
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -231,9 +242,15 @@ export default function ProductPage() {
                 )}
               </div>
               <div className="text-xs mt-2">
-                <span className={inStock && (stockCount === null || stockCount > 0) ? 'text-green-300' : 'text-red-300'}>
-                  {inStock && (stockCount === null || stockCount > 0) ? `In stock${typeof stockCount === 'number' ? `: ${stockCount}` : ''}` : 'Out of stock'}
-                </span>
+                {loaded ? (
+                  <span className={effectiveInStock && (effectiveStockCount === null || effectiveStockCount > 0) ? 'text-green-300' : 'text-red-300'}>
+                    {effectiveInStock && (effectiveStockCount === null || effectiveStockCount > 0)
+                      ? `In stock${typeof effectiveStockCount === 'number' ? `: ${effectiveStockCount}` : ''}`
+                      : 'Out of stock'}
+                  </span>
+                ) : (
+                  <span className="text-gray-400">Checking availability…</span>
+                )}
                 <span className="text-gray-400"> • Shipping: see options at checkout</span>
               </div>
             </div>
@@ -261,12 +278,12 @@ export default function ProductPage() {
               {/* Add to Cart Button */}
               <button
                 onClick={handleAddToCart}
-                disabled={!inStock || (typeof stockCount === 'number' && stockCount <= 0)}
-                className={`w-full ${inStock && !(typeof stockCount === 'number' && stockCount <= 0) ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-700 cursor-not-allowed'} text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm`}
+                disabled={!loaded || !effectiveInStock || (typeof effectiveStockCount === 'number' && effectiveStockCount <= 0)}
+                className={`w-full ${loaded && effectiveInStock && !(typeof effectiveStockCount === 'number' && effectiveStockCount <= 0) ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-700 cursor-not-allowed'} text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm`}
               >
                 <div className="flex items-center justify-center space-x-2">
                   <ShoppingCart className="w-4 h-4" />
-                  <span>{inStock ? (addedToCart ? 'Added to Cart!' : `Add to Cart - $${getPrice().toFixed(2)}`) : 'Out of Stock'}</span>
+                  <span>{loaded ? (effectiveInStock ? (addedToCart ? 'Added to Cart!' : `Add to Cart - $${getPrice().toFixed(2)}`) : 'Out of Stock') : 'Loading...'}</span>
                 </div>
               </button>
 
