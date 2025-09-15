@@ -37,11 +37,6 @@ export async function POST(request) {
       console.warn('Could not load dashboard settings:', e?.message || e)
     }
 
-  // Optional global override to hard-block checkout
-  const FORCE_OOS = (process.env.FORCE_OUT_OF_STOCK === 'true') || (process.env.NEXT_PUBLIC_FORCE_OUT_OF_STOCK === 'true')
-  if (FORCE_OOS) {
-    return NextResponse.json({ error: 'Out of stock' }, { status: 400 })
-  }
 
     const stockCountNum = remoteSettings && remoteSettings.stockCount !== undefined && remoteSettings.stockCount !== null
       ? Number(remoteSettings.stockCount) : undefined
