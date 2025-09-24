@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Star, CheckCircle, ShoppingCart, ArrowLeft, Shield, Truck, RotateCcw, MessageCircle, Calculator } from 'lucide-react'
+import { Star, CheckCircle, ShoppingCart, ArrowLeft, ArrowRight, Shield, Truck, RotateCcw, MessageCircle, Calculator } from 'lucide-react'
 
 export default function ProductPage() {
 
@@ -66,10 +66,10 @@ export default function ProductPage() {
       quantity: quantity,
       image: '/ti84.png'
     }
-    
+
     // Check if product already exists in cart
     const existingProductIndex = existingCart.findIndex(item => item.id === product.id)
-    
+
     if (existingProductIndex >= 0) {
       // Update quantity if product exists
       existingCart[existingProductIndex].quantity += quantity
@@ -77,7 +77,7 @@ export default function ProductPage() {
       // Add new product to cart
       existingCart.push(product)
     }
-    
+
     // Save to localStorage
     localStorage.setItem('cart', JSON.stringify(existingCart))
 
@@ -183,6 +183,24 @@ export default function ProductPage() {
               aria-label="Next image"
               title="Next image"
             >
+              {/* Visible arrows */}
+              <button
+                type="button"
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-20 rounded-full bg-black/60 border border-white/20 p-2 text-white hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/40"
+                aria-label="Previous image"
+                onClick={(e) => { e.stopPropagation(); setImgIndex((imgIndex - 1 + images.length) % images.length); setImgError(false) }}
+              >
+                <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-20 rounded-full bg-black/60 border border-white/20 p-2 text-white hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/40"
+                aria-label="Next image"
+                onClick={(e) => { e.stopPropagation(); setImgIndex((imgIndex + 1) % images.length); setImgError(false) }}
+              >
+                <ArrowRight className="w-5 h-5" aria-hidden="true" />
+              </button>
+
               <div className="relative z-10 w-full h-full flex items-center justify-center">
                 <Image
                   src={imgError ? fallbackImage : images[imgIndex]}
