@@ -17,10 +17,13 @@ export default function ProductPage() {
   const [loaded, setLoaded] = useState(false)
   // Product image carousel
   const images = ['/Calc_Front.jpg', '/Calc_Back.jpg']
+  const fallbackImage = '/84p.png'
   const [imgIndex, setImgIndex] = useState(0)
+  const [imgError, setImgError] = useState(false)
   useEffect(() => {
     const id = setInterval(() => {
       setImgIndex((i) => (i + 1) % images.length)
+      setImgError(false)
     }, 15000)
     return () => clearInterval(id)
   }, [])
@@ -175,19 +178,20 @@ export default function ProductPage() {
             {/* Main Product Image with carousel */}
             <div
               className="relative aspect-square rounded-lg overflow-hidden group border border-white/10 bg-gray-900/40 cursor-pointer"
-              onClick={() => setImgIndex((imgIndex + 1) % images.length)}
+              onClick={() => { setImgIndex((imgIndex + 1) % images.length); setImgError(false) }}
               role="button"
               aria-label="Next image"
               title="Next image"
             >
               <div className="relative z-10 w-full h-full flex items-center justify-center">
                 <Image
-                  src={images[imgIndex]}
+                  src={imgError ? fallbackImage : images[imgIndex]}
                   alt={imgIndex === 0 ? 'CalcAI Calculator - Front' : 'CalcAI Calculator - Back'}
                   width={600}
                   height={600}
                   className="w-4/5 h-4/5 object-contain transform group-hover:scale-105 transition-all duration-300"
                   priority
+                  onError={() => setImgError(true)}
                 />
               </div>
             </div>
@@ -195,7 +199,7 @@ export default function ProductPage() {
               {images.map((_, i) => (
                 <button
                   key={i}
-                  onClick={() => setImgIndex(i)}
+                  onClick={() => { setImgIndex(i); setImgError(false) }}
                   className={`h-2.5 w-2.5 rounded-full transition-colors ${i === imgIndex ? 'bg-white' : 'bg-gray-600 hover:bg-gray-500'}`}
                   aria-label={`Show image ${i + 1}`}
                 />
