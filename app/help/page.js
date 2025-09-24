@@ -40,6 +40,21 @@ export default function HelpPage() {
           <p className="text-gray-300">Follow these steps to unlock, launch, connect Wi‑Fi, and start using CalcAI. Keep your calculator steady for camera autofocus.</p>
         </div>
 
+        {/* Power / Batteries */}
+        <section className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-5 mb-8">
+          <h2 className="text-xl font-bold mb-2">Power and batteries</h2>
+          <p className="text-gray-200">
+            For best results we recommend high-quality AAA lithium batteries (triple‑A). They last longer than
+            standard alkaline cells and handle the higher power draw from the camera and Wi‑Fi modules.
+          </p>
+          <ul className="list-disc list-inside text-gray-300 mt-3 space-y-1">
+            <li>Use fresh AAA lithium cells for longest runtime.</li>
+            <li>Camera autofocus and uploads can cause short power spikes; lithium chemistry stays more stable under load.</li>
+            <li>Optional: keep a spare set in your bag. High‑capacity NiMH rechargeables also work, but may need more frequent charging.</li>
+          </ul>
+        </section>
+
+
         {/* Video placeholder */}
         <section className="rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-5 mb-8">
           <h2 className="text-xl font-bold mb-3">Setup Video</h2>

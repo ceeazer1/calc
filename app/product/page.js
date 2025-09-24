@@ -15,6 +15,15 @@ export default function ProductPage() {
   const [inStock, setInStock] = useState(true)
   const [stockCount, setStockCount] = useState(null)
   const [loaded, setLoaded] = useState(false)
+  // Product image carousel
+  const images = ['/Calc_Front.jpg', '/Calc_Back.jpg']
+  const [imgIndex, setImgIndex] = useState(0)
+  useEffect(() => {
+    const id = setInterval(() => {
+      setImgIndex((i) => (i + 1) % images.length)
+    }, 15000)
+    return () => clearInterval(id)
+  }, [])
 
   // Update cart count on component mount and when cart changes
   useEffect(() => {
@@ -163,19 +172,34 @@ export default function ProductPage() {
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Product Images */}
           <div className="relative">
-            {/* Main Product Image */}
-            <div className="relative aspect-square rounded-lg overflow-hidden group">
-              {/* Product Image */}
-              <div className="relative z-10 w-full h-full flex items-center justify-center">
+            {/* Main Product Image with carousel */}
+            <div className="relative aspect-square rounded-lg overflow-hidden group border border-white/10 bg-gray-900/40">
+              <button
+                onClick={() => setImgIndex((imgIndex + 1) % images.length)}
+                className="absolute inset-0 z-20"
+                aria-label="Next image"
+                title="Next image"
+              />
+              <div className="relative z-10 w-full h-full flex items-center justify-center cursor-pointer">
                 <Image
-                  src="/84p.png"
-                  alt="CalcAI - TI-84 Plus with AI Integration"
-                  width={300}
-                  height={300}
+                  src={images[imgIndex]}
+                  alt={imgIndex === 0 ? 'CalcAI Calculator - Front' : 'CalcAI Calculator - Back'}
+                  width={600}
+                  height={600}
                   className="w-4/5 h-4/5 object-contain transform group-hover:scale-105 transition-all duration-300"
                   priority
                 />
               </div>
+            </div>
+            <div className="flex items-center justify-center gap-2 mt-3">
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setImgIndex(i)}
+                  className={`h-2.5 w-2.5 rounded-full transition-colors ${i === imgIndex ? 'bg-white' : 'bg-gray-600 hover:bg-gray-500'}`}
+                  aria-label={`Show image ${i + 1}`}
+                />
+              ))}
             </div>
           </div>
 
