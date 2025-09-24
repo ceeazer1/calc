@@ -173,14 +173,14 @@ export default function ProductPage() {
           {/* Product Images */}
           <div className="relative">
             {/* Main Product Image with carousel */}
-            <div className="relative aspect-square rounded-lg overflow-hidden group border border-white/10 bg-gray-900/40">
-              <button
-                onClick={() => setImgIndex((imgIndex + 1) % images.length)}
-                className="absolute inset-0 z-20"
-                aria-label="Next image"
-                title="Next image"
-              />
-              <div className="relative z-10 w-full h-full flex items-center justify-center cursor-pointer">
+            <div
+              className="relative aspect-square rounded-lg overflow-hidden group border border-white/10 bg-gray-900/40 cursor-pointer"
+              onClick={() => setImgIndex((imgIndex + 1) % images.length)}
+              role="button"
+              aria-label="Next image"
+              title="Next image"
+            >
+              <div className="relative z-10 w-full h-full flex items-center justify-center">
                 <Image
                   src={images[imgIndex]}
                   alt={imgIndex === 0 ? 'CalcAI Calculator - Front' : 'CalcAI Calculator - Back'}
