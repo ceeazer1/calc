@@ -126,7 +126,7 @@ export default function Community() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-20 pb-16 bg-black text-white">
+      <section className="pt-20 pb-8 bg-black text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-extrabold mb-4 text-white">
@@ -140,7 +140,7 @@ export default function Community() {
       </section>
 
       {/* Social Links Section - larger centered tiles (previous style) */}
-      <section className="py-16 bg-black">
+      <section className="pt-4 pb-16 bg-black">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6">
             {socialLinks.map((social, index) => (
