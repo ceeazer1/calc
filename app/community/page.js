@@ -26,33 +26,29 @@ export default function Community() {
 
   const socialLinks = [
     {
-      name: "Discord",
-      description: "Join our Discord server for instant support, community discussions, and the latest updates",
-      url: "https://discord.gg/83ZwJcPWJ6",
-      icon: "/discord-logo.svg",
-      color: "bg-indigo-600 hover:bg-indigo-700",
+      name: 'Discord',
+      description: 'Join our Discord server for instant support, community discussions, and the latest updates',
+      url: 'https://discord.gg/83ZwJcPWJ6',
+      icon: '/discord-logo.svg',
       primary: true
     },
     {
-      name: "TikTok",
-      description: "Follow us on TikTok for quick demos, tips, and behind-the-scenes content",
-      url: "https://www.tiktok.com/@calc_ai",
-      icon: <Video className="w-8 h-8" />,
-      color: "bg-pink-600 hover:bg-pink-700"
+      name: 'TikTok',
+      description: 'Follow us on TikTok for quick demos, tips, and behind-the-scenes content',
+      url: 'https://www.tiktok.com/@calc_ai',
+      icon: '/tiktok-logo.svg'
     },
     {
-      name: "Instagram",
-      description: "See product photos, user stories, and updates on Instagram",
-      url: "https://www.instagram.com/calc.ai/",
-      icon: <Camera className="w-8 h-8" />,
-      color: "bg-purple-600 hover:bg-purple-700"
+      name: 'Instagram',
+      description: 'See product photos, user stories, and updates on Instagram',
+      url: 'https://www.instagram.com/calc.ai/',
+      icon: '/instagram-logo.svg'
     },
     {
-      name: "YouTube",
-      description: "Watch detailed tutorials, reviews, and product demonstrations",
-      url: "https://www.youtube.com/@CalcAI1",
-      icon: <Video className="w-8 h-8" />,
-      color: "bg-red-600 hover:bg-red-700"
+      name: 'YouTube',
+      description: 'Watch detailed tutorials, reviews, and product demonstrations',
+      url: 'https://www.youtube.com/@CalcAI1',
+      icon: '/youtube-logo.svg'
     }
   ]
 
@@ -126,7 +122,7 @@ export default function Community() {
       <section className="pt-20 pb-16 bg-black text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-purple-400">
+            <h1 className="text-4xl font-extrabold mb-4 text-white">
               Community
             </h1>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
@@ -143,21 +139,21 @@ export default function Community() {
             {socialLinks.map((social, index) => (
               <div
                 key={index}
-                className={`rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-6 hover:border-white/20 transition-all duration-300 ${social.primary ? 'ring-2 ring-blue-500' : ''}`}
+                className={`rounded-2xl border border-white/10 bg-black/40 backdrop-blur p-6 hover:border-white/30 transition-all duration-300 ${social.primary ? 'ring-1 ring-white/20' : ''}`}
               >
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0">
-                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${social.color}`}>
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-white/5 border border-white/15">
                       {typeof social.icon === 'string' ? (
                         <Image
                           src={social.icon}
                           alt={`${social.name} Logo`}
-                          width={24}
-                          height={24}
-                          className="w-6 h-6"
+                          width={28}
+                          height={28}
+                          className="w-7 h-7"
                         />
                       ) : (
-                        <div className="text-white">{social.icon}</div>
+                        <div className="text-white opacity-90">{social.icon}</div>
                       )}
                     </div>
                   </div>
@@ -177,10 +173,10 @@ export default function Community() {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`inline-flex items-center text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm ${social.color}`}
+                      className="inline-flex items-center text-white/90 font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm bg-white/5 hover:bg-white/10 border border-white/15"
                     >
                       Visit {social.name}
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                      <ArrowRight className="w-4 h-4 ml-2 opacity-80" />
                     </a>
                   </div>
                 </div>
