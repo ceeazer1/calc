@@ -142,7 +142,7 @@ export default function Community() {
       {/* Social Links Section - compact colored logos in a clean grid */}
       <section className="py-14 bg-black">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 justify-center place-items-center">
             {socialLinks.map((social, index) => (
               <a
                 key={index}
@@ -151,17 +151,17 @@ export default function Community() {
                 rel="noopener noreferrer"
                 className={`group rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] transition-colors duration-200 p-4 focus:outline-none focus:ring-2 focus:ring-white/20 ${social.ring || ''}`}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col items-center gap-3">
                   <div className={`flex-shrink-0 w-12 h-12 rounded-lg ${social.iconBg} grid place-items-center shadow-inner`}>
-                    <Image
+                    <img
                       src={social.icon}
                       alt={`${social.name} Logo`}
-                      width={26}
-                      height={26}
-                      className="w-6 h-6"
+                      width={28}
+                      height={28}
+                      className="w-7 h-7"
                     />
                   </div>
-                  <div className="min-w-0">
+                  <div className="min-w-0 text-center">
                     <div className="text-white font-semibold leading-tight">{social.name}</div>
                     <div className="text-xs text-gray-400 truncate">{social.description}</div>
                   </div>
