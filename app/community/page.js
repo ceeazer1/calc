@@ -27,28 +27,35 @@ export default function Community() {
   const socialLinks = [
     {
       name: 'Discord',
-      description: 'Join our Discord server for instant support, community discussions, and the latest updates',
       url: 'https://discord.gg/83ZwJcPWJ6',
       icon: '/discord-logo.svg',
-      primary: true
+      iconBg: 'bg-[#5865F2]',
+      ring: 'ring-[#5865F2]/30',
+      description: 'Primary support'
     },
     {
       name: 'TikTok',
-      description: 'Follow us on TikTok for quick demos, tips, and behind-the-scenes content',
       url: 'https://www.tiktok.com/@calc_ai',
-      icon: '/tiktok-logo.svg'
+      icon: '/tiktok-logo.svg',
+      iconBg: 'bg-gradient-to-br from-[#25F4EE] to-[#FE2C55]',
+      ring: 'ring-white/10',
+      description: 'Short demos'
     },
     {
       name: 'Instagram',
-      description: 'See product photos, user stories, and updates on Instagram',
       url: 'https://www.instagram.com/calc.ai/',
-      icon: '/instagram-logo.svg'
+      icon: '/instagram-logo.svg',
+      iconBg: 'bg-gradient-to-br from-[#F58529] via-[#DD2A7B] to-[#8134AF]',
+      ring: 'ring-white/10',
+      description: 'Photos & updates'
     },
     {
       name: 'YouTube',
-      description: 'Watch detailed tutorials, reviews, and product demonstrations',
       url: 'https://www.youtube.com/@CalcAI1',
-      icon: '/youtube-logo.svg'
+      icon: '/youtube-logo.svg',
+      iconBg: 'bg-[#FF0000]',
+      ring: 'ring-[#FF0000]/30',
+      description: 'Tutorials'
     }
   ]
 
@@ -132,55 +139,34 @@ export default function Community() {
         </div>
       </section>
 
-      {/* Social Links Section */}
-      <section className="py-16 bg-gray-900">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6">
+      {/* Social Links Section - compact colored logos in a clean grid */}
+      <section className="py-14 bg-black">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {socialLinks.map((social, index) => (
-              <div
+              <a
                 key={index}
-                className={`rounded-2xl border border-white/10 bg-black/40 backdrop-blur p-6 hover:border-white/30 transition-all duration-300 ${social.primary ? 'ring-1 ring-white/20' : ''}`}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] transition-colors duration-200 p-4 focus:outline-none focus:ring-2 focus:ring-white/20 ${social.ring || ''}`}
               >
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-white/5 border border-white/15">
-                      {typeof social.icon === 'string' ? (
-                        <Image
-                          src={social.icon}
-                          alt={`${social.name} Logo`}
-                          width={28}
-                          height={28}
-                          className="w-7 h-7"
-                        />
-                      ) : (
-                        <div className="text-white opacity-90">{social.icon}</div>
-                      )}
-                    </div>
+                <div className="flex items-center gap-3">
+                  <div className={`flex-shrink-0 w-12 h-12 rounded-lg ${social.iconBg} grid place-items-center shadow-inner`}>
+                    <Image
+                      src={social.icon}
+                      alt={`${social.name} Logo`}
+                      width={26}
+                      height={26}
+                      className="w-6 h-6"
+                    />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-white mb-2">
-                      {social.name}
-                      {social.primary && (
-                        <span className="ml-2 text-xs bg-blue-600 text-white px-2 py-1 rounded-full">
-                          Primary Support
-                        </span>
-                      )}
-                    </h3>
-                    <p className="text-gray-400 text-sm mb-4">
-                      {social.description}
-                    </p>
-                    <a
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center text-white/90 font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm bg-white/5 hover:bg-white/10 border border-white/15"
-                    >
-                      Visit {social.name}
-                      <ArrowRight className="w-4 h-4 ml-2 opacity-80" />
-                    </a>
+                  <div className="min-w-0">
+                    <div className="text-white font-semibold leading-tight">{social.name}</div>
+                    <div className="text-xs text-gray-400 truncate">{social.description}</div>
                   </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
