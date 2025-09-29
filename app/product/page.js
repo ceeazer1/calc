@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Star, CheckCircle, ShoppingCart, ArrowLeft, ArrowRight, Shield, Truck, RotateCcw, MessageCircle, Calculator } from 'lucide-react'
+import { getStripe } from '../../lib/stripe'
 
 export default function ProductPage() {
 
@@ -107,7 +108,31 @@ export default function ProductPage() {
       .catch(() => {})
       .finally(() => setLoaded(true))
   }, [])
-
+  const handlePreorderCheckout = async () => {
+    try {
+      const stripe = await getStripe()
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          preorder: true,
+          cartItems: [{
+            id: 'calcai-ti84-preorder',
+            name: getProductName() + ' — Preorder (Ships Oct 15)',
+            price: 200.0,
+            quantity,
+            image: '/ti84.png'
+          }]
+        })
+      })
+      const data = await response.json()
+      if (!response.ok || !data.sessionId) throw new Error(data.error || 'Checkout error')
+      await stripe.redirectToCheckout({ sessionId: data.sessionId })
+    } catch (e) {
+      alert('Could not start preorder checkout. Please try again or contact support.')
+      console.error(e)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -269,16 +294,19 @@ export default function ProductPage() {
 
             {/* Price Section */}
             <div className="bg-gray-900 p-4 rounded-lg border border-gray-800">
-              <div className="text-2xl font-bold text-white flex items-center gap-3">
-                {compareAt && compareAt > price ? (
-                  <>
-                    <span className="text-gray-400 line-through">${compareAt.toFixed(2)}</span>
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <div className="text-2xl font-bold text-white flex items-center gap-3">
+                  {compareAt && compareAt > price ? (
+                    <>
+                      <span className="text-gray-400 line-through">${compareAt.toFixed(2)}</span>
+                      <span>${price.toFixed(2)}</span>
+                      <span className="text-xs font-semibold text-green-300 bg-green-500/10 border border-green-400/20 rounded-full px-2 py-0.5">On Sale</span>
+                    </>
+                  ) : (
                     <span>${price.toFixed(2)}</span>
-                    <span className="text-xs font-semibold text-green-300 bg-green-500/10 border border-green-400/20 rounded-full px-2 py-0.5">On Sale</span>
-                  </>
-                ) : (
-                  <span>${price.toFixed(2)}</span>
-                )}
+                  )}
+                </div>
+                <span className="text-xs font-semibold text-amber-300 bg-amber-500/10 border border-amber-400/20 rounded-full px-2 py-0.5">Sells out fast</span>
               </div>
               <div className="text-xs mt-2">
                 {loaded ? (
@@ -291,6 +319,12 @@ export default function ProductPage() {
                   <span className="text-gray-400">Checking availability…</span>
                 )}
                 <span className="text-gray-400"> • Shipping: see options at checkout</span>
+              </div>
+              <div className="mt-2 text-xs text-gray-400">
+                <span>Preorder price: $200. Ships Oct 15.</span>
+              </div>
+              <div className="mt-2 text-xs text-blue-300">
+                Live stock updates on Discord: <a href="https://discord.gg/83ZwJcPWJ6" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-200">discord.gg/83ZwJcPWJ6</a>
               </div>
             </div>
 
@@ -314,17 +348,26 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              {/* Add to Cart Button */}
-              <button
-                onClick={handleAddToCart}
-                disabled={!loaded || !inStock || (typeof stockCount === 'number' && stockCount <= 0)}
-                className={`w-full ${loaded && inStock && !(typeof stockCount === 'number' && stockCount <= 0) ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-700 cursor-not-allowed'} text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm`}
-              >
-                <div className="flex items-center justify-center space-x-2">
-                  <ShoppingCart className="w-4 h-4" />
-                  <span>{loaded ? (inStock ? (addedToCart ? 'Added to Cart!' : `Add to Cart - $${getPrice().toFixed(2)}`) : 'Out of Stock') : 'Loading...'}</span>
-                </div>
-              </button>
+              {/* CTAs: Add to Cart + Preorder */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button
+                  onClick={handleAddToCart}
+                  disabled={!loaded || !inStock || (typeof stockCount === 'number' && stockCount <= 0)}
+                  className={`w-full ${loaded && inStock && !(typeof stockCount === 'number' && stockCount <= 0) ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-700 cursor-not-allowed'} text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm`}
+                >
+                  <div className="flex items-center justify-center space-x-2">
+                    <ShoppingCart className="w-4 h-4" />
+                    <span>{loaded ? (inStock ? (addedToCart ? 'Added to Cart!' : `Add to Cart - $${getPrice().toFixed(2)}`) : 'Out of Stock') : 'Loading...'}</span>
+                  </div>
+                </button>
+
+                <button
+                  onClick={handlePreorderCheckout}
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm"
+                >
+                  Preorder - $200 • Ships Oct 15
+                </button>
+              </div>
 
               {addedToCart && (
                 <div className="text-center">
@@ -340,6 +383,8 @@ export default function ProductPage() {
               <div className="text-center text-xs text-gray-400 mt-2">
                 <p>Secure payment powered by Stripe</p>
               </div>
+
+              <div className="text-center text-xs text-gray-500 mt-1">SMS in-stock alerts: coming soon</div>
             </div>
 
             {/* Guarantees */}

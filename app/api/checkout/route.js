@@ -16,9 +16,9 @@ export async function POST(request) {
     // Always use primary production domain.
     const domain = 'https://calcai.cc'
 
-    const { cartItems, totalAmount, formData } = await request.json()
+    const { cartItems, totalAmount, formData, preorder } = await request.json()
 
-    console.log('Creating Stripe session with domain:', domain)
+    console.log('Creating Stripe session with domain:', domain, 'preorder:', preorder === true)
 
     // Fetch dynamic price/stock from dashboard (public endpoint)
     let remoteSettings = null
@@ -36,11 +36,12 @@ export async function POST(request) {
 
     const stockCountNum = remoteSettings && remoteSettings.stockCount !== undefined && remoteSettings.stockCount !== null
       ? Number(remoteSettings.stockCount) : undefined
-    if (remoteSettings && (remoteSettings.inStock === false || (Number.isFinite(stockCountNum) && stockCountNum <= 0))) {
+    if (!preorder && remoteSettings && (remoteSettings.inStock === false || (Number.isFinite(stockCountNum) && stockCountNum <= 0))) {
       return NextResponse.json({ error: 'Out of stock' }, { status: 400 })
     }
 
-    const unitAmountCents = Math.round(((remoteSettings?.price ?? 174.99) * 100))
+    // Price: preorder is fixed at $200.00, otherwise use dashboard price (or fallback)
+    const unitAmountCents = preorder ? 20000 : Math.round(((remoteSettings?.price ?? 174.99) * 100))
 
     // Convert cart items to Stripe line items (authoritative price from dashboard)
     const lineItems = cartItems && cartItems.length ? cartItems.map(item => ({
@@ -124,7 +125,9 @@ export async function POST(request) {
         },
       ],
       metadata: {
-        order_type: 'calcai_purchase',
+        order_type: preorder ? 'calcai_preorder' : 'calcai_purchase',
+        preorder: preorder ? 'true' : 'false',
+        ship_after: preorder ? 'Oct 15' : 'N/A',
         total_items: cartItems ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 1,
       },
     })
