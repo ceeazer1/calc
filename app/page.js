@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Hero from '../components/Hero'
 import FeatureGrid from '../components/FeatureGrid'
-import WhatsInside from '../components/WhatsInside'
 import HardwareOverview from '../components/HardwareOverview'
 import AIFeatures from '../components/AIFeatures'
 import WifiUpdates from '../components/WifiUpdates'
@@ -69,7 +68,6 @@ export default function Home() {
       <AIFeatures />
       <HardwareOverview />
       <FeatureGrid />
-      <WhatsInside />
 
 
 
