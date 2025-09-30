@@ -15,7 +15,7 @@ export default function Hero() {
             transition={{ duration: 0.9, ease: "easeInOut" }}
             className="mx-auto w-36 sm:w-44 md:w-48 relative z-10"
           >
-            <Image src="/logo.png" alt="CalcAI" width={192} height={192} className="w-full h-auto" priority />
+            <Image src="/logo.png" alt="CalcAI" width={240} height={72} className="w-full h-auto" priority />
           </motion.div>
           <motion.p
             initial={{ opacity: 0, y: 14 }}
@@ -44,7 +44,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 24, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.6 }}
-          className="mt-10 mx-auto max-w-xs sm:max-w-sm md:max-w-md"
+          className="mt-10 mx-auto max-w-[200px] sm:max-w-[260px] md:max-w-[320px]"
         >
           <Image src="/ti84.png" alt="CalcAI TI-84" width={1200} height={1600} className="w-full h-auto object-contain" priority />
         </motion.div>

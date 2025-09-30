@@ -33,7 +33,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             <div className="flex items-center">
-              <Image src="/logo.png" alt="CalcAI Logo" width={80} height={80} className="w-20 h-20" />
+              <Image src="/logo.png" alt="CalcAI Logo" width={200} height={60} className="h-8 w-auto sm:h-9" />
             </div>
             <div className="flex items-center space-x-8">
               <div className="hidden md:flex items-center space-x-8">
@@ -98,7 +98,7 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center mb-3">
-                <Image src="/logo.png" alt="CalcAI Logo" width={60} height={60} className="w-16 h-16" />
+                <Image src="/logo.png" alt="CalcAI Logo" width={200} height={60} className="h-10 w-auto" />
               </div>
               <p className="text-gray-300 text-sm">Multi-tool device for students</p>
             </div>
