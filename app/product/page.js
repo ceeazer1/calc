@@ -292,6 +292,22 @@ export default function ProductPage() {
               </ul>
             </div>
 
+
+            {/* PCB Overview (simple, image-led) */}
+            <div className="bg-gray-900/50 border border-white/10 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-white mb-3">PCB overview</h3>
+              <div className="rounded-md overflow-hidden">
+                <Image
+                  src="/New_PCB.png"
+                  alt="CalcAI PCB overview"
+                  width={1200}
+                  height={800}
+                  className="w-full h-auto"
+                />
+              </div>
+              <p className="text-xs text-gray-400 mt-2">Labels on the image highlight the main functions.</p>
+            </div>
+
             {/* Price Section */}
             <div className="bg-gray-900 p-4 rounded-lg border border-gray-800">
               <div className="flex items-center justify-between gap-3 flex-wrap">
