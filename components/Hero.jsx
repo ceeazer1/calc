@@ -46,7 +46,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.15 }}
           className="mt-10"
         >
-          <Image src="/Calc_Front.jpg" alt="CalcAI front" width={1600} height={1000} className="w-full h-auto" priority />
+          <Image src="/ti84.png" alt="CalcAI TI-84" width={1200} height={1600} className="w-full h-auto object-contain" priority />
         </motion.div>
       </div>
     </section>
