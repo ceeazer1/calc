@@ -9,14 +9,14 @@ export default function Hero() {
     <section className="relative pt-24 pb-16 text-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-5xl sm:text-6xl font-semibold tracking-tight"
+          <motion.div
+            initial={{ opacity: 1, y: 16, scale: 1.06 }}
+            animate={{ opacity: 1, y: [-4, -14], scale: [1.06, 1] }}
+            transition={{ duration: 0.9, ease: "easeInOut" }}
+            className="mx-auto w-36 sm:w-44 md:w-48 relative z-10"
           >
-            CalcAI
-          </motion.h1>
+            <Image src="/logo.png" alt="CalcAI" width={192} height={192} className="w-full h-auto" priority />
+          </motion.div>
           <motion.p
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
@@ -41,10 +41,10 @@ export default function Hero() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="mt-10 mx-auto max-w-sm sm:max-w-md md:max-w-lg"
+          initial={{ opacity: 0, y: 24, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.6 }}
+          className="mt-10 mx-auto max-w-xs sm:max-w-sm md:max-w-md"
         >
           <Image src="/ti84.png" alt="CalcAI TI-84" width={1200} height={1600} className="w-full h-auto object-contain" priority />
         </motion.div>
