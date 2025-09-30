@@ -44,7 +44,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="mt-10"
+          className="mt-10 mx-auto max-w-sm sm:max-w-md md:max-w-lg"
         >
           <Image src="/ti84.png" alt="CalcAI TI-84" width={1200} height={1600} className="w-full h-auto object-contain" priority />
         </motion.div>
