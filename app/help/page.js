@@ -17,9 +17,9 @@ export default function HelpPage() {
               <Image
                 src="/logo.png"
                 alt="CalcAI Logo"
-                width={80}
-                height={80}
-                className="w-20 h-20 transform hover:scale-105 transition-transform duration-200"
+                width={200}
+                height={60}
+                className="h-5 sm:h-6 w-auto transform hover:scale-105 transition-transform duration-200"
               />
             </Link>
             <nav className="flex items-center space-x-6 text-sm">
