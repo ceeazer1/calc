@@ -32,7 +32,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             <div className="flex items-center">
-              <Image src="/logo.png" alt="CalcAI Logo" width={200} height={60} className="h-6 w-auto sm:h-7" />
+              <Image src="/logo.png" alt="CalcAI Logo" width={200} height={60} className="h-5 w-auto sm:h-6" />
             </div>
             <div className="flex items-center space-x-8">
               <div className="hidden md:flex items-center space-x-8">

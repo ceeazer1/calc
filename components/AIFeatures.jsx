@@ -15,41 +15,37 @@ export default function AIFeatures() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl font-bold mb-4">AI features built in</h2>
-            <p className="text-gray-300 mb-6">
-              Powered by the latest GPT model, <span className="font-semibold">gpt5-io</span>. Type a question and read the answer on the calculator. Prefer not to type?
-              Open the back camera, take a quick photo, and let it solve or explain the steps for you.
-            </p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-8 text-center">AI features built in</h2>
 
             <div className="grid sm:grid-cols-2 gap-4">
-              <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-4">
+              <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-6">
                 <div className="flex items-center gap-3 mb-1">
-                  <div className="w-9 h-9 rounded-md bg-blue-600/20 flex items-center justify-center text-blue-300">
-                    <Keyboard className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-md bg-blue-600/20 flex items-center justify-center text-blue-300">
+                    <Keyboard className="w-6 h-6" />
                   </div>
-                  <div className="font-semibold">Type to ask</div>
+                  <div className="font-semibold text-lg">Type to ask</div>
                 </div>
-                <p className="text-sm text-gray-300">Enter prompts and questions directly on the TI‑84 keypad.</p>
+                <p className="text-base text-gray-300">Type on the TI‑84.</p>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-4">
+              <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-6">
                 <div className="flex items-center gap-3 mb-1">
-                  <div className="w-9 h-9 rounded-md bg-blue-600/20 flex items-center justify-center text-blue-300">
-                    <Camera className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-md bg-blue-600/20 flex items-center justify-center text-blue-300">
+                    <Camera className="w-6 h-6" />
                   </div>
-                  <div className="font-semibold">Snap to solve</div>
+                  <div className="font-semibold text-lg">Snap to solve</div>
                 </div>
-                <p className="text-sm text-gray-300">Open the back case to access the camera and capture problems to analyze.</p>
+                <p className="text-base text-gray-300">Take a photo. Get steps.</p>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-4">
+              <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-6">
                 <div className="flex items-center gap-3 mb-1">
-                  <div className="w-9 h-9 rounded-md bg-blue-600/20 flex items-center justify-center text-blue-300">
-                    <Bot className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-md bg-blue-600/20 flex items-center justify-center text-blue-300">
+                    <Bot className="w-6 h-6" />
                   </div>
-                  <div className="font-semibold">Multiple models</div>
+                  <div className="font-semibold text-lg">ChatGPT</div>
                 </div>
-                <p className="text-sm text-gray-300">Supports integrations with ChatGPT, DeepSeek, and more via APIs.</p>
+                <p className="text-base text-gray-300">Built on ChatGPT.</p>
               </div>
             </div>
           </motion.div>
