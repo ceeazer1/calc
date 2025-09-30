@@ -3,23 +3,6 @@
 import Image from "next/image"
 
 export default function HardwareOverview() {
-  const bullets = [
-    {
-      icon: Cpu,
-      title: "Custom PCB, purpose‑built",
-      desc: "A compact, custom PCB integrates the core components for a reliable, ready‑to‑go device designed to avoid glitches and bugs.",
-    },
-    {
-      icon: Signal,
-      title: "ESP32‑S3 Sense at the core",
-      desc: "The main brain handles camera control, Wi‑Fi connectivity, and communication between the calculator and the PCB.",
-    },
-    {
-      icon: Camera,
-      title: "Discrete camera integration",
-      desc: "A small camera blends into the back case. Pop it open when needed to capture problems discreetly.",
-    },
-  ]
 
 
   return (
