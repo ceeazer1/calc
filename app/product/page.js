@@ -293,7 +293,7 @@ export default function ProductPage() {
             </div>
 
 
->
+
 
             {/* Price Section */}
             <div className="bg-gray-900 p-4 rounded-lg border border-gray-800">
