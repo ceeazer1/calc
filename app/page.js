@@ -6,7 +6,6 @@ import Image from 'next/image'
 import Hero from '../components/Hero'
 import FeatureGrid from '../components/FeatureGrid'
 import WhatsInside from '../components/WhatsInside'
-import WhatIsCalcAI from '../components/WhatIsCalcAI'
 import HardwareOverview from '../components/HardwareOverview'
 import AIFeatures from '../components/AIFeatures'
 import WifiUpdates from '../components/WifiUpdates'
@@ -33,7 +32,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             <div className="flex items-center">
-              <Image src="/logo.png" alt="CalcAI Logo" width={200} height={60} className="h-8 w-auto sm:h-9" />
+              <Image src="/logo.png" alt="CalcAI Logo" width={200} height={60} className="h-6 w-auto sm:h-7" />
             </div>
             <div className="flex items-center space-x-8">
               <div className="hidden md:flex items-center space-x-8">
@@ -67,9 +66,8 @@ export default function Home() {
 
 
       <Hero />
-      <WhatIsCalcAI />
-      <HardwareOverview />
       <AIFeatures />
+      <HardwareOverview />
       <FeatureGrid />
       <WhatsInside />
 

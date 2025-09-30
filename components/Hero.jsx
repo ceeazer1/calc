@@ -23,7 +23,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.05 }}
             className="mt-3 text-lg text-gray-300"
           >
-            Smart calculator. Minimal, fast, to the point.
+            Calculator powered by AI
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 14 }}

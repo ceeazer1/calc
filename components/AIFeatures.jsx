@@ -8,7 +8,7 @@ export default function AIFeatures() {
   return (
     <section id="ai-features" className="py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-10 items-center">
+        <div className="max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -54,18 +54,7 @@ export default function AIFeatures() {
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98, y: 8 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
-            className="relative w-full max-w-md mx-auto"
-          >
-            <div className="absolute -inset-8 bg-gradient-to-tr from-blue-600/20 via-purple-600/10 to-sky-500/20 blur-2xl rounded-3xl" />
-            <div className="relative rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl p-6">
-              <Image src="/Calcimg.png" alt="CalcAI camera and AI" width={480} height={480} className="w-full h-auto object-contain" />
-            </div>
-          </motion.div>
+
         </div>
       </div>
     </section>
