@@ -100,7 +100,7 @@ export default function HelpPage() {
               <h3 className="font-semibold text-white mb-2">A) Enter the password value</h3>
               <ol className="list-decimal list-inside space-y-2">
                 <li>On the Home screen, insert the letter <span className="font-mono">P</span>: press <span className="font-mono">ALPHA</span>, then press the key that has <span className="font-mono">P</span> in green (you should see a green <span className="font-mono">P</span> on screen).</li>
-                <li>Type <span className="font-mono">&gt;12345</span> (that <span className="font-mono">&gt;</span> represents the <span className="font-mono">STO→</span> key on the calculator).</li>
+                <li>Type <span className="font-mono">P&gt;12345</span> (the <span className="font-mono">&gt;</span> is the <span className="font-mono">STO→</span> key).</li>
                 <li>Press <span className="font-mono">ENTER</span>.</li>
                 <li>You should now see something like: <span className="font-mono">P&gt;12345</span></li>
               </ol>
