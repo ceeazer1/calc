@@ -44,6 +44,7 @@ export default function HelpPage() {
               <a href="#open-calcai" className="block text-gray-300 hover:text-white">3) Open CALCAI</a>
               <a href="#wifi" className="block text-gray-300 hover:text-white">Wi‑Fi / Hotspot</a>
               <a href="#camera" className="block text-gray-300 hover:text-white">Camera</a>
+              <a href="#updates" className="block text-gray-300 hover:text-white">Updates</a>
               <a href="#debug" className="block text-gray-300 hover:text-white">Debugging / Support</a>
             </nav>
           </aside>
@@ -59,6 +60,7 @@ export default function HelpPage() {
                 { id: 'open-calcai', label: 'Open CALCAI' },
                 { id: 'wifi', label: 'Wi‑Fi' },
                 { id: 'camera', label: 'Camera' },
+                { id: 'updates', label: 'Updates' },
                 { id: 'debug', label: 'Support' },
               ].map((it) => (
                 <a key={it.id} href={`#${it.id}`} className="shrink-0 rounded-full border border-white/10 px-3 py-1 text-xs text-gray-300">
@@ -70,7 +72,7 @@ export default function HelpPage() {
         <div id="intro" className="sr-only">Overview</div>
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-purple-400">
-            CalcAI — First-Time Setup (Easy Guide)
+            CalcAI — First-Time Setup
           </h1>
           <p className="text-gray-300">Follow these steps to unlock, launch, connect Wi‑Fi, and start using CalcAI. Keep your calculator steady for camera autofocus.</p>
         </div>
@@ -180,6 +182,8 @@ export default function HelpPage() {
               <li>Follow the page to add your home Wi‑Fi or hotspot.</li>
               <li>The portal auto‑closes after ~10 minutes for privacy.</li>
             </ol>
+            <p className="text-gray-300">You can save up to <span className="font-semibold">3 networks</span> (home, school, hotspot) and switch as needed.</p>
+
             {/* Wi‑Fi video walkthrough */}
             <div className="aspect-video w-full rounded-lg overflow-hidden border border-white/10 bg-black/50">
               <iframe
@@ -196,6 +200,8 @@ export default function HelpPage() {
               <ul className="list-disc list-inside space-y-1 text-amber-100/90">
                 <li>While you’re on the Configuration page, the calculator is locked to the portal—you cannot access other calculator functions.</li>
                 <li>Before returning to CALCAI, you must close the portal by tapping <span className="font-mono">“Close configuration portal”</span> on the portal page.</li>
+
+
                 <li>If you don’t close it, the calculator won’t function properly.</li>
               </ul>
             </div>
@@ -210,6 +216,27 @@ export default function HelpPage() {
             <li>Image quality drops in low light. Use bright, even lighting and avoid glare for best results.</li>
           </ul>
         </section>
+        {/* Updates */}
+        <section id="updates" className="scroll-mt-24 rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6 mb-6">
+          <h2 className="text-2xl font-bold mb-4">Updates</h2>
+          <ul className="list-disc list-inside space-y-2 text-gray-200">
+            <li>On the calculator: open <span className="font-mono">Settings → Update</span> to check for and install firmware updates.</li>
+            <li>During update, the TI‑84 shows <span className="font-mono">Updating…</span>. The ESP will reboot when finished.</li>
+            <li>After reboot, the ESP automatically re‑sends the CalcAI launcher back to your calculator.</li>
+            <li>We announce new firmware and features in our Discord. Join to get notified.</li>
+          </ul>
+          <div className="mt-4">
+            <a
+              href="https://discord.gg/83ZwJcPWJ6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-colors font-semibold"
+            >
+              Join our Discord for Updates
+            </a>
+          </div>
+        </section>
+
 
         {/* Debugging / Support */}
         <section id="debug" className="scroll-mt-24 rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6">
