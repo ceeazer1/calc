@@ -29,7 +29,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="mt-8 flex flex-col sm:flex-row gap-3 justify-center"
+            className="mt-8 flex flex-col items-center sm:flex-row sm:items-center gap-3 justify-center"
           >
             <Link href="/product" className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md text-sm sm:text-base px-5 py-2.5">
               Buy

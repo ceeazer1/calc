@@ -117,6 +117,17 @@ export default function HelpPage() {
               </ol>
               <p className="mt-2 text-green-300">➜ The ESP is now unlocked.</p>
             </div>
+            {/* Unlock video walkthrough */}
+            <div className="aspect-video w-full rounded-lg overflow-hidden border border-white/10 bg-black/50">
+              <iframe
+                className="w-full h-full"
+                src="https://www.youtube.com/embed/j-q0VZhzFvs"
+                title="CalcAI Unlock — Step 1"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+
           </div>
         </section>
 
