@@ -31,7 +31,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mt-8 flex flex-col sm:flex-row gap-3 justify-center"
           >
-            <Link href="/product" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg">
+            <Link href="/product" className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md text-sm sm:text-base px-5 py-2.5">
               Buy
             </Link>
             <a href="#hardware" className="text-white/80 hover:text-white font-semibold py-3 px-6">

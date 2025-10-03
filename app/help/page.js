@@ -31,8 +31,43 @@ export default function HelpPage() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {/* Layout: Sidebar + Content */}
+        <div className="md:grid md:grid-cols-12 md:gap-8">
+          {/* Sidebar (desktop) */}
+          <aside className="hidden md:block md:col-span-3 sticky top-20 h-max">
+            <nav className="space-y-2 text-sm">
+              <a href="#intro" className="block text-gray-300 hover:text-white">Overview</a>
+              <a href="#power" className="block text-gray-300 hover:text-white">Power & batteries</a>
+              <a href="#unlock" className="block text-gray-300 hover:text-white">1) Unlock</a>
+              <a href="#launcher" className="block text-gray-300 hover:text-white">2) Launch the launcher</a>
+              <a href="#open-calcai" className="block text-gray-300 hover:text-white">3) Open CALCAI</a>
+              <a href="#wifi" className="block text-gray-300 hover:text-white">Wi‑Fi / Hotspot</a>
+              <a href="#camera" className="block text-gray-300 hover:text-white">Camera</a>
+              <a href="#debug" className="block text-gray-300 hover:text-white">Debugging / Support</a>
+            </nav>
+          </aside>
+
+          {/* Content column */}
+          <div className="md:col-span-9">
+            {/* Mobile quick links */}
+            <div className="md:hidden -mx-1 mb-6 flex gap-2 overflow-x-auto pb-1">
+              {[
+                { id: 'power', label: 'Power' },
+                { id: 'unlock', label: 'Unlock' },
+                { id: 'launcher', label: 'Launcher' },
+                { id: 'open-calcai', label: 'Open CALCAI' },
+                { id: 'wifi', label: 'Wi‑Fi' },
+                { id: 'camera', label: 'Camera' },
+                { id: 'debug', label: 'Support' },
+              ].map((it) => (
+                <a key={it.id} href={`#${it.id}`} className="shrink-0 rounded-full border border-white/10 px-3 py-1 text-xs text-gray-300">
+                  {it.label}
+                </a>
+              ))}
+            </div>
         {/* Hero */}
+        <div id="intro" className="sr-only">Overview</div>
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-purple-400">
             CalcAI — First-Time Setup (Easy Guide)
@@ -41,7 +76,7 @@ export default function HelpPage() {
         </div>
 
         {/* Power / Batteries */}
-        <section className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-5 mb-8">
+        <section id="power" className="scroll-mt-24 rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-5 mb-8">
           <h2 className="text-xl font-bold mb-2">Power and batteries</h2>
           <p className="text-gray-200">
             For best results we recommend high-quality AAA lithium batteries (triple‑A). They last longer than
@@ -55,20 +90,10 @@ export default function HelpPage() {
         </section>
 
 
-        {/* Video placeholder */}
-        <section className="rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-5 mb-8">
-          <h2 className="text-xl font-bold mb-3">Setup Video</h2>
-          <div className="aspect-video w-full rounded-lg overflow-hidden border border-white/10 bg-black/50 flex items-center justify-center text-gray-400">
-            {/* Replace the placeholder below with your YouTube embed when ready */}
-            {/* <iframe className="w-full h-full" src="https://www.youtube.com/embed/VIDEO_ID" title="CalcAI Setup" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen /> */}
-            <div className="p-6 text-center">
-              <div className="text-sm">YouTube walkthrough coming soon</div>
-            </div>
-          </div>
-        </section>
+
 
         {/* Step 1: Unlock */}
-        <section className="rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6 mb-6">
+        <section id="unlock" className="scroll-mt-24 rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4">1) Unlock it</h2>
           <div className="space-y-4 text-gray-200">
             <div>
@@ -96,7 +121,7 @@ export default function HelpPage() {
         </section>
 
         {/* Step 2: Launcher */}
-        <section className="rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6 mb-6">
+        <section id="launcher" className="scroll-mt-24 rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4">2) Launch the launcher</h2>
           <div className="space-y-4 text-gray-200">
             <div>
@@ -124,7 +149,7 @@ export default function HelpPage() {
         </section>
 
         {/* Step 3: Open CALCAI */}
-        <section className="rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6 mb-6">
+        <section id="open-calcai" className="scroll-mt-24 rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4">3) Open CALCAI</h2>
           <ol className="list-decimal list-inside space-y-2 text-gray-200">
             <li>Press <span className="font-mono">PRGM</span>.</li>
@@ -134,7 +159,7 @@ export default function HelpPage() {
         </section>
 
         {/* Step 4: Wi‑Fi */}
-        <section className="rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6 mb-6">
+        <section id="wifi" className="scroll-mt-24 rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4">4) Connect Wi‑Fi / Hotspot</h2>
           <div className="space-y-3 text-gray-200">
             <ol className="list-decimal list-inside space-y-2">
@@ -144,6 +169,17 @@ export default function HelpPage() {
               <li>Follow the page to add your home Wi‑Fi or hotspot.</li>
               <li>The portal auto‑closes after ~10 minutes for privacy.</li>
             </ol>
+            {/* Wi‑Fi video walkthrough */}
+            <div className="aspect-video w-full rounded-lg overflow-hidden border border-white/10 bg-black/50">
+              <iframe
+                className="w-full h-full"
+                src="https://www.youtube.com/embed/n48sqHHPF5Y"
+                title="CalcAI Wi‑Fi Setup"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+
             <div className="rounded-lg border border-amber-400/30 bg-amber-500/10 p-4">
               <h3 className="font-semibold text-amber-300 mb-2">Important: Portal lockout behavior</h3>
               <ul className="list-disc list-inside space-y-1 text-amber-100/90">
@@ -156,7 +192,7 @@ export default function HelpPage() {
         </section>
 
         {/* Camera */}
-        <section className="rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6 mb-6">
+        <section id="camera" className="scroll-mt-24 rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4">Camera</h2>
           <ul className="list-disc list-inside space-y-2 text-gray-200">
             <li>After you press <span className="font-mono">ENTER</span> to capture, you’ll see “hold still”—that’s autofocus working. Keep the calculator steady.</li>
@@ -165,7 +201,7 @@ export default function HelpPage() {
         </section>
 
         {/* Debugging / Support */}
-        <section className="rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6">
+        <section id="debug" className="scroll-mt-24 rounded-2xl border border-white/10 bg-gray-900/40 backdrop-blur p-6">
           <h2 className="text-2xl font-bold mb-4">Debugging / Support</h2>
           <ol className="list-decimal list-inside space-y-2 text-gray-200">
             <li>If you encounter a problem you can’t solve: Open <span className="font-mono">Settings → Configuration</span> to start the portal.</li>
@@ -184,6 +220,8 @@ export default function HelpPage() {
             </a>
           </div>
         </section>
+          </div>
+        </div>
       </main>
     </div>
   )
