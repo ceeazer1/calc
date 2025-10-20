@@ -90,6 +90,14 @@ export default function PairPage() {
     }
   }
 
+  function unpair() {
+    try { localStorage.removeItem("calcai_pair"); } catch {}
+    setMac("");
+    setWebToken("");
+    setNotes("");
+    setStatus("Unpaired. Enter a new code to pair again.");
+  }
+
   return (
     <div className="max-w-2xl mx-auto p-6">
       <h1 className="text-2xl font-semibold mb-4">Pair your Calculator</h1>
@@ -114,6 +122,7 @@ export default function PairPage() {
             <button onClick={() => saveNotes("set")} className="px-3 py-2 border rounded">Save</button>
             <button onClick={() => saveNotes("append")} className="px-3 py-2 border rounded">Append</button>
             <button onClick={clearNotes} className="px-3 py-2 border rounded text-red-600">Clear</button>
+            <button onClick={unpair} className="px-3 py-2 border rounded ml-auto">Unpair</button>
           </div>
           <textarea
             value={notes}
