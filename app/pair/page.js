@@ -119,7 +119,7 @@ export default function PairPage() {
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={12}
-            className="w-full border rounded p-3 font-mono"
+            className="w-full border rounded p-3 font-mono bg-black text-white placeholder-gray-400"
             placeholder="Type your notes here..."
           />
           {status && <div className="text-sm text-gray-600">{status}</div>}
