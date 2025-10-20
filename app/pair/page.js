@@ -101,7 +101,7 @@ export default function PairPage() {
             onChange={(e) => setCode(e.target.value.toUpperCase())}
             maxLength={8}
             placeholder="PAIR CODE (e.g., K7P3Q9)"
-            className="border rounded px-3 py-2 w-full tracking-widest"
+            className="border rounded px-3 py-2 w-full tracking-widest bg-black text-white placeholder-gray-400"
           />
           <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Pair</button>
           {status && <div className="text-sm text-gray-600">{status}</div>}
