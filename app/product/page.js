@@ -95,25 +95,41 @@ export default function ProductPage() {
     setTimeout(() => setAddedToCart(false), 3000)
   }
 
-  // Load price/stock from dashboard if configured and then mark loaded
+  // Load price/stock from dashboard (via public env or local proxy) then mark loaded
   useEffect(() => {
     const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL
-    if (!DASHBOARD_URL) { setLoaded(true); return }
-    const base = DASHBOARD_URL.replace(/\/+$/, '')
-    fetch(`${base}/api/website-public/settings`, { cache: 'no-store' })
-      .then(r => r.ok ? r.json() : null)
-      .then(j => {
-        if (!j) return
-        if (typeof j.price === 'number') setPrice(Number(j.price))
-        if (typeof j.compareAt === 'number') setCompareAt(Number(j.compareAt))
-        if (typeof j.inStock === 'boolean') setInStock(j.inStock)
-        if (typeof j.stockCount === 'number') setStockCount(Number(j.stockCount))
-        if (typeof j.preorderEnabled === 'boolean') setPreorderEnabled(j.preorderEnabled)
-        if (typeof j.preorderPrice === 'number') setPreorderPrice(Number(j.preorderPrice))
-        if (typeof j.preorderShipDate === 'string') setPreorderShipDate(j.preorderShipDate)
-      })
-      .catch(() => {})
-      .finally(() => setLoaded(true))
+    const doApply = (j) => {
+      if (!j) return
+      if (typeof j.price === 'number') setPrice(Number(j.price))
+      if (typeof j.compareAt === 'number') setCompareAt(Number(j.compareAt))
+      if (typeof j.inStock === 'boolean') setInStock(j.inStock)
+      if (typeof j.stockCount === 'number') setStockCount(Number(j.stockCount))
+      if (typeof j.preorderEnabled === 'boolean') setPreorderEnabled(j.preorderEnabled)
+      if (typeof j.preorderPrice === 'number') setPreorderPrice(Number(j.preorderPrice))
+      if (typeof j.preorderShipDate === 'string') setPreorderShipDate(j.preorderShipDate)
+    }
+
+    const fetchDirect = async () => {
+      try {
+        const base = DASHBOARD_URL.replace(/\/+$/, '')
+        const r = await fetch(`${base}/api/website-public/settings`, { cache: 'no-store' })
+        return r.ok ? await r.json() : null
+      } catch { return null }
+    }
+    const fetchViaProxy = async () => {
+      try {
+        const r = await fetch('/api/website-settings', { cache: 'no-store' })
+        return r.ok ? await r.json() : null
+      } catch { return null }
+    }
+
+    ;(async () => {
+      let j = null
+      if (DASHBOARD_URL) j = await fetchDirect()
+      if (!j) j = await fetchViaProxy()
+      doApply(j)
+      setLoaded(true)
+    })()
   }, [])
   const handlePreorderCheckout = async () => {
     try {
