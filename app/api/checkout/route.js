@@ -20,7 +20,7 @@ export async function POST(request) {
 
     console.log('Creating Stripe session with domain:', domain, 'preorder:', preorder === true)
 
-    // Fetch dynamic price/stock from dashboard (public endpoint)
+    // Fetch dynamic price/stock and preorder controls from dashboard (public endpoint)
     let remoteSettings = null
     try {
       const dashURL = process.env.DASHBOARD_URL || process.env.NEXT_PUBLIC_DASHBOARD_URL
@@ -36,19 +36,29 @@ export async function POST(request) {
 
     const stockCountNum = remoteSettings && remoteSettings.stockCount !== undefined && remoteSettings.stockCount !== null
       ? Number(remoteSettings.stockCount) : undefined
+
+    const preorderAllowed = !!(remoteSettings && remoteSettings.preorderEnabled === true)
+    if (preorder && !preorderAllowed) {
+      return NextResponse.json({ error: 'Preorders are currently disabled' }, { status: 400 })
+    }
+
     if (!preorder && remoteSettings && (remoteSettings.inStock === false || (Number.isFinite(stockCountNum) && stockCountNum <= 0))) {
       return NextResponse.json({ error: 'Out of stock' }, { status: 400 })
     }
 
-    // Price: preorder is fixed at $200.00, otherwise use dashboard price (or fallback)
-    const unitAmountCents = preorder ? 20000 : Math.round(((remoteSettings?.price ?? 174.99) * 100))
+    // Price: preorder from dashboard or fallback, otherwise use dashboard price (or fallback)
+    const unitAmountCents = preorder
+      ? Math.round(((remoteSettings?.preorderPrice ?? 200.00) * 100))
+      : Math.round(((remoteSettings?.price ?? 174.99) * 100))
 
     // Convert cart items to Stripe line items (authoritative price from dashboard)
+    const shipDate = (remoteSettings?.preorderShipDate && typeof remoteSettings.preorderShipDate === 'string') ? remoteSettings.preorderShipDate : ''
+    const nameSuffix = preorder ? (` \u2014 Preorder${shipDate ? ` (Ships ${shipDate})` : ''}`) : ''
     const lineItems = cartItems && cartItems.length ? cartItems.map(item => ({
       price_data: {
         currency: 'usd',
         product_data: {
-          name: item.name,
+          name: (item.name || 'CalcAI - TI-84 Plus with ChatGPT') + nameSuffix,
           description: 'The world\u2019s first calculator with discrete AI integration',
           images: [`${domain}${item.image}`],
         },
@@ -60,7 +70,7 @@ export async function POST(request) {
         price_data: {
           currency: 'usd',
           product_data: {
-            name: 'CalcAI - TI-84 Plus with ChatGPT',
+            name: 'CalcAI - TI-84 Plus with ChatGPT' + nameSuffix,
             description: 'The world\u2019s first calculator with discrete AI integration',
             images: [`${domain}/NEWTI84.png`],
           },
@@ -127,7 +137,7 @@ export async function POST(request) {
       metadata: {
         order_type: preorder ? 'calcai_preorder' : 'calcai_purchase',
         preorder: preorder ? 'true' : 'false',
-        ship_after: preorder ? 'Oct 15' : 'N/A',
+        ship_after: preorder ? (shipDate || 'N/A') : 'N/A',
         total_items: cartItems ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 1,
       },
     })

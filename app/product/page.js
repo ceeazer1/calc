@@ -15,6 +15,10 @@ export default function ProductPage() {
   const [compareAt, setCompareAt] = useState(199.99)
   const [inStock, setInStock] = useState(true)
   const [stockCount, setStockCount] = useState(null)
+  // Preorder controls (from dashboard)
+  const [preorderEnabled, setPreorderEnabled] = useState(false)
+  const [preorderPrice, setPreorderPrice] = useState(200.00)
+  const [preorderShipDate, setPreorderShipDate] = useState("")
   const [loaded, setLoaded] = useState(false)
   // Product image carousel
   const images = ['/Calc_Front.jpg', '/Calc_Back.jpg']
@@ -104,6 +108,9 @@ export default function ProductPage() {
         if (typeof j.compareAt === 'number') setCompareAt(Number(j.compareAt))
         if (typeof j.inStock === 'boolean') setInStock(j.inStock)
         if (typeof j.stockCount === 'number') setStockCount(Number(j.stockCount))
+        if (typeof j.preorderEnabled === 'boolean') setPreorderEnabled(j.preorderEnabled)
+        if (typeof j.preorderPrice === 'number') setPreorderPrice(Number(j.preorderPrice))
+        if (typeof j.preorderShipDate === 'string') setPreorderShipDate(j.preorderShipDate)
       })
       .catch(() => {})
       .finally(() => setLoaded(true))
@@ -111,6 +118,7 @@ export default function ProductPage() {
   const handlePreorderCheckout = async () => {
     try {
       const stripe = await getStripe()
+      const label = getProductName() + ' — Preorder' + (preorderShipDate ? ` (Ships ${preorderShipDate})` : '')
       const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -118,8 +126,8 @@ export default function ProductPage() {
           preorder: true,
           cartItems: [{
             id: 'calcai-ti84-preorder',
-            name: getProductName() + ' — Preorder (Ships Oct 15)',
-            price: 200.0,
+            name: label,
+            price: preorderPrice,
             quantity,
             image: '/ti84.png'
           }]
@@ -323,9 +331,13 @@ export default function ProductPage() {
                 )}
                 <span className="text-gray-400"> • Shipping: see options at checkout</span>
               </div>
-              <div className="mt-2 text-xs text-gray-400">
-                <span>Preorder price: $200. Ships Oct 15.</span>
-              </div>
+              {preorderEnabled && (preorderPrice || preorderShipDate) ? (
+                <div className="mt-2 text-xs text-gray-400">
+                  <span>
+                    Preorder{preorderPrice ? ` price: $${preorderPrice.toFixed(2)}` : ''}{preorderShipDate ? ` • Ships ${preorderShipDate}` : ''}
+                  </span>
+                </div>
+              ) : null}
               <div className="mt-2 text-xs text-blue-300">
                 Live stock updates on Discord: <a href="https://discord.gg/83ZwJcPWJ6" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-200">discord.gg/83ZwJcPWJ6</a>
               </div>
@@ -351,7 +363,7 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              {/* CTAs: Add to Cart + Preorder */}
+              {/* CTAs: Add to Cart + Preorder (optional) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <button
                   onClick={handleAddToCart}
@@ -364,12 +376,14 @@ export default function ProductPage() {
                   </div>
                 </button>
 
-                <button
-                  onClick={handlePreorderCheckout}
-                  className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm"
-                >
-                  Preorder - $200 • Ships Oct 15
-                </button>
+                {preorderEnabled ? (
+                  <button
+                    onClick={handlePreorderCheckout}
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm"
+                  >
+                    {`Preorder - $${preorderPrice.toFixed(2)}${preorderShipDate ? ` • Ships ${preorderShipDate}` : ''}`}
+                  </button>
+                ) : null}
               </div>
 
               {addedToCart && (
