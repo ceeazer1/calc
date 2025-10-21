@@ -397,7 +397,10 @@ export default function ProductPage() {
                     onClick={handlePreorderCheckout}
                     className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm"
                   >
+                    {`Preorder - $${preorderPrice.toFixed(2)}${preorderShipDate ? ` \u2022 Ships ${preorderShipDate}` : ''}`}
+                    {/*
                     {`Preorder - $${preorderPrice.toFixed(2)}${preorderShipDate ? ` • Ships ${preorderShipDate}` : ''}`}
+                    */}
                   </button>
                 ) : null}
               </div>
