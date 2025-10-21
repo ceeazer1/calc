@@ -53,15 +53,6 @@ export default function Home() {
           </div>
         </div>
       </nav>
-      {/* Global Sale Banner */}
-      <div className="w-full border-b border-blue-400/20 bg-gradient-to-r from-blue-500/10 via-sky-500/10 to-purple-500/10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="py-1.5 text-center">
-            <div className="text-sm sm:text-base font-semibold text-blue-200 tracking-wide">BACK TO SCHOOL SALE</div>
-            <div className="text-[11px] sm:text-xs text-blue-300/90">Limited time only • Limited stock</div>
-          </div>
-        </div>
-      </div>
 
 
       <Hero />
