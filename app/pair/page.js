@@ -146,7 +146,7 @@ export default function PairPage() {
 
           {mode === 'register' ? (
             <form onSubmit={doRegister} className="space-y-3">
-              <p>First time? Enter your calculator's pairing code to claim your device and create an account.</p>
+              <p>First time? Enter your calculator&apos;s pairing code to claim your device and create an account.</p>
               <input value={code} onChange={(e)=>setCode(e.target.value.toUpperCase())} maxLength={8} placeholder="PAIR CODE (e.g., K7P3Q9)" className="border rounded px-3 py-2 w-full tracking-widest bg-black text-white placeholder-gray-400" />
               <input value={username} onChange={(e)=>setUsername(e.target.value)} placeholder="Username" className="border rounded px-3 py-2 w-full bg-black text-white placeholder-gray-400" />
               <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Password" className="border rounded px-3 py-2 w-full bg-black text-white placeholder-gray-400" />
