@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Star, CheckCircle, ShoppingCart, ArrowLeft, ArrowRight, Shield, Truck, RotateCcw, MessageCircle, Calculator } from 'lucide-react'
 import { getStripe } from '../../lib/stripe'
 import CountdownBadge from '../../components/CountdownBadge'
+import CountdownBanner from '../../components/CountdownBanner'
 
 export default function ProductPage() {
 
@@ -218,7 +219,12 @@ export default function ProductPage() {
         </div>
       </nav>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20">
+      {/* Restock Countdown Banner (offset for fixed nav) */}
+      <div className="mt-14">
+        <CountdownBanner target="2025-11-15T00:00:00" />
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-6">
         {/* Breadcrumb */}
         <div className="flex items-center space-x-2 text-sm text-gray-400 mb-8">
           <Link href="/" className="hover:text-white transition-colors">Home</Link>

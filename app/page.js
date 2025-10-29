@@ -9,6 +9,7 @@ import HardwareOverview from '../components/HardwareOverview'
 import AIFeatures from '../components/AIFeatures'
 import WifiUpdates from '../components/WifiUpdates'
 import CountdownBadge from '../components/CountdownBadge'
+import CountdownBanner from '../components/CountdownBanner'
 import { ShoppingCart, ArrowRight, Instagram, Youtube } from 'lucide-react'
 
 export default function Home() {
@@ -58,6 +59,8 @@ export default function Home() {
         </div>
       </nav>
 
+      {/* Restock Countdown Banner just below nav */}
+      <CountdownBanner target="2025-11-15T00:00:00" />
 
       <Hero />
       <AIFeatures />
