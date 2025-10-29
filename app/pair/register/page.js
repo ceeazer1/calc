@@ -4,8 +4,7 @@ import Link from "next/link";
 
 const SERVER = "https://calcai-server.fly.dev";
 
-export default function PairPage() {
-  const [mode, setMode] = useState("register"); // 'register' | 'login'
+export default function RegisterPage() {
   const [code, setCode] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +27,6 @@ export default function PairPage() {
               setUsername(j.username || "");
               setMacs(Array.isArray(j.macs) ? j.macs : []);
               if (Array.isArray(j.macs) && j.macs.length > 0) setMac(j.macs[0]);
-              setMode("login");
             }
           })
           .catch(()=>{});
@@ -48,7 +46,7 @@ export default function PairPage() {
     setStatus("Registering...");
     try {
       if (!code || !username || !password) throw new Error("All fields required");
-      // Optionally, check claim status first
+      // Check claim status first
       const chk = await fetch(`${SERVER}/api/pair/resolve?code=${encodeURIComponent(code.trim())}`);
       const cj = await chk.json().catch(()=>({}));
       if (!chk.ok || !cj.ok) throw new Error("Invalid code");
@@ -66,26 +64,6 @@ export default function PairPage() {
       setMac(j.mac);
       setMacs(Array.isArray(j.macs) ? j.macs : [j.mac]);
       setStatus("Registered. You can load notes now.");
-      setMode("login");
-    } catch (e){ setStatus(e.message || "Error"); }
-  }
-
-  async function doLogin(e){
-    e.preventDefault();
-    setStatus("Logging in...");
-    try {
-      const resp = await fetch(`${SERVER}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: username.trim(), password })
-      });
-      const j = await resp.json().catch(()=>({}));
-      if (!resp.ok || !j.ok) throw new Error(j.error || "login_failed");
-      try { localStorage.setItem("calcai_token", j.token); } catch {}
-      setToken(j.token);
-      setMacs(Array.isArray(j.macs) ? j.macs : []);
-      if (Array.isArray(j.macs) && j.macs.length > 0) setMac(j.macs[0]);
-      setStatus("Logged in. You can load notes now.");
     } catch (e){ setStatus(e.message || "Error"); }
   }
 
@@ -135,12 +113,60 @@ export default function PairPage() {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-8 text-center">
-      <h1 className="text-3xl font-semibold mb-3">Pair your CalcAI</h1>
-      <p className="text-gray-400 mb-8">Choose one option to continue.</p>
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <Link href="/pair/register" className="btn-primary inline-block">Register your device</Link>
-        <Link href="/pair/login" className="btn-secondary inline-block">Log in</Link>
+    <div className="max-w-2xl mx-auto p-6">
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold mb-2">Register your device</h1>
+        <p className="text-sm text-gray-400 mb-4">Enter your calculator&#39;s pairing code to claim your device and create an account.</p>
+        {!token && (
+          <form onSubmit={doRegister} className="space-y-3">
+            <input value={code} onChange={(e)=>setCode(e.target.value.toUpperCase())} maxLength={8} placeholder="PAIR CODE (e.g., K7P3Q9)" className="border rounded px-3 py-2 w-full tracking-widest bg-black text-white placeholder-gray-400" />
+            <input value={username} onChange={(e)=>setUsername(e.target.value)} placeholder="Username" className="border rounded px-3 py-2 w-full bg-black text-white placeholder-gray-400" />
+            <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Password" className="border rounded px-3 py-2 w-full bg-black text-white placeholder-gray-400" />
+            <div className="flex items-center gap-3">
+              <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Register</button>
+              <Link href="/pair/login" className="text-sm text-gray-400 hover:text-gray-200">Already have an account? Log in</Link>
+            </div>
+            {status && <div className="text-sm text-gray-400">{status}</div>}
+          </form>
+        )}
+      </div>
+
+      {token && (
+        <div className="mb-4 text-sm text-gray-400 flex items-center gap-2">
+          <span>Signed in as</span>
+          <code className="px-2 py-1 bg-gray-800 rounded">{username || 'user'}</code>
+          <button onClick={logout} className="ml-auto px-3 py-1 border rounded">Log out</button>
+        </div>
+      )}
+
+      {(token || mac) && (
+        <div className="space-y-4">
+          <div className="text-sm text-gray-400 flex items-center gap-2">
+            <span>Device:</span>
+            {macs.length > 1 ? (
+              <select value={mac} onChange={(e)=>setMac(e.target.value)} className="px-2 py-1 bg-black border rounded">
+                {macs.map(m=> (<option key={m} value={m}>{m}</option>))}
+              </select>
+            ) : (
+              <code>{mac}</code>
+            )}
+            {!token && code && <span>| Using code <code>{code}</code></span>}
+          </div>
+
+          <div className="flex gap-2">
+            <button onClick={loadNotes} className="px-3 py-2 border rounded">Load</button>
+            <button onClick={()=>saveNotes('set')} className="px-3 py-2 border rounded">Save</button>
+            <button onClick={()=>saveNotes('append')} className="px-3 py-2 border rounded">Append</button>
+            <button onClick={clearNotes} className="px-3 py-2 border rounded text-red-600">Clear</button>
+          </div>
+
+          <textarea value={notes} onChange={(e)=>setNotes(e.target.value)} rows={12} className="w-full border rounded p-3 font-mono bg-black text-white placeholder-gray-400" placeholder="Type your notes here..." />
+          {status && <div className="text-sm text-gray-400">{status}</div>}
+        </div>
+      )}
+
+      <div className="mt-8">
+        <Link href="/pair" className="text-sm text-gray-400 hover:text-gray-200">Back to Pair options</Link>
       </div>
     </div>
   );
