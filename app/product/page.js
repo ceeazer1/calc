@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Star, CheckCircle, ShoppingCart, ArrowLeft, ArrowRight, Shield, Truck, RotateCcw, MessageCircle, Calculator } from 'lucide-react'
 import { getStripe } from '../../lib/stripe'
+import CountdownBadge from '../../components/CountdownBadge'
 
 export default function ProductPage() {
 
@@ -196,6 +197,10 @@ export default function ProductPage() {
                 >
                   Specifications
                 </Link>
+              </div>
+
+              <div className="hidden sm:block">
+                <CountdownBadge target="2025-11-15T00:00:00" />
               </div>
 
               {/* Cart Icon with Count */}

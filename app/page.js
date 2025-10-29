@@ -8,6 +8,7 @@ import FeatureGrid from '../components/FeatureGrid'
 import HardwareOverview from '../components/HardwareOverview'
 import AIFeatures from '../components/AIFeatures'
 import WifiUpdates from '../components/WifiUpdates'
+import CountdownBadge from '../components/CountdownBadge'
 import { ShoppingCart, ArrowRight, Instagram, Youtube } from 'lucide-react'
 
 export default function Home() {
@@ -38,6 +39,9 @@ export default function Home() {
                 <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
                 <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
                 <a href="#whats-inside" className="text-gray-300 hover:text-white text-sm font-medium">Specifications</a>
+              </div>
+              <div className="hidden sm:block">
+                <CountdownBadge target="2025-11-15T00:00:00" />
               </div>
               <Link href="/cart" className="relative flex items-center space-x-2 text-gray-300 hover:text-white">
                 <ShoppingCart className="w-4 h-4" />
