@@ -22,6 +22,39 @@ export default function ProductPage() {
   const [preorderPrice, setPreorderPrice] = useState(200.00)
   const [preorderShipDate, setPreorderShipDate] = useState("")
   const [loaded, setLoaded] = useState(false)
+
+  // SMS restock notify form
+  const [smsPhone, setSmsPhone] = useState('')
+  const [smsConsent, setSmsConsent] = useState(false)
+  const [smsSubmitting, setSmsSubmitting] = useState(false)
+  const [smsResult, setSmsResult] = useState(null) // { ok, error }
+
+  async function handleSmsSubscribe(e){
+    e.preventDefault()
+    if (!smsPhone.trim() || !smsConsent || smsSubmitting) return
+    setSmsSubmitting(true)
+    setSmsResult(null)
+    try {
+      const r = await fetch('/api/sms/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: smsPhone, consent: true })
+      })
+      const j = await r.json()
+      if (j?.ok){
+        setSmsResult({ ok:true })
+        setSmsPhone('')
+        setSmsConsent(false)
+      } else {
+        setSmsResult({ ok:false, error: j?.error || 'subscribe_failed' })
+      }
+    } catch (e) {
+      setSmsResult({ ok:false, error: 'network_error' })
+    } finally {
+      setSmsSubmitting(false)
+    }
+  }
+
   // Product image carousel
   const images = ['/Calc_Front.jpg', '/Calc_Back.jpg']
   const fallbackImage = '/84p.png'
@@ -431,7 +464,51 @@ export default function ProductPage() {
                 <p>Secure payment powered by Stripe</p>
               </div>
 
-              <div className="text-center text-xs text-gray-500 mt-1">SMS in-stock alerts: coming soon</div>
+              {/* SMS restock alert opt-in (with proof of consent) */}
+              <div className="border-t border-gray-700 pt-4 mt-4">
+                {smsResult?.ok ? (
+                  <div className="text-green-400 text-xs">✓ You’re subscribed. We’ll text you when CalcAI is back in stock.</div>
+                ) : (
+                  <form onSubmit={handleSmsSubscribe} className="space-y-2">
+                    <input
+                      type="tel"
+                      inputMode="tel"
+                      autoComplete="tel"
+                      value={smsPhone}
+                      onChange={(e) => setSmsPhone(e.target.value)}
+                      placeholder="+1 (555) 123-4567"
+                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                      disabled={smsSubmitting}
+                    />
+                    <label className="flex items-start space-x-2 text-xs text-gray-400">
+                      <input
+                        type="checkbox"
+                        checked={smsConsent}
+                        onChange={(e) => setSmsConsent(e.target.checked)}
+                        className="mt-0.5"
+                        disabled={smsSubmitting}
+                      />
+                      <span>
+                        I agree to receive SMS restock alerts from CalcAI at the number provided. Message & data rates may apply. Reply STOP to opt out, HELP for help. Consent not required to buy. See our <a className="underline" href="/terms" target="_blank" rel="noreferrer">Terms</a> and <a className="underline" href="/privacy" target="_blank" rel="noreferrer">Privacy Policy</a>.
+                        <br />
+                        <span className="text-gray-500">We store your phone, timestamp, and IP to document proof of consent.</span>
+                      </span>
+                    </label>
+                    {smsResult?.error && (
+                      <div className="text-red-400 text-xs">
+                        {smsResult.error === 'invalid_phone' ? 'Please enter a valid phone number' : smsResult.error === 'consent_required' ? 'Please check the consent box' : 'Could not subscribe. Try again.'}
+                      </div>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={!smsConsent || !smsPhone.trim() || smsSubmitting}
+                      className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white text-sm font-medium py-2 px-4 rounded transition-colors"
+                    >
+                      {smsSubmitting ? 'Subscribing…' : 'Notify me by SMS'}
+                    </button>
+                  </form>
+                )}
+              </div>
             </div>
 
             {/* Guarantees */}
