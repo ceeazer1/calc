@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Poppins } from 'next/font/google'
+import { ArrowLeft } from 'lucide-react'
+import { PRIVACY_HTML } from '../../content/privacy'
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
 
-export default function FAQ() {
+export default function Privacy() {
   return (
     <div className="min-h-screen bg-black">
       {/* Navigation */}
@@ -38,43 +40,25 @@ export default function FAQ() {
       </nav>
 
       {/* Main Content */}
-      <main className="pt-24 pb-24">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-white mb-4">
-              Frequently Asked Questions
-            </h1>
-            <p className="text-lg text-gray-400">
-              Coming soon - We&apos;re preparing comprehensive answers to help you get the most out of CalcAI
-            </p>
+      <main className="pt-24 pb-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6">
+            <h1 className="text-4xl font-bold text-white">Privacy Policy</h1>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-12 text-center">
-            <div className="text-4xl mb-4">🚧</div>
-            <h2 className="text-xl font-semibold text-white mb-3">
-              Under Construction
-            </h2>
-            <p className="text-gray-400 mb-6">
-              We&apos;re working on creating detailed FAQ content to address all your questions about CalcAI.
-              In the meantime, feel free to reach out to our support team on Discord.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                href="/#support" 
-                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-blue-500/25"
-              >
-                Contact Support
-              </Link>
-              <Link 
-                href="/" 
-                className="bg-transparent border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105"
-              >
-                Back to Home
-              </Link>
-            </div>
+          <article className="prose prose-invert max-w-3xl mx-auto prose-h2:text-white prose-h2:mt-10 prose-h2:mb-3 prose-p:text-gray-300 prose-li:text-gray-300 prose-strong:text-white prose-a:text-blue-400 hover:prose-a:text-blue-300">
+            <div dangerouslySetInnerHTML={{ __html: PRIVACY_HTML }} />
+          </article>
+
+          <div className="mt-8">
+            <Link href="/" className="inline-flex items-center space-x-2 text-gray-400 hover:text-white transition-colors text-sm">
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Home</span>
+            </Link>
           </div>
         </div>
       </main>
     </div>
   )
 }
+

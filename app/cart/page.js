@@ -3,8 +3,11 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Poppins } from 'next/font/google'
 import { Trash2, Plus, Minus, ShoppingCart, ArrowLeft, MessageCircle } from 'lucide-react'
 import { getStripe } from '../../lib/stripe'
+
+const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
 
 export default function CartPage() {
   const [cart, setCart] = useState([])
@@ -93,27 +96,29 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 border-b border-white/10">
+      <header className={`${poppins.className} bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 border-b border-white/10`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/logo.png"
-                alt="CalcAI Logo"
-                width={80}
-                height={80}
-                className="w-20 h-20 transform hover:scale-105 transition-transform duration-200"
-              />
-            </Link>
-
-            <div className="flex items-center space-x-6">
-              <Link
-                href="/community"
-                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200 text-sm"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>Community</span>
+          <div className="grid grid-cols-3 items-center h-14">
+            {/* Left: Community, Specifications */}
+            <div className="hidden md:flex items-center gap-8 justify-start">
+              <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
+              <Link href="/#whats-inside" className="text-gray-300 hover:text-white text-sm font-medium">Specifications</Link>
+            </div>
+            {/* Center: Logo */}
+            <div className="flex items-center justify-center">
+              <Link href="/">
+                <Image
+                  src="/logo.png"
+                  alt="CalcAI Logo"
+                  width={200}
+                  height={60}
+                  className="h-5 sm:h-6 w-auto transform hover:scale-105 transition-transform duration-200"
+                />
               </Link>
+            </div>
+            {/* Right: FAQ, Cart */}
+            <div className="flex items-center gap-8 justify-end">
+              <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
               <div className="flex items-center space-x-2 text-gray-300">
                 <ShoppingCart className="w-4 h-4" />
                 <span className="text-sm">{getTotalItems()} items</span>

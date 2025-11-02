@@ -3,7 +3,10 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { Poppins } from 'next/font/google'
 import { ArrowRight, ShoppingCart, MessageCircle, Users, Video, Camera } from 'lucide-react'
+
+const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
 
 export default function Community() {
   const [cartItemCount, setCartItemCount] = useState(0)
@@ -62,10 +65,16 @@ export default function Community() {
   return (
     <div className="min-h-screen bg-black">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10">
+      <nav className={`${poppins.className} fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14">
-            <div className="flex items-center">
+          <div className="grid grid-cols-3 items-center h-14">
+            {/* Left: Community, Specifications */}
+            <div className="hidden md:flex items-center gap-8 justify-start">
+              <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
+              <Link href="/#whats-inside" className="text-gray-300 hover:text-white text-sm font-medium">Specifications</Link>
+            </div>
+            {/* Center: Logo */}
+            <div className="flex items-center justify-center">
               <Link href="/">
                 <Image
                   src="/logo.png"
@@ -76,37 +85,10 @@ export default function Community() {
                 />
               </Link>
             </div>
-            <div className="flex items-center space-x-8">
-              {/* Navigation Links */}
-              <div className="hidden md:flex items-center space-x-8">
-                <Link
-                  href="/#support"
-                  className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium"
-                >
-                  Support
-                </Link>
-                <Link
-                  href="/faq"
-                  className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium"
-                >
-                  FAQ
-                </Link>
-                <Link
-                  href="/#whats-inside"
-                  className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium"
-                >
-                  Specifications
-                </Link>
-                <Link
-                  href="/community"
-                  className="text-white transition-colors duration-200 text-sm font-medium"
-                >
-                  Community
-                </Link>
-              </div>
-
-              {/* Cart Icon */}
-              <Link href="/cart" className="relative flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200">
+            {/* Right: FAQ, Cart */}
+            <div className="flex items-center gap-8 justify-end">
+              <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
+              <Link href="/cart" className="relative flex items-center space-x-2 text-gray-300 hover:text-white">
                 <ShoppingCart className="w-4 h-4" />
                 <span className="hidden sm:inline text-sm">Cart</span>
                 {cartItemCount > 0 && (
@@ -114,11 +96,6 @@ export default function Community() {
                     {cartItemCount}
                   </span>
                 )}
-              </Link>
-
-              {/* Order Button */}
-              <Link href="/product" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 text-sm shadow-md">
-                Order Now
               </Link>
             </div>
           </div>

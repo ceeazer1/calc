@@ -3,14 +3,16 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { Poppins } from 'next/font/google'
 import Hero from '../components/Hero'
 import FeatureGrid from '../components/FeatureGrid'
 import HardwareOverview from '../components/HardwareOverview'
 import AIFeatures from '../components/AIFeatures'
 import WifiUpdates from '../components/WifiUpdates'
-import CountdownBadge from '../components/CountdownBadge'
 import CountdownBanner from '../components/CountdownBanner'
 import { ShoppingCart, ArrowRight, Instagram, Youtube } from 'lucide-react'
+
+const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
 
 export default function Home() {
   const [cartItemCount, setCartItemCount] = useState(0)
@@ -28,22 +30,27 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
+      {/* Restock Countdown Banner (above nav) */}
+      <CountdownBanner target="2025-11-15T00:00:00" />
+
       {/* Navigation */}
-      <nav className="sticky top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10">
+      <nav className={`${poppins.className} sticky top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14">
-            <div className="flex items-center">
-              <Image src="/logo.png" alt="CalcAI Logo" width={200} height={60} className="h-5 w-auto sm:h-6" />
+          <div className="grid grid-cols-3 items-center h-14">
+            {/* Left: Community, Specifications */}
+            <div className="hidden md:flex items-center gap-8 justify-start">
+              <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
+              <a href="#whats-inside" className="text-gray-300 hover:text-white text-sm font-medium">Specifications</a>
             </div>
-            <div className="flex items-center space-x-8">
-              <div className="hidden md:flex items-center space-x-8">
-                <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
-                <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
-                <a href="#whats-inside" className="text-gray-300 hover:text-white text-sm font-medium">Specifications</a>
-              </div>
-              <div className="hidden sm:block">
-                <CountdownBadge target="2025-11-15T00:00:00" />
-              </div>
+            {/* Center: Logo */}
+            <div className="flex items-center justify-center">
+              <Link href="/">
+                <Image src="/logo.png" alt="CalcAI Logo" width={200} height={60} className="h-5 w-auto sm:h-6" />
+              </Link>
+            </div>
+            {/* Right: FAQ, Cart */}
+            <div className="flex items-center gap-8 justify-end">
+              <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
               <Link href="/cart" className="relative flex items-center space-x-2 text-gray-300 hover:text-white">
                 <ShoppingCart className="w-4 h-4" />
                 <span className="hidden sm:inline text-sm">Cart</span>
@@ -53,14 +60,12 @@ export default function Home() {
                   </span>
                 )}
               </Link>
-              <Link href="/product" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg text-sm shadow-md">Order Now</Link>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Restock Countdown Banner just below nav */}
-      <CountdownBanner target="2025-11-15T00:00:00" />
+
 
       <Hero />
       <AIFeatures />

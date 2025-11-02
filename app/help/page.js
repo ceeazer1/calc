@@ -1,5 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { Poppins } from 'next/font/google'
+
+const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
 
 export const metadata = {
   title: 'Help | CalcAI — First-Time Setup',
@@ -10,23 +13,31 @@ export default function HelpPage() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 border-b border-white/10 sticky top-0 z-40">
+      <header className={`${poppins.className} bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 border-b border-white/10 sticky top-0 z-40`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/logo.png"
-                alt="CalcAI Logo"
-                width={200}
-                height={60}
-                className="h-5 sm:h-6 w-auto transform hover:scale-105 transition-transform duration-200"
-              />
-            </Link>
-            <nav className="flex items-center space-x-6 text-sm">
-              <Link href="/product" className="text-gray-300 hover:text-white transition-colors">Product</Link>
-              <Link href="/community" className="text-gray-300 hover:text-white transition-colors">Community</Link>
-              <Link href="/cart" className="text-gray-300 hover:text-white transition-colors">Cart</Link>
-            </nav>
+          <div className="grid grid-cols-3 items-center h-14">
+            {/* Left: Community, Specifications */}
+            <div className="hidden md:flex items-center gap-8 justify-start">
+              <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
+              <Link href="/#whats-inside" className="text-gray-300 hover:text-white text-sm font-medium">Specifications</Link>
+            </div>
+            {/* Center: Logo */}
+            <div className="flex items-center justify-center">
+              <Link href="/">
+                <Image
+                  src="/logo.png"
+                  alt="CalcAI Logo"
+                  width={200}
+                  height={60}
+                  className="h-5 sm:h-6 w-auto transform hover:scale-105 transition-transform duration-200"
+                />
+              </Link>
+            </div>
+            {/* Right: FAQ, Cart */}
+            <div className="flex items-center gap-8 justify-end">
+              <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
+              <Link href="/cart" className="text-gray-300 hover:text-white text-sm font-medium">Cart</Link>
+            </div>
           </div>
         </div>
       </header>

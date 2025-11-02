@@ -10,3 +10,79 @@ export const TERMS_HTML = `<p>CalcAI — Terms of Service, Acceptable Use &amp; 
 <p>After inspection, we process a repair, replacement, or refund per Section 8. Addendum D — Data retention schedule (informational) Order &amp; payment meta (non‑card): 7 years (for tax/accounting). Diagnostic logs (if you enable logging): 90 days, then deletion. Access &amp; support tickets: 180 days after resolution. RMA photos/videos: 1 year after case closure. Addendum E — Security disclosure (informational) Responsible disclosure. Report security issues by opening a private ticket on Discord (link on  calcai.cc). Do not publicly disclose before we confirm a fix or 90 days, whichever comes first. Good‑faith research that avoids user data, service disruption, or device damage is welcomed; unauthorized access to other users’ data is prohibited. Addendum F — DMCA policy (informational) If you believe content on calcai.cc infringes your copyright, open a DMCA ticket on Discord with: (1) your contact info, (2) a description of the copyrighted work, (3) the URL or description of the allegedly infringing material, (4) a statement under penalty of perjury that you own the rights, and (5) your signature (typed is acceptable). We will remove or disable access to the material and notify the user. Counter‑notices may also be submitted through Discord. Addendum G — Component substitution &amp; EOL (informational) Substitutions. Due to supply constraints, we may substitute components of equal or greater specification without notice, with no material impact on advertised functionality. End‑of‑life (EOL). We will provide at least 30 days’ notice on calcai.cc before discontinuing a product line or major firmware channel, when practicable. Addendum H — Exam‑safe mode (informational) If offered, Exam‑safe mode attempts to disable wireless and AI features. It does not guarantee compliance with any exam rules, and acceptance is at the discretion of the testing authority. You must verify rules in advance. We will not provide or enable features designed to conceal prohibited functionality from proctors or IT staff. Addendum I — Refurbished/modified labeling (informational) Recommended label text for packaging, invoices, and product pages: “Refurbished &amp; Modified by CALCAI. Original manufacturer: Texas Instruments. Not affiliated with, sponsored by, or endorsed by Texas Instruments.” “This product includes third‑party hardware/firmware modifications by CALCAI.” 4.  •  •  •  •  •  •  •  •  •  •  •  •  •  9</p>
 <p>Addendum J — TI firmware &amp; copyrighted material (informational) CALCAI does not host, sell, or distribute TI firmware, ROMs, or copyrighted materials. Tools we provide (if any) operate on user‑supplied images or open‑source alternatives. Do not request that we share TI firmware. Addendum K — Anti‑circumvention statement (informational) CALCAI products must not be used to defeat technical protection measures on TI or third‑party devices or services, including exam modes, cryptographic checks, or access controls. Where interoperability is permitted by law, you must follow the applicable legal process. CALCAI does not provide bypass tools or instructions. Addendum L — TI‑Safe Branding &amp; Quality Control Program (informational) 1)  Authenticity &amp; provenance - CALCAI only modifies genuine donor units originally manufactured by Texas Instruments (TI). - For each donor unit, CALCAI maintains an intake record: serial/ID (if present), purchase source, and date. Records retained per Addendum D. - CALCAI does not remove or alter TI serial plates; any incidental display of TI markings is solely to identify the donor device. 2)  Quality control (QC) standards -  Incoming inspection (housing integrity, key matrix test, USB/link‑port check, battery terminals). - Electrical safety (visual check of solder joints; no exposed conductive parts; cable strain relief). - Functional testing (boot, display, keypad, link‑port; AI connectivity where applicable). - Burn‑in: 30–60 minutes typical workload to screen early faults. -  Final audit: photos of finished unit; checklist signed by a technician. QC logs retained per Addendum D. 3)    Labeling &amp; customer notice  - Packaging/product page must state:  “Refurbished &amp; Modified by CALCAI. Original manufacturer: Texas Instruments. Not affiliated with, sponsored by, or endorsed by Texas Instruments.” - A    device label (inside battery door or exterior where lawful) states “Modified by CALCAI” and the CALCAI order/RMA ID. 4)    Advertising &amp; marketplace listings  - Titles/descriptions may use nominative fair use to describe compatibility: “Compatible with TI‑84 Plus”. -  Prohibited: claims of being “official,” “authorized,” “certified,” “partner,”   or   using   TI   logos/wordmarks/fonts/trade   dress.   -   Use  CALCAI  as   the   brand;   avoid keyword‑stuffing   TI   marks.   Allowed   once   per   listing:   “compatible   with   TI‑84   Plus.”   -   Use  original photography of our modified units. Do not use TI marketing images. 5)  Domains &amp; handles - Primary domain: calcai.cc. Do    not register domains or social handles that include “texasinstruments,” “ti84,” or similar brand marks. 6)  Takedown &amp; communication protocol - If TI (or a rights holder) contacts CALCAI regarding confusion or misuse, CALCAI will: (a) acknowledge receipt; (b) review within 3 business days; (c) promptly correct any non‑compliant copy/imagery; (d) document remediation. - DMCA requests are handled per Addendum F. •  •  10</p>
 <p>Addendum M — Firmware lawfulness &amp; no‑distribution reminder (informational) CALCAI does not distribute TI firmware/OS/ROMs. Firmware patching tools, if provided, operate on  user‑supplied images and do not contain TI code. CALCAI products must not be used to bypass exam locks, cryptographic protections, or other technical measures on TI devices (see Addendum K). Addendum N — Marketplace &amp; ad copy guardrails (informational) DO: “Modified graphing calculator (compatible with TI‑84 Plus). Refurbished &amp; modified by CALCAI. Not affiliated with TI.” DON’T   : “Official TI‑84 ChatGPT,” “TI‑84 by CALCAI,” “Authorized by Texas Instruments,” any TI logos. Search ads: limit TI brand mentions to one compatibility reference; add negative keywords that imply affiliation (e.g., “official, authorized”). This document is a template and not legal advice. Local laws vary. Before publishing, have a qualified attorney review for your jurisdiction and business model. •  •  •  •  •  11</p>`
+
+
+// Simplified, plain-language Terms (V2)
+export const TERMS_HTML_V2 = `
+<p><strong>Terms of Service</strong><br/>Effective date: [Month DD, 2025]</p>
+
+<p>This is a plain-language summary of the rules for using CalcAI devices, software, and the website. It’s not legal advice. If you don’t agree, please don’t use or buy CalcAI products.</p>
+
+<h2>1) What we sell; no affiliation</h2>
+<ul>
+  <li>We refurbish/modify calculators (e.g., add ESP32, camera, and firmware) and provide software/services to connect them to cloud AI features.</li>
+  <li>We are <strong>not</strong> affiliated with Texas Instruments, OpenAI, College Board, or any testing authority. Trademarks belong to their owners.</li>
+  <li>For learning/productivity only. Do not use on proctored exams unless the rules explicitly allow it.</li>
+</ul>
+
+<h2>2) Your responsibilities</h2>
+<ul>
+  <li>Follow school/testing rules and the law. No cheating or tampering with proctoring/IT controls.</li>
+  <li>Provide reliable Wi‑Fi/internet. Third‑party firewalls/school networks may block features.</li>
+  <li>Use good judgment. AI output can be wrong or unsafe; verify important results.</li>
+</ul>
+
+<h2>3) Acceptable use</h2>
+<p>Do not use CalcAI to break laws, infringe rights, harass people, generate illegal content, bypass technical protections, or perform medical/legal/financial decisions without qualified human review. We may throttle or refuse service for abuse.</p>
+
+<h2>4) Third‑party services (OpenAI, Twilio, Stripe)</h2>
+<ul>
+  <li><strong>AI providers.</strong> When you use cloud features, your prompts, images, and outputs go to the provider (e.g., OpenAI) under their terms/privacy. Don’t submit secrets you don’t want processed in the cloud.</li>
+  <li><strong>SMS.</strong> If you opt in, restock texts are sent via Twilio. Reply STOP to unsubscribe; HELP for help.</li>
+  <li><strong>Payments.</strong> All payments are processed by Stripe. We do not store full card numbers or CVCs.</li>
+</ul>
+
+<h2>5) Privacy (short summary)</h2>
+<ul>
+  <li>We may see and store your <strong>prompts, images, and AI responses</strong> for troubleshooting, quality, and to power features. We keep the <em>latest image per device</em>. See our <a href="/privacy">Privacy Policy</a> for details.</li>
+  <li>We <strong>do not</strong> collect Wi‑Fi SSID/passwords or your account passwords.</li>
+  <li>We log consent for SMS (phone number, consent IP/timestamp, status).</li>
+</ul>
+
+<h2>6) Software and updates</h2>
+<ul>
+  <li>We may publish or deliver firmware/software updates, including security fixes. Updates can change or remove features.</li>
+  <li>Updates may be initiated by you from the calculator, or served remotely so your device can fetch them. We may require certain updates for safety or compliance.</li>
+  <li>Installing unapproved firmware, opening the device, or altering wiring may void the limited warranty.</li>
+</ul>
+
+<h2>7) Orders, shipping, returns, Stripe payments</h2>
+<ul>
+  <li>Prices can change until checkout. We may cancel suspected-fraud orders with a prompt refund.</li>
+  <li>Taxes/duties are your responsibility. Risk of loss passes to you when we give the package to the carrier.</li>
+  <li>Unused stock units: limited return window (e.g., 14 days) may apply; shipping is non‑refundable. Custom/send‑in work is generally final sale except for defects we caused.</li>
+  <li>Payments run through Stripe. Refunds (if any) go back to the original method per Stripe timelines.</li>
+</ul>
+
+<h2>8) Limited warranty (workmanship)</h2>
+<p>We provide a 14‑day workmanship/DOA warranty from delivery. We will repair or replace (at our option) units that fail due to our workmanship. Damage from misuse, liquid, accidents, unsupported power sources, or unapproved modifications is not covered. Contact us before attempting any repair or firmware change; unapproved changes void the warranty.</p>
+
+<h2>9) Trademarks &amp; no affiliation (Texas Instruments)</h2>
+<p>CalcAI is not affiliated with, sponsored by, or endorsed by Texas Instruments. References to TI‑84 and related marks are nominative fair use to describe compatibility only. Do not present our products as official TI products.</p>
+
+<h2>10) Disclaimers &amp; liability limits</h2>
+<ul>
+  <li>Except for the limited warranty above, products/services are provided “as is” and “as available.”</li>
+  <li>We do not guarantee compatibility with every network, API, or exam rule.</li>
+  <li>To the maximum extent allowed by law, we are not liable for indirect, incidental, or consequential damages; our total liability will not exceed what you paid for the item/service at issue.</li>
+</ul>
+
+<h2>11) Disputes; governing law</h2>
+<p>We’ll try informal resolution first (open a ticket on our Discord linked at calcai.cc). These Terms are governed by New Jersey law; courts in New Jersey have exclusive jurisdiction where permitted.</p>
+
+<h2>12) Changes; contact</h2>
+<ul>
+  <li>We may update these Terms at any time. Changes apply to future orders/use. We will post the new effective date when we update.</li>
+  <li>Contact: open a private ticket in our Discord (link on <a href="https://calcai.cc" target="_blank" rel="noopener noreferrer">calcai.cc</a>).</li>
+</ul>
+`;

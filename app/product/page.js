@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Poppins } from 'next/font/google'
 import { Star, CheckCircle, ShoppingCart, ArrowLeft, ArrowRight, Shield, Truck, RotateCcw, MessageCircle, Calculator } from 'lucide-react'
 import { getStripe } from '../../lib/stripe'
-import CountdownBadge from '../../components/CountdownBadge'
 import CountdownBanner from '../../components/CountdownBanner'
+
+const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
 
 export default function ProductPage() {
 
@@ -195,11 +197,20 @@ export default function ProductPage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* Restock Countdown Banner (above nav) */}
+      <CountdownBanner target="2025-11-15T00:00:00" />
+
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10">
+      <nav className={`${poppins.className} sticky top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14">
-            <div className="flex items-center">
+          <div className="grid grid-cols-3 items-center h-14">
+            {/* Left: Community, Specifications */}
+            <div className="hidden md:flex items-center gap-8 justify-start">
+              <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
+              <Link href="/#whats-inside" className="text-gray-300 hover:text-white text-sm font-medium">Specifications</Link>
+            </div>
+            {/* Center: Logo */}
+            <div className="flex items-center justify-center">
               <Link href="/">
                 <Image
                   src="/logo.png"
@@ -210,35 +221,10 @@ export default function ProductPage() {
                 />
               </Link>
             </div>
-            <div className="flex items-center space-x-8">
-              {/* Navigation Links */}
-              <div className="hidden md:flex items-center space-x-8">
-                <Link
-                  href="/community"
-                  className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium"
-                >
-                  Community
-                </Link>
-                <Link
-                  href="/faq"
-                  className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium"
-                >
-                  FAQ
-                </Link>
-                <Link
-                  href="/#whats-inside"
-                  className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium"
-                >
-                  Specifications
-                </Link>
-              </div>
-
-              <div className="hidden sm:block">
-                <CountdownBadge target="2025-11-15T00:00:00" />
-              </div>
-
-              {/* Cart Icon with Count */}
-              <Link href="/cart" className="relative flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200">
+            {/* Right: FAQ, Cart */}
+            <div className="flex items-center gap-8 justify-end">
+              <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
+              <Link href="/cart" className="relative flex items-center space-x-2 text-gray-300 hover:text-white">
                 <ShoppingCart className="w-4 h-4" />
                 <span className="hidden sm:inline text-sm">Cart</span>
                 {cartItemCount > 0 && (
@@ -252,10 +238,6 @@ export default function ProductPage() {
         </div>
       </nav>
 
-      {/* Restock Countdown Banner (offset for fixed nav) */}
-      <div className="mt-14">
-        <CountdownBanner target="2025-11-15T00:00:00" />
-      </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-6">
         {/* Breadcrumb */}

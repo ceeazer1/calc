@@ -1,17 +1,25 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { Poppins } from 'next/font/google'
 import { ArrowLeft } from 'lucide-react'
-import { TERMS_HTML } from '../../content/terms'
+import { TERMS_HTML_V2 as TERMS_HTML } from '../../content/terms'
 
+const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
 
 export default function Terms() {
   return (
     <div className="min-h-screen bg-black">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10">
+      <nav className={`${poppins.className} fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14">
-            <div className="flex items-center">
+          <div className="grid grid-cols-3 items-center h-14">
+            {/* Left: Community, Specifications */}
+            <div className="hidden md:flex items-center gap-8 justify-start">
+              <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
+              <Link href="/#whats-inside" className="text-gray-300 hover:text-white text-sm font-medium">Specifications</Link>
+            </div>
+            {/* Center: Logo */}
+            <div className="flex items-center justify-center">
               <Link href="/">
                 <Image
                   src="/logo.png"
@@ -22,11 +30,10 @@ export default function Terms() {
                 />
               </Link>
             </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/" className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200 text-sm">
-                <ArrowLeft className="w-4 h-4" />
-                <span>Back to Home</span>
-              </Link>
+            {/* Right: FAQ, Cart */}
+            <div className="flex items-center gap-8 justify-end">
+              <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
+              <Link href="/cart" className="text-gray-300 hover:text-white text-sm font-medium">Cart</Link>
             </div>
           </div>
         </div>
@@ -39,8 +46,7 @@ export default function Terms() {
             <h1 className="text-4xl font-bold text-white">Terms of Service</h1>
           </div>
 
-          {/* Terms content goes here. Replace the placeholder text with the actual terms text. */}
-          <article className="prose prose-invert max-w-none">
+          <article className="prose prose-invert max-w-3xl mx-auto prose-h2:text-white prose-h2:mt-10 prose-h2:mb-3 prose-p:text-gray-300 prose-li:text-gray-300 prose-strong:text-white prose-a:text-blue-400 hover:prose-a:text-blue-300">
             <div dangerouslySetInnerHTML={{ __html: TERMS_HTML }} />
           </article>
 
