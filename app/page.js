@@ -43,13 +43,13 @@ export default function Home() {
               <a href="#whats-inside" className="text-gray-300 hover:text-white text-sm font-medium">Specifications</a>
             </div>
             {/* Center: Logo */}
-            <div className="flex items-center justify-center">
+            <div className="col-start-2 flex items-center justify-center md:col-start-auto">
               <Link href="/">
                 <Image src="/logo.png" alt="CalcAI Logo" width={200} height={60} className="h-5 w-auto sm:h-6" />
               </Link>
             </div>
             {/* Right: FAQ, Cart */}
-            <div className="flex items-center gap-8 justify-end">
+            <div className="col-start-3 flex items-center gap-8 justify-end md:col-start-auto">
               <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
               <Link href="/cart" className="relative flex items-center space-x-2 text-gray-300 hover:text-white">
                 <ShoppingCart className="w-4 h-4" />
