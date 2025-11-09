@@ -10,6 +10,42 @@ import CountdownBanner from '../../components/CountdownBanner'
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
 
+// Lightweight international phone config (no deps)
+const COUNTRIES = [
+  { code:'US', name:'United States', dial:'1', flag:'🇺🇸', nsn:[10], pattern:[3,3,4], placeholder:'(555) 123-4567' },
+  { code:'CA', name:'Canada', dial:'1', flag:'🇨🇦', nsn:[10], pattern:[3,3,4], placeholder:'(555) 123-4567' },
+  { code:'GB', name:'United Kingdom', dial:'44', flag:'🇬🇧', nsn:[9,10], pattern:[4,3,3], placeholder:'7123 456 789' },
+  { code:'AU', name:'Australia', dial:'61', flag:'🇦🇺', nsn:[9], pattern:[4,3,2], placeholder:'4123 456 78' },
+  { code:'IN', name:'India', dial:'91', flag:'🇮🇳', nsn:[10], pattern:[5,5], placeholder:'98765 43210' },
+  { code:'DE', name:'Germany', dial:'49', flag:'🇩🇪', nsn:[10,11], pattern:[3,3,4], placeholder:'151 234 5678' },
+  { code:'FR', name:'France', dial:'33', flag:'🇫🇷', nsn:[9], pattern:[2,2,2,3], placeholder:'6 12 34 567' }
+]
+const onlyDigits = (s) => String(s||'').replace(/\D/g, '')
+const nsnMax = (c) => Math.max(...c.nsn)
+const nsnMin = (c) => Math.min(...c.nsn)
+function formatNational(c, digits){
+  const d = onlyDigits(digits).slice(0, nsnMax(c))
+  // Special US/CA formatting
+  if ((c.code==='US' || c.code==='CA')){
+    const a = d.slice(0,3), b = d.slice(3,6), x = d.slice(6,10)
+    if (d.length <= 3) return a
+    if (d.length <= 6) return `(${a}) ${b}`
+    return `(${a}) ${b}-${x}`
+  }
+  const p = c.pattern || []
+  if (!p.length) return d.replace(/(\d{3})(?=\d)/g, '$1 ').trim()
+  let res = '', i = 0
+  for (const g of p){
+    if (i >= d.length) break
+    const nxt = d.slice(i, i+g)
+    if (!nxt) break
+    res += (res ? ' ' : '') + nxt
+    i += g
+  }
+  if (i < d.length) res += ' ' + d.slice(i)
+  return res
+}
+
 export default function ProductPage() {
 
   const [quantity, setQuantity] = useState(1)
@@ -30,6 +66,9 @@ export default function ProductPage() {
   const [smsConsent, setSmsConsent] = useState(false)
   const [smsSubmitting, setSmsSubmitting] = useState(false)
   const [smsResult, setSmsResult] = useState(null) // { ok, error }
+  const [smsCountry, setSmsCountry] = useState(COUNTRIES[0])
+  const [smsNational, setSmsNational] = useState('')
+
 
   async function handleSmsSubscribe(e){
     e.preventDefault()
@@ -46,6 +85,8 @@ export default function ProductPage() {
       if (j?.ok){
         setSmsResult({ ok:true })
         setSmsPhone('')
+        setSmsNational('')
+
         setSmsConsent(false)
       } else {
         setSmsResult({ ok:false, error: j?.error || 'subscribe_failed' })
@@ -452,16 +493,44 @@ export default function ProductPage() {
                   <div className="text-green-400 text-xs">✓ You’re subscribed. We’ll text you when CalcAI is back in stock.</div>
                 ) : (
                   <form onSubmit={handleSmsSubscribe} className="space-y-2">
-                    <input
-                      type="tel"
-                      inputMode="tel"
-                      autoComplete="tel"
-                      value={smsPhone}
-                      onChange={(e) => setSmsPhone(e.target.value)}
-                      placeholder="+1 (555) 123-4567"
-                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
-                      disabled={smsSubmitting}
-                    />
+                    <div className="flex gap-2">
+                      <select
+                        value={smsCountry.code}
+                        onChange={(e) => {
+                          const c = COUNTRIES.find(x => x.code === e.target.value) || COUNTRIES[0]
+                          const capped = smsNational.slice(0, nsnMax(c))
+                          setSmsCountry(c)
+                          setSmsNational(capped)
+                          const e164 = capped ? `+${c.dial}${capped}` : ''
+                          setSmsPhone(e164)
+                        }}
+                        className="px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm text-white"
+                        disabled={smsSubmitting}
+                        aria-label="Country"
+                      >
+                        {COUNTRIES.map(c => (
+                          <option key={c.code} value={c.code}>{`${c.flag} +${c.dial}`}</option>
+                        ))}
+                      </select>
+                      <div className="flex-1 flex items-center">
+                        <span className="px-2 py-2 bg-gray-800 border border-gray-700 border-r-0 rounded-l text-sm text-gray-300">+{smsCountry.dial}</span>
+                        <input
+                          type="tel"
+                          inputMode="numeric"
+                          value={formatNational(smsCountry, smsNational)}
+                          onChange={(e) => {
+                            const digits = onlyDigits(e.target.value)
+                            const capped = digits.slice(0, nsnMax(smsCountry))
+                            setSmsNational(capped)
+                            const e164 = capped ? `+${smsCountry.dial}${capped}` : ''
+                            setSmsPhone(e164)
+                          }}
+                          placeholder={smsCountry.placeholder}
+                          className="w-full px-3 py-2 bg-gray-800 border border-gray-700 border-l-0 rounded-r text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                          disabled={smsSubmitting}
+                        />
+                      </div>
+                    </div>
                     <label className="flex items-start space-x-2 text-xs text-gray-400">
                       <input
                         type="checkbox"
@@ -483,7 +552,7 @@ export default function ProductPage() {
                     )}
                     <button
                       type="submit"
-                      disabled={!smsConsent || !smsPhone.trim() || smsSubmitting}
+                      disabled={!smsConsent || onlyDigits(smsNational).length < nsnMin(smsCountry) || smsSubmitting}
                       className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white text-sm font-medium py-2 px-4 rounded transition-colors"
                     >
                       {smsSubmitting ? 'Subscribing…' : 'Notify me by SMS'}
