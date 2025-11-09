@@ -72,7 +72,7 @@ export default function ProductPage() {
 
   async function handleSmsSubscribe(e){
     e.preventDefault()
-    if (!smsPhone.trim() || !smsConsent || smsSubmitting) return
+    if (!smsPhone.trim() || smsSubmitting) return
     setSmsSubmitting(true)
     setSmsResult(null)
     try {
@@ -81,13 +81,13 @@ export default function ProductPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone: smsPhone, consent: true })
       })
-      const j = await r.json()
-      if (j?.ok){
+      let j = null
+      try { j = await r.json() } catch {}
+      const ok = r.ok && (j?.ok !== false)
+      if (ok){
         setSmsResult({ ok:true })
         setSmsPhone('')
         setSmsNational('')
-
-        setSmsConsent(false)
       } else {
         setSmsResult({ ok:false, error: j?.error || 'subscribe_failed' })
       }
@@ -509,7 +509,7 @@ export default function ProductPage() {
                         aria-label="Country"
                       >
                         {COUNTRIES.map(c => (
-                          <option key={c.code} value={c.code}>{`${c.flag} +${c.dial}`}</option>
+                          <option key={c.code} value={c.code}>{`${c.code} +${c.dial}`}</option>
                         ))}
                       </select>
                       <div className="flex-1 flex items-center">
@@ -531,28 +531,17 @@ export default function ProductPage() {
                         />
                       </div>
                     </div>
-                    <label className="flex items-start space-x-2 text-xs text-gray-400">
-                      <input
-                        type="checkbox"
-                        checked={smsConsent}
-                        onChange={(e) => setSmsConsent(e.target.checked)}
-                        className="mt-0.5"
-                        disabled={smsSubmitting}
-                      />
-                      <span>
-                        I agree to receive SMS restock alerts from CalcAI at the number provided. Message & data rates may apply. Reply STOP to opt out, HELP for help. Consent not required to buy. See our <a className="underline" href="/terms" target="_blank" rel="noreferrer">Terms</a> and <a className="underline" href="/privacy" target="_blank" rel="noreferrer">Privacy Policy</a>.
-                        <br />
-                        <span className="text-gray-500">We store your phone, timestamp, and IP to document proof of consent.</span>
-                      </span>
-                    </label>
+                    <p className="text-[10px] leading-4 text-gray-500">
+                      By pressing <span className="text-gray-300">“Notify me by SMS”</span>, you agree to receive SMS restock alerts from CalcAI at the number provided. Msg & data rates may apply. Reply STOP to opt out, HELP for help. Consent not required to buy. See our <a className="underline" href="/terms" target="_blank" rel="noreferrer">Terms</a> and <a className="underline" href="/privacy" target="_blank" rel="noreferrer">Privacy Policy</a>.
+                    </p>
                     {smsResult?.error && (
                       <div className="text-red-400 text-xs">
-                        {smsResult.error === 'invalid_phone' ? 'Please enter a valid phone number' : smsResult.error === 'consent_required' ? 'Please check the consent box' : 'Could not subscribe. Try again.'}
+                        {smsResult.error === 'invalid_phone' ? 'Please enter a valid phone number' : 'Could not subscribe. Try again.'}
                       </div>
                     )}
                     <button
                       type="submit"
-                      disabled={!smsConsent || onlyDigits(smsNational).length < nsnMin(smsCountry) || smsSubmitting}
+                      disabled={onlyDigits(smsNational).length < nsnMin(smsCountry) || smsSubmitting}
                       className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white text-sm font-medium py-2 px-4 rounded transition-colors"
                     >
                       {smsSubmitting ? 'Subscribing…' : 'Notify me by SMS'}
