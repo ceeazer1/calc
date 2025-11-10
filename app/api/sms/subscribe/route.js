@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { sql } from '@vercel/postgres'
 
+export const runtime = 'nodejs'
+
 function normalizePhone(input){
   if (!input) return null
   let s = String(input).trim()
@@ -66,17 +68,22 @@ export async function POST(req) {
       return NextResponse.json(sent, { status: 502 })
     }
 
-    // Upsert into Vercel Postgres (no Fly)
-    await ensureTable()
-    const fwdIp = req.headers.get('x-forwarded-for') || ''
-    await sql`insert into sms_subscribers (phone, status, consent_ts, consent_ip, source, created_at, updated_at)
-      values (${phone}, 'subscribed', now(), ${fwdIp}, ${source}, now(), now())
-      on conflict (phone) do update set
-        status = 'subscribed',
-        consent_ts = now(),
-        consent_ip = excluded.consent_ip,
-        source = coalesce(excluded.source, sms_subscribers.source),
-        updated_at = now()`
+    // Upsert into Vercel Postgres (best-effort)
+    try {
+      await ensureTable()
+      const fwdIp = req.headers.get('x-forwarded-for') || ''
+      await sql`insert into sms_subscribers (phone, status, consent_ts, consent_ip, source, created_at, updated_at)
+        values (${phone}, 'subscribed', now(), ${fwdIp}, ${source}, now(), now())
+        on conflict (phone) do update set
+          status = 'subscribed',
+          consent_ts = now(),
+          consent_ip = excluded.consent_ip,
+          source = coalesce(excluded.source, sms_subscribers.source),
+          updated_at = now()`
+    } catch (dbErr) {
+      console.error('sms_subscribers upsert failed', dbErr)
+      // do not fail the request; Twilio confirmation already sent
+    }
 
     return NextResponse.json({ ok:true })
   } catch (e) {
