@@ -62,27 +62,22 @@ export async function POST(req) {
     const phone = normalizePhone(rawPhone)
     if (!phone) return NextResponse.json({ ok:false, error:'invalid_phone' }, { status: 400 })
 
+    // Enforce DB persistence: upsert first, fail if DB write fails
+    await ensureTable()
+    const fwdIp = req.headers.get('x-forwarded-for') || ''
+    await sql`insert into sms_subscribers (phone, status, consent_ts, consent_ip, source, created_at, updated_at)
+      values (${phone}, 'subscribed', now(), ${fwdIp}, ${source}, now(), now())
+      on conflict (phone) do update set
+        status = 'subscribed',
+        consent_ts = now(),
+        consent_ip = excluded.consent_ip,
+        source = coalesce(excluded.source, sms_subscribers.source),
+        updated_at = now()`
+
     const confirmText = 'CalcAI: You are subscribed for restock alerts. Reply STOP to opt out. HELP for help.'
     const sent = await sendViaTwilio({ to: phone, body: confirmText })
     if (!sent.ok){
       return NextResponse.json(sent, { status: 502 })
-    }
-
-    // Upsert into Vercel Postgres (best-effort)
-    try {
-      await ensureTable()
-      const fwdIp = req.headers.get('x-forwarded-for') || ''
-      await sql`insert into sms_subscribers (phone, status, consent_ts, consent_ip, source, created_at, updated_at)
-        values (${phone}, 'subscribed', now(), ${fwdIp}, ${source}, now(), now())
-        on conflict (phone) do update set
-          status = 'subscribed',
-          consent_ts = now(),
-          consent_ip = excluded.consent_ip,
-          source = coalesce(excluded.source, sms_subscribers.source),
-          updated_at = now()`
-    } catch (dbErr) {
-      console.error('sms_subscribers upsert failed', dbErr)
-      // do not fail the request; Twilio confirmation already sent
     }
 
     return NextResponse.json({ ok:true })
