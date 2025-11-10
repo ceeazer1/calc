@@ -396,7 +396,7 @@ export default function ProductPage() {
                 TI-84 Plus with AI Integration
               </h2>
               <p className="text-gray-400">
-                Multi-tool device for students in a familiar TI-84 body
+                Get notified when the next restock is available.
               </p>
             </div>
 
@@ -444,7 +444,7 @@ export default function ProductPage() {
                     <span>${price.toFixed(2)}</span>
                   )}
                 </div>
-                <span className="text-xs font-semibold text-amber-300 bg-amber-500/10 border border-amber-400/20 rounded-full px-2 py-0.5">Sells out fast</span>
+
               </div>
               <div className="text-xs mt-2">
                 {loaded ? (
@@ -465,9 +465,7 @@ export default function ProductPage() {
                   </span>
                 </div>
               ) : null}
-              <div className="mt-2 text-xs text-blue-300">
-                Live stock updates on Discord: <a href="https://discord.gg/83ZwJcPWJ6" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-200">discord.gg/83ZwJcPWJ6</a>
-              </div>
+
             </div>
 
 
