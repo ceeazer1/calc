@@ -11,7 +11,9 @@
   "dependencies": {
     "@stripe/stripe-js": "^2.4.0",
     "@vercel/postgres": "^0.10.0",
+    "flag-icons": "^7.5.0",
     "framer-motion": "^10.16.16",
+    "libphonenumber-js": "^1.12.26",
     "lucide-react": "^0.294.0",
     "next": "14.0.4",
     "react": "^18",

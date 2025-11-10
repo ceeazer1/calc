@@ -10,16 +10,59 @@ import CountdownBanner from '../../components/CountdownBanner'
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
 
-// Lightweight international phone config (no deps)
+// Country list (dial codes); patterns kept light — we can switch to libphonenumber-js formatting next
 const COUNTRIES = [
-  { code:'US', name:'United States', dial:'1', flag:'🇺🇸', nsn:[10], pattern:[3,3,4], placeholder:'(555) 123-4567' },
-  { code:'CA', name:'Canada', dial:'1', flag:'🇨🇦', nsn:[10], pattern:[3,3,4], placeholder:'(555) 123-4567' },
-  { code:'GB', name:'United Kingdom', dial:'44', flag:'🇬🇧', nsn:[9,10], pattern:[4,3,3], placeholder:'7123 456 789' },
-  { code:'AU', name:'Australia', dial:'61', flag:'🇦🇺', nsn:[9], pattern:[4,3,2], placeholder:'4123 456 78' },
-  { code:'IN', name:'India', dial:'91', flag:'🇮🇳', nsn:[10], pattern:[5,5], placeholder:'98765 43210' },
-  { code:'DE', name:'Germany', dial:'49', flag:'🇩🇪', nsn:[10,11], pattern:[3,3,4], placeholder:'151 234 5678' },
-  { code:'FR', name:'France', dial:'33', flag:'🇫🇷', nsn:[9], pattern:[2,2,2,3], placeholder:'6 12 34 567' }
+  { code:'US', name:'United States', dial:'1', nsn:[10], pattern:[3,3,4], placeholder:'(555) 123-4567' },
+  { code:'CA', name:'Canada', dial:'1', nsn:[10], pattern:[3,3,4], placeholder:'(555) 123-4567' },
+  { code:'MX', name:'Mexico', dial:'52', nsn:[10], pattern:[], placeholder:'Phone number' },
+  { code:'BR', name:'Brazil', dial:'55', nsn:[10,11], pattern:[], placeholder:'Phone number' },
+  { code:'AR', name:'Argentina', dial:'54', nsn:[10], pattern:[], placeholder:'Phone number' },
+  { code:'GB', name:'United Kingdom', dial:'44', nsn:[9,10], pattern:[4,3,3], placeholder:'7123 456 789' },
+  { code:'IE', name:'Ireland', dial:'353', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'FR', name:'France', dial:'33', nsn:[9], pattern:[2,2,2,3], placeholder:'6 12 34 567' },
+  { code:'DE', name:'Germany', dial:'49', nsn:[10,11], pattern:[3,3,4], placeholder:'151 234 5678' },
+  { code:'ES', name:'Spain', dial:'34', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'IT', name:'Italy', dial:'39', nsn:[9,10], pattern:[], placeholder:'Phone number' },
+  { code:'NL', name:'Netherlands', dial:'31', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'BE', name:'Belgium', dial:'32', nsn:[8,9], pattern:[], placeholder:'Phone number' },
+  { code:'SE', name:'Sweden', dial:'46', nsn:[9,10], pattern:[], placeholder:'Phone number' },
+  { code:'NO', name:'Norway', dial:'47', nsn:[8], pattern:[], placeholder:'Phone number' },
+  { code:'DK', name:'Denmark', dial:'45', nsn:[8], pattern:[], placeholder:'Phone number' },
+  { code:'FI', name:'Finland', dial:'358', nsn:[9,10], pattern:[], placeholder:'Phone number' },
+  { code:'PT', name:'Portugal', dial:'351', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'CH', name:'Switzerland', dial:'41', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'AT', name:'Austria', dial:'43', nsn:[10,11], pattern:[], placeholder:'Phone number' },
+  { code:'PL', name:'Poland', dial:'48', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'CZ', name:'Czechia', dial:'420', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'SK', name:'Slovakia', dial:'421', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'HU', name:'Hungary', dial:'36', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'RO', name:'Romania', dial:'40', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'GR', name:'Greece', dial:'30', nsn:[10], pattern:[], placeholder:'Phone number' },
+  { code:'TR', name:'Türkiye', dial:'90', nsn:[10], pattern:[], placeholder:'Phone number' },
+  { code:'IL', name:'Israel', dial:'972', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'AE', name:'United Arab Emirates', dial:'971', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'SA', name:'Saudi Arabia', dial:'966', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'ZA', name:'South Africa', dial:'27', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'EG', name:'Egypt', dial:'20', nsn:[9,10], pattern:[], placeholder:'Phone number' },
+  { code:'MA', name:'Morocco', dial:'212', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'NG', name:'Nigeria', dial:'234', nsn:[8,10], pattern:[], placeholder:'Phone number' },
+  { code:'KE', name:'Kenya', dial:'254', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'GH', name:'Ghana', dial:'233', nsn:[9], pattern:[], placeholder:'Phone number' },
+  { code:'IN', name:'India', dial:'91', nsn:[10], pattern:[5,5], placeholder:'98765 43210' },
+  { code:'PK', name:'Pakistan', dial:'92', nsn:[10], pattern:[], placeholder:'Phone number' },
+  { code:'BD', name:'Bangladesh', dial:'880', nsn:[10], pattern:[], placeholder:'Phone number' },
+  { code:'SG', name:'Singapore', dial:'65', nsn:[8], pattern:[], placeholder:'Phone number' },
+  { code:'MY', name:'Malaysia', dial:'60', nsn:[9,10], pattern:[], placeholder:'Phone number' },
+  { code:'ID', name:'Indonesia', dial:'62', nsn:[9,10,11], pattern:[], placeholder:'Phone number' },
+  { code:'PH', name:'Philippines', dial:'63', nsn:[10], pattern:[], placeholder:'Phone number' },
+  { code:'TH', name:'Thailand', dial:'66', nsn:[9,10], pattern:[], placeholder:'Phone number' },
+  { code:'VN', name:'Vietnam', dial:'84', nsn:[9,10], pattern:[], placeholder:'Phone number' },
+  { code:'KR', name:'South Korea', dial:'82', nsn:[9,10], pattern:[], placeholder:'Phone number' },
+  { code:'JP', name:'Japan', dial:'81', nsn:[10], pattern:[], placeholder:'Phone number' },
+  { code:'AU', name:'Australia', dial:'61', nsn:[9], pattern:[4,3,2], placeholder:'4123 456 78' },
+  { code:'NZ', name:'New Zealand', dial:'64', nsn:[8,9], pattern:[], placeholder:'Phone number' },
 ]
+
 const onlyDigits = (s) => String(s||'').replace(/\D/g, '')
 const nsnMax = (c) => Math.max(...c.nsn)
 const nsnMin = (c) => Math.min(...c.nsn)
@@ -68,6 +111,7 @@ export default function ProductPage() {
   const [smsResult, setSmsResult] = useState(null) // { ok, error }
   const [smsCountry, setSmsCountry] = useState(COUNTRIES[0])
   const [smsNational, setSmsNational] = useState('')
+  const [countryOpen, setCountryOpen] = useState(false)
 
 
   async function handleSmsSubscribe(e){
@@ -494,24 +538,40 @@ export default function ProductPage() {
                 ) : (
                   <form onSubmit={handleSmsSubscribe} className="space-y-2">
                     <div className="flex gap-2">
-                      <select
-                        value={smsCountry.code}
-                        onChange={(e) => {
-                          const c = COUNTRIES.find(x => x.code === e.target.value) || COUNTRIES[0]
-                          const capped = smsNational.slice(0, nsnMax(c))
-                          setSmsCountry(c)
-                          setSmsNational(capped)
-                          const e164 = capped ? `+${c.dial}${capped}` : ''
-                          setSmsPhone(e164)
-                        }}
-                        className="px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm text-white"
-                        disabled={smsSubmitting}
-                        aria-label="Country"
-                      >
-                        {COUNTRIES.map(c => (
-                          <option key={c.code} value={c.code}>{`${c.code} +${c.dial}`}</option>
-                        ))}
-                      </select>
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => setCountryOpen(v => !v)}
+                          disabled={smsSubmitting}
+                          aria-label="Country"
+                          className="px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm text-white flex items-center gap-2"
+                        >
+                          <span className={`fi fi-${smsCountry.code.toLowerCase()}`}></span>
+                        </button>
+                        {countryOpen && (
+                          <div className="absolute z-20 mt-1 max-h-56 overflow-auto bg-gray-800 border border-gray-700 rounded shadow-lg w-60">
+                            {COUNTRIES.map(c => (
+                              <button
+                                type="button"
+                                key={c.code}
+                                onClick={() => {
+                                  setCountryOpen(false)
+                                  const capped = smsNational.slice(0, nsnMax(c))
+                                  setSmsCountry(c)
+                                  setSmsNational(capped)
+                                  const e164 = capped ? `+${c.dial}${capped}` : ''
+                                  setSmsPhone(e164)
+                                }}
+                                className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-700 text-sm text-white"
+                              >
+                                <span className={`fi fi-${c.code.toLowerCase()}`}></span>
+                                <span className="truncate">{c.name}</span>
+                                <span className="ml-auto text-gray-400">+{c.dial}</span>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                       <div className="flex-1 flex items-center">
                         <span className="px-2 py-2 bg-gray-800 border border-gray-700 border-r-0 rounded-l text-sm text-gray-300">+{smsCountry.dial}</span>
                         <input
