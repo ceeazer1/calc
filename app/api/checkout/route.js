@@ -98,24 +98,13 @@ export async function POST(request) {
       shipping_address_collection: {
         allowed_countries: ['US', 'CA', 'GB', 'AU', 'DE', 'FR'],
       },
-      // Offer three delivery options at Checkout
+      // Offer two delivery options at Checkout
       shipping_options: [
         {
           shipping_rate_data: {
             type: 'fixed_amount',
-            fixed_amount: { amount: 1200, currency: 'usd' },
-            display_name: 'Economy – USPS Ground Advantage',
-            delivery_estimate: {
-              minimum: { unit: 'business_day', value: 2 },
-              maximum: { unit: 'business_day', value: 5 },
-            },
-          },
-        },
-        {
-          shipping_rate_data: {
-            type: 'fixed_amount',
-            fixed_amount: { amount: 2000, currency: 'usd' },
-            display_name: 'Fast – USPS Priority Mail',
+            fixed_amount: { amount: 1500, currency: 'usd' },
+            display_name: 'USPS Priority Mail',
             delivery_estimate: {
               minimum: { unit: 'business_day', value: 1 },
               maximum: { unit: 'business_day', value: 3 },
@@ -126,7 +115,7 @@ export async function POST(request) {
           shipping_rate_data: {
             type: 'fixed_amount',
             fixed_amount: { amount: 5500, currency: 'usd' },
-            display_name: 'Express – Priority Mail Express',
+            display_name: 'Priority Mail Express',
             delivery_estimate: {
               minimum: { unit: 'business_day', value: 1 },
               maximum: { unit: 'business_day', value: 2 },

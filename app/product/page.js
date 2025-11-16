@@ -629,7 +629,7 @@ export default function ProductPage() {
                     <div>
                       <h4 className="font-semibold text-white mb-1">Ready to Ship</h4>
                       <p className="text-gray-400 leading-relaxed">
-                        If the product shows <span className="text-green-400 font-medium">"In Stock"</span>, your CalcAI is ready to ship immediately. Orders are typically processed and shipped within 1 business day.
+                        If the product shows <span className="text-green-400 font-medium">&quot;In Stock&quot;</span>, your CalcAI is ready to ship immediately. Orders are typically processed and shipped within 1 business day.
                       </p>
                     </div>
                   </div>
@@ -643,7 +643,7 @@ export default function ProductPage() {
                     <div>
                       <h4 className="font-semibold text-white mb-1">Made to Order</h4>
                       <p className="text-gray-400 leading-relaxed">
-                        If no units are ready to ship, we'll modify your TI-84 Plus calculator to order. This process takes <span className="text-blue-400 font-medium">up to 5 business days</span> from order confirmation. Once complete, your CalcAI will be shipped via USPS Priority Mail.
+                        If no units are ready to ship, we&apos;ll modify your TI-84 Plus calculator to order. This process takes <span className="text-blue-400 font-medium">up to 5 business days</span> from order confirmation. Once complete, your CalcAI will be shipped via USPS Priority Mail.
                       </p>
                     </div>
                   </div>
@@ -657,7 +657,7 @@ export default function ProductPage() {
                     <div>
                       <h4 className="font-semibold text-white mb-1">Out of Stock</h4>
                       <p className="text-gray-400 leading-relaxed">
-                        If the product shows <span className="text-red-400 font-medium">"Out of Stock"</span>, we currently have no units on hand and are low on supplies. For the most accurate restock updates, join our{' '}
+                        If the product shows <span className="text-red-400 font-medium">&quot;Out of Stock&quot;</span>, we currently have no units on hand and are low on supplies. For the most accurate restock updates, join our{' '}
                         <a href="https://discord.gg/calcai" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">
                           Discord server
                         </a>
