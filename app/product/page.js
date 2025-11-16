@@ -627,23 +627,9 @@ export default function ProductPage() {
                       1
                     </div>
                     <div>
-                      <h4 className="font-semibold text-white mb-1">Ready to Ship</h4>
+                      <h4 className="font-semibold text-white mb-1">In Stock</h4>
                       <p className="text-gray-400 leading-relaxed">
-                        If the product shows <span className="text-green-400 font-medium">&quot;In Stock&quot;</span>, your CalcAI is ready to ship immediately. Orders are typically processed and shipped within 1 business day.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xs">
-                      2
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-1">Made to Order</h4>
-                      <p className="text-gray-400 leading-relaxed">
-                        If no units are ready to ship, we&apos;ll modify your TI-84 Plus calculator to order. This process takes <span className="text-blue-400 font-medium">up to 5 business days</span> from order confirmation. Once complete, your CalcAI will be shipped via USPS Priority Mail.
+                        If the product shows <span className="text-green-400 font-medium">&quot;In Stock&quot;</span>, your order will be fulfilled. Depending on current inventory, your CalcAI may ship immediately (if a unit is ready) or be made to order within <span className="text-blue-400 font-medium">up to 5 business days</span>.
                       </p>
                     </div>
                   </div>
@@ -652,7 +638,7 @@ export default function ProductPage() {
                 <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
                   <div className="flex items-start gap-3">
                     <div className="flex-shrink-0 w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-xs">
-                      3
+                      2
                     </div>
                     <div>
                       <h4 className="font-semibold text-white mb-1">Out of Stock</h4>
@@ -673,9 +659,9 @@ export default function ProductPage() {
                       📦
                     </div>
                     <div>
-                      <h4 className="font-semibold text-white mb-1">Delivery Time</h4>
+                      <h4 className="font-semibold text-white mb-1">Shipping & Tracking</h4>
                       <p className="text-gray-400 leading-relaxed">
-                        All orders ship via <span className="text-blue-400 font-medium">USPS Priority Mail</span>, which typically delivers in <span className="text-blue-400 font-medium">2-4 business days</span> depending on your location within the United States. Tracking information will be provided once your order ships.
+                        All orders ship via <span className="text-blue-400 font-medium">USPS Priority Mail</span>, which typically delivers in <span className="text-blue-400 font-medium">2-4 business days</span> depending on your location within the United States. Your tracking number will be sent to the email address you provide during checkout.
                       </p>
                     </div>
                   </div>
