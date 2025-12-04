@@ -112,9 +112,13 @@ export async function POST(request) {
     try { json = await res.json() } catch {}
 
     if (!res.ok) {
-      console.error('[HoodPay create payment] status', res.status, json || await res.text())
+      let upstream = json
+      if (!upstream) {
+        try { upstream = await res.text() } catch {}
+      }
+      console.error('[HoodPay create payment] status', res.status, upstream)
       if (fallbackUrl) return NextResponse.json({ url: fallbackUrl })
-      return NextResponse.json({ error: 'Failed to create HoodPay payment' }, { status: 502 })
+      return NextResponse.json({ error: 'Failed to create HoodPay payment', status: res.status, upstream }, { status: 502 })
     }
 
     // Try common fields for checkout URL
