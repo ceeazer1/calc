@@ -73,65 +73,92 @@ export async function POST(request) {
 
     // Build payload based on HoodPay examples (Billgang docs)
     const notifyUrl = `${domain}/api/hoodpay/webhook`
-    const body = {
-      currency: 'USD',
-      amount: amountStr,
-      metadata: {
-        processToken,
-        email: formData?.email || null,
-        phone: formData?.phone || null,
-        shippingAddress: {
-          firstName: formData?.firstName || null,
-          lastName: formData?.lastName || null,
-          address1: formData?.address || null,
-          address2: formData?.address2 || null,
-          city: formData?.city || null,
-          state: formData?.state || null,
-          zipCode: formData?.zipCode || null,
-          country: formData?.country || null
-        },
-        items: Array.isArray(cartItems) ? cartItems.map(({ id, name, quantity, price }) => ({ id, name, quantity, price })) : null
+
+    // Build a payload with multiple key variants to satisfy differing API shapes.
+    const amountCents = Math.round(Number(amountUsd) * 100)
+    const baseMetadata = {
+      processToken,
+      email: formData?.email || null,
+      phone: formData?.phone || null,
+      shippingAddress: {
+        firstName: formData?.firstName || null,
+        lastName: formData?.lastName || null,
+        address1: formData?.address || null,
+        address2: formData?.address2 || null,
+        city: formData?.city || null,
+        state: formData?.state || null,
+        zipCode: formData?.zipCode || null,
+        country: formData?.country || null
       },
+      items: Array.isArray(cartItems) ? cartItems.map(({ id, name, quantity, price }) => ({ id, name, quantity, price })) : null
+    }
+
+    const payload = {
+      currency: 'USD',
+      amount: amountStr,            // e.g., "174.99"
+      amount_usd: amountStr,        // snake_case variant
+      amount_cents: amountCents,    // minor units variant
+      businessId: BUSINESS_ID,      // some APIs expect this in body
+      metadata: baseMetadata,
+      // Webhook/callback variants
       notifyUrl,
-      // Common names for redirect fields (use whichever HoodPay supports)
+      webhookUrl: notifyUrl,
+      webhook_url: notifyUrl,
+      callback_url: notifyUrl,
+      // Redirect variants
       successUrl,
       cancelUrl,
-      returnUrl: successUrl
+      returnUrl: successUrl,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+      return_url: successUrl
     }
 
-    const res = await fetch(`${API_BASE}/businesses/${BUSINESS_ID}/payments`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    })
-
-    let json = null
-    try { json = await res.json() } catch {}
-
-    if (!res.ok) {
-      let upstream = json
-      if (!upstream) {
-        try { upstream = await res.text() } catch {}
+    async function tryCreate(url, headers, bodyObj) {
+      const r = await fetch(url, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(bodyObj)
+      })
+      let j = null
+      let t = null
+      try { j = await r.json() } catch {
+        try { t = await r.text() } catch {}
       }
-      console.error('[HoodPay create payment] status', res.status, upstream)
-      if (fallbackUrl) return NextResponse.json({ url: fallbackUrl })
-      return NextResponse.json({ error: 'Failed to create HoodPay payment', status: res.status, upstream }, { status: 502 })
+      return { ok: r.ok, status: r.status, json: j, text: t }
     }
 
-    // Try common fields for checkout URL
-    const data = json?.data || json || {}
-    const checkoutUrl = data.checkoutUrl || data.checkout_url || data.url || data.paymentUrl || data.link
+    const headers = {
+      'Authorization': `Bearer ${API_KEY}`,
+      'X-API-KEY': API_KEY,
+      'x-api-key': API_KEY,
+      'Content-Type': 'application/json'
+    }
+
+    const attemptUrls = [
+      `${API_BASE}/businesses/${BUSINESS_ID}/payments`,
+      `${API_BASE}/payments`
+    ]
+
+    const attempts = []
+    let checkoutUrl = null
+    for (const u of attemptUrls) {
+      const r = await tryCreate(u, headers, payload)
+      attempts.push({ url: u, status: r.status, body: r.json || r.text })
+      if (r.ok) {
+        const d = r.json?.data || r.json || {}
+        checkoutUrl = d.checkoutUrl || d.checkout_url || d.url || d.paymentUrl || d.payment_url || d.link || d.checkoutLink
+        if (checkoutUrl) break
+      }
+    }
 
     if (checkoutUrl) {
       return NextResponse.json({ url: checkoutUrl, processToken })
     }
 
     // Last-resort fallback
-    if (fallbackUrl) return NextResponse.json({ url: fallbackUrl })
-    return NextResponse.json({ error: 'No checkout URL returned by HoodPay' }, { status: 502 })
+    if (fallbackUrl) return NextResponse.json({ url: fallbackUrl, attempts })
+    return NextResponse.json({ error: 'Failed to create HoodPay payment', attempts }, { status: 502 })
   } catch (error) {
     console.error('Error creating HoodPay checkout:', error)
     return NextResponse.json(
