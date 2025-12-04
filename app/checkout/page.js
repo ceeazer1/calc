@@ -62,7 +62,9 @@ export default function Checkout() {
         console.error('Checkout error:', data)
         const msg = (data && (data.error || data.message)) ? (data.error || data.message) : 'Payment could not be started. Please try again.'
         const upstream = data && data.upstream ? (typeof data.upstream === 'string' ? data.upstream : JSON.stringify(data.upstream)) : ''
-        alert(upstream ? `${msg}\n\nDetails: ${upstream}` : msg)
+        const attempts = data && data.attempts ? JSON.stringify(data.attempts) : ''
+        const details = [upstream, attempts].filter(Boolean).join('\n\n')
+        alert(details ? `${msg}\n\nDetails: ${details}` : msg)
       }
     } catch (error) {
       console.error('Error:', error)
