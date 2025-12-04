@@ -59,8 +59,9 @@ export default function Checkout() {
       if (response.ok && data?.url) {
         window.location.href = data.url
       } else {
-        console.error('Checkout error:', data?.error)
-        alert('Payment could not be started. Please try again.')
+        console.error('Checkout error:', data)
+        const msg = (data && (data.error || data.message)) ? (data.error || data.message) : 'Payment could not be started. Please try again.'
+        alert(msg)
       }
     } catch (error) {
       console.error('Error:', error)
