@@ -14,22 +14,19 @@ import {
   Star,
   MessageCircle
 } from 'lucide-react'
-import { getStripe } from '../../lib/stripe'
 
 export default function Checkout() {
   const [formData, setFormData] = useState({
     email: '',
+    phone: '',
     firstName: '',
     lastName: '',
     address: '',
+    address2: '',
     city: '',
     state: '',
     zipCode: '',
-    country: 'US',
-    cardNumber: '',
-    expiryDate: '',
-    cvv: '',
-    nameOnCard: ''
+    country: 'US'
   })
 
   const [isProcessing, setIsProcessing] = useState(false)
@@ -48,7 +45,7 @@ export default function Checkout() {
     setIsProcessing(true)
 
     try {
-      // Create checkout session
+      // Request checkout URL from server
       const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: {
@@ -57,15 +54,13 @@ export default function Checkout() {
         body: JSON.stringify({ formData }),
       })
 
-      const { sessionId } = await response.json()
+      const data = await response.json()
 
-      // Redirect to Stripe Checkout
-      const stripe = await getStripe()
-      const { error } = await stripe.redirectToCheckout({ sessionId })
-
-      if (error) {
-        console.error('Stripe error:', error)
-        alert('Payment failed. Please try again.')
+      if (response.ok && data?.url) {
+        window.location.href = data.url
+      } else {
+        console.error('Checkout error:', data?.error)
+        alert('Payment could not be started. Please try again.')
       }
     } catch (error) {
       console.error('Error:', error)
@@ -197,7 +192,7 @@ export default function Checkout() {
           <div className="order-2 lg:order-1">
             <div className="bg-white rounded-xl shadow-lg p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Order Summary</h2>
-              
+
               <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg mb-6">
                 <div className="w-20 h-20 rounded-lg overflow-hidden">
                   <Image
@@ -277,6 +272,21 @@ export default function Checkout() {
                       required
                     />
                   </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      placeholder="(555) 123-4567"
+                      required
+                    />
+                  </div>
+
                 </div>
               </div>
 
@@ -311,6 +321,20 @@ export default function Checkout() {
                     />
                   </div>
                 </div>
+                <div className="mt-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Apt, Suite, etc. (optional)
+                  </label>
+                  <input
+                    type="text"
+                    name="address2"
+                    value={formData.address2}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    placeholder="Apt 2B"
+                  />
+                </div>
+
 
                 <div className="mt-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -393,84 +417,19 @@ export default function Checkout() {
                 </div>
               </div>
 
-              {/* Payment Information */}
+              {/* Payment */}
               <div className="bg-white rounded-xl shadow-lg p-8">
-                <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                  <CreditCard className="w-6 h-6 mr-2" />
-                  Payment Information
-                </h3>
-
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Name on Card
-                  </label>
-                  <input
-                    type="text"
-                    name="nameOnCard"
-                    value={formData.nameOnCard}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="John Doe"
-                    required
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Card Number
-                  </label>
-                  <input
-                    type="text"
-                    name="cardNumber"
-                    value={formData.cardNumber}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="1234 5678 9012 3456"
-                    maxLength="19"
-                    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Expiry Date
-                    </label>
-                    <input
-                      type="text"
-                      name="expiryDate"
-                      value={formData.expiryDate}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      placeholder="MM/YY"
-                      maxLength="5"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      CVV
-                    </label>
-                    <input
-                      type="text"
-                      name="cvv"
-                      value={formData.cvv}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      placeholder="123"
-                      maxLength="4"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Payment</h3>
+                <p className="text-gray-600">
+                  You’ll enter your payment details securely on HoodPay after clicking the button below.
+                </p>
+                <div className="mt-4 p-4 bg-blue-50 rounded-lg">
                   <div className="flex items-center space-x-2 text-blue-800">
                     <Lock className="w-5 h-5" />
-                    <span className="text-sm font-medium">Secure Payment</span>
+                    <span className="text-sm font-medium">Secure payment via HoodPay</span>
                   </div>
                   <p className="text-sm text-blue-700 mt-1">
-                    Your payment information is encrypted and secure. We never store your card details.
+                    We never store your card details. All payments are processed by HoodPay.
                   </p>
                 </div>
               </div>
@@ -491,7 +450,7 @@ export default function Checkout() {
                     <span>Redirecting to Secure Payment...</span>
                   </div>
                 ) : (
-                  `Proceed to Secure Payment - $129.99`
+                  `Proceed to Secure Payment`
                 )}
               </button>
 

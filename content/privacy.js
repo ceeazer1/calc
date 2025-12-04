@@ -6,7 +6,7 @@ export const PRIVACY_HTML = `
 
 <h2>What we collect</h2>
 <ul>
-  <li><strong>Order and contact info</strong> you submit during checkout (handled by Stripe), such as name, email, and shipping region.</li>
+  <li><strong>Order and contact info</strong> you submit during checkout (handled by HoodPay), such as name, email, and shipping region.</li>
   <li><strong>Device and service logs</strong> when enabled by you or necessary to operate the service, including device MAC address, timestamp, and limited diagnostic messages.</li>
   <li><strong>AI usage data</strong> when you use CalcAI’s cloud features: prompts you send, the AI’s responses, and—if you capture an image for analysis—the image. For performance and storage efficiency, we keep <em>the latest image per device</em> and log prompts/responses with timestamps.</li>
   <li><strong>SMS data</strong> for restock alerts: your phone number, consent status (checkbox), consent IP and timestamp, and subscription status (subscribed/unsubscribed).</li>
@@ -17,7 +17,7 @@ export const PRIVACY_HTML = `
 <ul>
   <li><strong>No Wi‑Fi credentials.</strong> We do not receive your Wi‑Fi network name (SSID) or Wi‑Fi password. Those are configured locally on your device and are not transmitted to our servers.</li>
   <li><strong>No account passwords.</strong> We do not collect your school, email, or other third‑party account usernames or passwords.</li>
-  <li><strong>No full payment card data.</strong> Payments are processed by Stripe; we do not store full card numbers or CVCs.</li>
+  <li><strong>No full payment card data.</strong> Payments are processed by HoodPay; we do not store full card numbers or CVCs.</li>
 </ul>
 
 <h2>How we use information</h2>
@@ -33,7 +33,7 @@ export const PRIVACY_HTML = `
 <ul>
   <li><strong>AI providers</strong> (for cloud features), such as OpenAI. Your prompts/images/outputs are processed under their terms and privacy policies.</li>
   <li><strong>SMS provider</strong> (Twilio) to deliver text messages and manage STOP/HELP keywords.</li>
-  <li><strong>Payments</strong> (Stripe) to process transactions. Stripe’s terms and privacy policy apply to payment processing.</li>
+  <li><strong>Payments</strong> (HoodPay) to process transactions. HoodPay’s terms and privacy policy apply to payment processing.</li>
   <li><strong>Hosting/infra</strong> providers that help us run the website and APIs.</li>
   <li><strong>Law enforcement</strong> when required by law.</li>
 </ul>

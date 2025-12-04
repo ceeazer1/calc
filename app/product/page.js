@@ -5,7 +5,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Poppins } from 'next/font/google'
 import { Star, CheckCircle, ShoppingCart, ArrowLeft, ArrowRight, Shield, Truck, RotateCcw, MessageCircle, Calculator } from 'lucide-react'
-import { getStripe } from '../../lib/stripe'
 import CountdownBanner from '../../components/CountdownBanner'
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
@@ -255,7 +254,6 @@ export default function ProductPage() {
   }, [])
   const handlePreorderCheckout = async () => {
     try {
-      const stripe = await getStripe()
       const label = getProductName() + ' — Preorder' + (preorderShipDate ? ` (Ships ${preorderShipDate})` : '')
       const response = await fetch('/api/checkout', {
         method: 'POST',
@@ -272,8 +270,8 @@ export default function ProductPage() {
         })
       })
       const data = await response.json()
-      if (!response.ok || !data.sessionId) throw new Error(data.error || 'Checkout error')
-      await stripe.redirectToCheckout({ sessionId: data.sessionId })
+      if (!response.ok || !data.url) throw new Error(data.error || 'Checkout error')
+      window.location.href = data.url
     } catch (e) {
       alert('Could not start preorder checkout. Please try again or contact support.')
       console.error(e)
@@ -526,7 +524,7 @@ export default function ProductPage() {
               )}
 
               <div className="text-center text-xs text-gray-400 mt-2">
-                <p>Secure payment powered by Stripe</p>
+                <p>Secure payment via HoodPay</p>
               </div>
 
               {/* SMS restock alert opt-in (with proof of consent) */}

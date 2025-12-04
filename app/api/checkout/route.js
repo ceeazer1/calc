@@ -1,26 +1,22 @@
 import { NextResponse } from 'next/server'
-import stripe from '../../../lib/stripe'
 
+// HoodPay Orders API integration: creates a payment via API and returns checkout URL.
+// Env required in Vercel:
+// - HOODPAY_API_KEY
+// - HOODPAY_BUSINESS_ID
+// - (optional) HOODPAY_API_BASE (default https://api.hoodpay.io/v1)
+// - (optional) HOODPAY_SUCCESS_URL (default https://calcai.cc/success)
+// - (optional) HOODPAY_CANCEL_URL (default https://calcai.cc/cart)
+// - (optional) HOODPAY_CHECKOUT_URL fallback hosted link
 export async function POST(request) {
   try {
-    // Check if Stripe is properly configured
-    if (!process.env.STRIPE_SECRET_KEY) {
-      console.error('STRIPE_SECRET_KEY is not set')
-      return NextResponse.json(
-        { error: 'Stripe configuration error: Missing secret key' },
-        { status: 500 }
-      )
-    }
-
-    // Force stable domain for success/cancel URLs so Stripe "Back/Cancel" always returns to cart
-    // Always use primary production domain.
-    const domain = 'https://calcai.cc'
+    const domain = process.env.NEXT_PUBLIC_DOMAIN || 'https://calcai.cc'
+    const successUrl = process.env.HOODPAY_SUCCESS_URL || `${domain}/success`
+    const cancelUrl = process.env.HOODPAY_CANCEL_URL || `${domain}/cart`
 
     const { cartItems, totalAmount, formData, preorder } = await request.json()
 
-    console.log('Creating Stripe session with domain:', domain, 'preorder:', preorder === true)
-
-    // Fetch dynamic price/stock and preorder controls from dashboard (public endpoint)
+    // Load live settings from dashboard (authoritative pricing/stock)
     let remoteSettings = null
     try {
       const dashURL = process.env.DASHBOARD_URL || process.env.NEXT_PUBLIC_DASHBOARD_URL
@@ -32,7 +28,6 @@ export async function POST(request) {
     } catch (e) {
       console.warn('Could not load dashboard settings:', e?.message || e)
     }
-
 
     const stockCountNum = remoteSettings && remoteSettings.stockCount !== undefined && remoteSettings.stockCount !== null
       ? Number(remoteSettings.stockCount) : undefined
@@ -46,96 +41,97 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Out of stock' }, { status: 400 })
     }
 
-    // Price: preorder from dashboard or fallback, otherwise use dashboard price (or fallback)
-    const unitAmountCents = preorder
-      ? Math.round(((remoteSettings?.preorderPrice ?? 200.00) * 100))
-      : Math.round(((remoteSettings?.price ?? 174.99) * 100))
+    // Compute amount (USD). Prefer dashboard price over client input.
+    const basePrice = preorder
+      ? (remoteSettings?.preorderPrice ?? 200.00)
+      : (remoteSettings?.price ?? 174.99)
 
-    // Convert cart items to Stripe line items (authoritative price from dashboard)
-    const shipDate = (remoteSettings?.preorderShipDate && typeof remoteSettings.preorderShipDate === 'string') ? remoteSettings.preorderShipDate : ''
-    const nameSuffix = preorder ? (` \u2014 Preorder${shipDate ? ` (Ships ${shipDate})` : ''}`) : ''
-    const lineItems = cartItems && cartItems.length ? cartItems.map(item => ({
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: (item.name || 'CalcAI - TI-84 Plus with ChatGPT') + nameSuffix,
-          description: 'The world\u2019s first calculator with discrete AI integration',
-          images: [`${domain}${item.image}`],
-        },
-        unit_amount: unitAmountCents,
-      },
-      quantity: item.quantity,
-    })) : [
-      {
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: 'CalcAI - TI-84 Plus with ChatGPT' + nameSuffix,
-            description: 'The world\u2019s first calculator with discrete AI integration',
-            images: [`${domain}/NEWTI84.png`],
-          },
-          unit_amount: unitAmountCents,
-        },
-        quantity: 1,
-      }
-    ]
+    // If cartItems provided, sum them; otherwise use basePrice for single unit.
+    const itemsTotal = Array.isArray(cartItems) && cartItems.length > 0
+      ? cartItems.reduce((sum, it) => sum + (Number(it.price) * Number(it.quantity || 1)), 0)
+      : basePrice
 
-    // Create a checkout session
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: [
-        'card',
-        'cashapp',
-        'us_bank_account',
-        'link'
-      ],
-      automatic_tax: {
-        enabled: false, // Set to true if you want automatic tax calculation
-      },
-      line_items: lineItems,
-      mode: 'payment',
-      success_url: `${domain}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${domain}/cart`,
-      shipping_address_collection: {
-        allowed_countries: ['US', 'CA', 'GB', 'AU', 'DE', 'FR'],
-      },
-      // Offer two delivery options at Checkout
-      shipping_options: [
-        {
-          shipping_rate_data: {
-            type: 'fixed_amount',
-            fixed_amount: { amount: 1500, currency: 'usd' },
-            display_name: 'USPS Priority Mail',
-            delivery_estimate: {
-              minimum: { unit: 'business_day', value: 1 },
-              maximum: { unit: 'business_day', value: 3 },
-            },
-          },
-        },
-        {
-          shipping_rate_data: {
-            type: 'fixed_amount',
-            fixed_amount: { amount: 5500, currency: 'usd' },
-            display_name: 'Priority Mail Express',
-            delivery_estimate: {
-              minimum: { unit: 'business_day', value: 1 },
-              maximum: { unit: 'business_day', value: 2 },
-            },
-          },
-        },
-      ],
+    // Default shipping (UI currently shows FREE; set to 0.00 for alignment)
+    const shipping = 0.00
+    const amountUsd = (Number.isFinite(itemsTotal) ? itemsTotal : basePrice) + shipping
+    const amountStr = amountUsd.toFixed(2)
+
+    // HoodPay API config
+    const API_BASE = (process.env.HOODPAY_API_BASE || 'https://api.hoodpay.io/v1').replace(/\/$/, '')
+    const API_KEY = process.env.HOODPAY_API_KEY
+    const BUSINESS_ID = process.env.HOODPAY_BUSINESS_ID
+
+    // If API credentials are missing, gracefully fall back to hosted checkout URL
+    const fallbackUrl = process.env.HOODPAY_CHECKOUT_URL || process.env.NEXT_PUBLIC_HOODPAY_CHECKOUT_URL
+    if (!API_KEY || !BUSINESS_ID) {
+      if (fallbackUrl) return NextResponse.json({ url: fallbackUrl })
+      return NextResponse.json({ error: 'HoodPay not configured. Set HOODPAY_API_KEY and HOODPAY_BUSINESS_ID.' }, { status: 500 })
+    }
+
+    // Create a unique process token to correlate in webhooks
+    const processToken = `calcai_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`
+
+    // Build payload based on HoodPay examples (Billgang docs)
+    const notifyUrl = `${domain}/api/hoodpay/webhook`
+    const body = {
+      currency: 'USD',
+      amount: amountStr,
       metadata: {
-        order_type: preorder ? 'calcai_preorder' : 'calcai_purchase',
-        preorder: preorder ? 'true' : 'false',
-        ship_after: preorder ? (shipDate || 'N/A') : 'N/A',
-        total_items: cartItems ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 1,
+        processToken,
+        email: formData?.email || null,
+        phone: formData?.phone || null,
+        shippingAddress: {
+          firstName: formData?.firstName || null,
+          lastName: formData?.lastName || null,
+          address1: formData?.address || null,
+          address2: formData?.address2 || null,
+          city: formData?.city || null,
+          state: formData?.state || null,
+          zipCode: formData?.zipCode || null,
+          country: formData?.country || null
+        },
+        items: Array.isArray(cartItems) ? cartItems.map(({ id, name, quantity, price }) => ({ id, name, quantity, price })) : null
       },
+      notifyUrl,
+      // Common names for redirect fields (use whichever HoodPay supports)
+      successUrl,
+      cancelUrl,
+      returnUrl: successUrl
+    }
+
+    const res = await fetch(`${API_BASE}/businesses/${BUSINESS_ID}/payments`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
     })
 
-    return NextResponse.json({ sessionId: session.id })
+    let json = null
+    try { json = await res.json() } catch {}
+
+    if (!res.ok) {
+      console.error('[HoodPay create payment] status', res.status, json || await res.text())
+      if (fallbackUrl) return NextResponse.json({ url: fallbackUrl })
+      return NextResponse.json({ error: 'Failed to create HoodPay payment' }, { status: 502 })
+    }
+
+    // Try common fields for checkout URL
+    const data = json?.data || json || {}
+    const checkoutUrl = data.checkoutUrl || data.checkout_url || data.url || data.paymentUrl || data.link
+
+    if (checkoutUrl) {
+      return NextResponse.json({ url: checkoutUrl, processToken })
+    }
+
+    // Last-resort fallback
+    if (fallbackUrl) return NextResponse.json({ url: fallbackUrl })
+    return NextResponse.json({ error: 'No checkout URL returned by HoodPay' }, { status: 502 })
   } catch (error) {
-    console.error('Error creating checkout session:', error)
+    console.error('Error creating HoodPay checkout:', error)
     return NextResponse.json(
-      { error: 'Error creating checkout session' },
+      { error: 'Error creating checkout' },
       { status: 500 }
     )
   }

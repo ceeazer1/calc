@@ -2,7 +2,7 @@
 
 A modern, interactive website showcasing the revolutionary CalcAI product - a TI-84 Plus calculator with discrete ChatGPT integration.
 
-**Now with complete Stripe payment integration and streamlined direct checkout flow!**
+**Now with HoodPay checkout integration and streamlined direct checkout flow!**
 
 ## 🚀 Features
 
@@ -18,7 +18,7 @@ A modern, interactive website showcasing the revolutionary CalcAI product - a TI
 - **Styling**: Tailwind CSS
 - **Icons**: Lucide React
 - **Animations**: Framer Motion (ready to implement)
-- **Payment**: Stripe integration (ready to implement)
+- **Payment**: HoodPay checkout integration
 
 ## 📦 Installation
 

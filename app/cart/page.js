@@ -5,7 +5,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Poppins } from 'next/font/google'
 import { Trash2, Plus, Minus, ShoppingCart, ArrowLeft, MessageCircle } from 'lucide-react'
-import { getStripe } from '../../lib/stripe'
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
 
@@ -52,7 +51,7 @@ export default function CartPage() {
     setIsProcessing(true)
 
     try {
-      // Create checkout session with cart items
+      // Request checkout URL from server
       const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: {
@@ -64,15 +63,13 @@ export default function CartPage() {
         }),
       })
 
-      const { sessionId } = await response.json()
+      const data = await response.json()
 
-      // Redirect to Stripe Checkout
-      const stripe = await getStripe()
-      const { error } = await stripe.redirectToCheckout({ sessionId })
-
-      if (error) {
-        console.error('Stripe error:', error)
-        alert('Payment failed. Please try again.')
+      if (response.ok && data?.url) {
+        window.location.href = data.url
+      } else {
+        console.error('Checkout error:', data?.error)
+        alert('Payment could not be started. Please try again.')
       }
     } catch (error) {
       console.error('Error:', error)
