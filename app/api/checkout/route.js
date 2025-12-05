@@ -16,7 +16,7 @@ export async function POST(request) {
     const successUrl = process.env.HOODPAY_SUCCESS_URL || `${domain}/success`
     const cancelUrl = process.env.HOODPAY_CANCEL_URL || `${domain}/cart`
 
-    const { cartItems, totalAmount, formData, preorder } = await request.json()
+    const { cartItems, totalAmount, formData, preorder, shippingType } = await request.json()
 
     // Load live settings from dashboard (authoritative pricing/stock)
     let remoteSettings = null
@@ -53,8 +53,10 @@ export async function POST(request) {
       ? cartItems.reduce((sum, it) => sum + (Number(it.price) * Number(it.quantity || 1)), 0)
       : basePrice
 
-    // Default shipping (UI currently shows FREE; set to 0.00 for alignment)
-    const shipping = 0.00
+    // Shipping cost computed server-side from selected type
+    const sType = typeof shippingType === 'string' ? shippingType.toLowerCase() : 'standard'
+    const shippingMap = { standard: 0.00, free: 0.00, express: 24.99 }
+    const shipping = (shippingMap[sType] ?? 0.00)
     const amountUsd = (Number.isFinite(itemsTotal) ? itemsTotal : basePrice) + shipping
     const amountStr = amountUsd.toFixed(2)
 
@@ -83,6 +85,8 @@ export async function POST(request) {
       processToken,
       email: formData?.email || null,
       phone: formData?.phone || null,
+      shippingType: sType,
+      shippingCost: shipping,
       shippingAddress: {
         firstName: formData?.firstName || null,
         lastName: formData?.lastName || null,
@@ -143,7 +147,8 @@ export async function POST(request) {
       const hpRes = await client.payments.create({
         amount: Number(amountUsd),
         currency: 'USD',
-        name: orderName
+        name: orderName,
+        metadata: baseMetadata
       })
       checkoutUrl = hpRes?.data?.url || null
     } catch (err) {

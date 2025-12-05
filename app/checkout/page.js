@@ -29,6 +29,12 @@ export default function Checkout() {
     country: 'US'
   })
 
+  const [shippingType, setShippingType] = useState('standard')
+  const shippingPrices = { standard: 0, express: 24.99 }
+  const subtotal = 129.99
+  const shippingAmount = shippingPrices[shippingType] ?? 0
+  const total = (subtotal + shippingAmount).toFixed(2)
+
   const [isProcessing, setIsProcessing] = useState(false)
   const [orderComplete, setOrderComplete] = useState(false)
 
@@ -51,7 +57,7 @@ export default function Checkout() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ formData }),
+        body: JSON.stringify({ formData, shippingType }),
       })
 
       const data = await response.json()
@@ -218,18 +224,18 @@ export default function Checkout() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-2xl font-bold text-gray-900">$129.99</div>
+                  <div className="text-2xl font-bold text-gray-900">${subtotal.toFixed(2)}</div>
                 </div>
               </div>
 
               <div className="space-y-3 border-t pt-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-semibold">$129.99</span>
+                  <span className="font-semibold">${subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Shipping</span>
-                  <span className="font-semibold text-green-600">FREE</span>
+                  <span className="text-gray-600">Shipping ({shippingType === 'express' ? 'Express' : 'Standard'})</span>
+                  <span className="font-semibold">{shippingAmount === 0 ? 'FREE' : `$${shippingAmount.toFixed(2)}`}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tax</span>
@@ -237,7 +243,7 @@ export default function Checkout() {
                 </div>
                 <div className="border-t pt-3 flex justify-between text-lg">
                   <span className="font-bold text-gray-900">Total</span>
-                  <span className="font-bold text-gray-900">$129.99</span>
+                  <span className="font-bold text-gray-900">${total}</span>
                 </div>
               </div>
 
@@ -413,11 +419,47 @@ export default function Checkout() {
                       <option value="CA">Canada</option>
                       <option value="UK">United Kingdom</option>
                       <option value="AU">Australia</option>
+
                       <option value="DE">Germany</option>
                       <option value="FR">France</option>
                       <option value="OTHER">Other</option>
                     </select>
                   </div>
+                </div>
+              </div>
+
+              {/* Shipping Method */
+              <div className="bg-white rounded-xl shadow-lg p-8">
+                <h3 className="text-xl font-semibold text-gray-900 mb-6">Shipping Method</h3>
+                <div className="space-y-3">
+                  <label className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer ${shippingType === 'standard' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}>
+                    <div className="flex items-center space-x-3">
+                      <input
+                        type="radio"
+                        name="shippingType"
+                        value="standard"
+                        checked={shippingType === 'standard'}
+                        onChange={() => setShippingType('standard')}
+                        className="form-radio text-blue-600"
+                      />
+                      <span className="font-medium text-gray-900">Standard (5-7 business days)</span>
+                    </div>
+                    <span className="text-gray-900 font-semibold">FREE</span>
+                  </label>
+                  <label className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer ${shippingType === 'express' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}>
+                    <div className="flex items-center space-x-3">
+                      <input
+                        type="radio"
+                        name="shippingType"
+                        value="express"
+                        checked={shippingType === 'express'}
+                        onChange={() => setShippingType('express')}
+                        className="form-radio text-blue-600"
+                      />
+                      <span className="font-medium text-gray-900">Express (2 business days)</span>
+                    </div>
+                    <span className="text-gray-900 font-semibold">$24.99</span>
+                  </label>
                 </div>
               </div>
 
@@ -454,6 +496,41 @@ export default function Checkout() {
                     <span>Redirecting to Secure Payment...</span>
                   </div>
                 ) : (
+              {/* Shipping Method */
+              <div className="bg-white rounded-xl shadow-lg p-8">
+                <h3 className="text-xl font-semibold text-gray-900 mb-6">Shipping Method</h3>
+                <div className="space-y-3">
+                  <label className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer ${shippingType === 'standard' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}>
+                    <div className="flex items-center space-x-3">
+                      <input
+                        type="radio"
+                        name="shippingType"
+                        value="standard"
+                        checked={shippingType === 'standard'}
+                        onChange={() => setShippingType('standard')}
+                        className="form-radio text-blue-600"
+                      />
+                      <span className="font-medium text-gray-900">Standard (5-7 business days)</span>
+                    </div>
+                    <span className="text-gray-900 font-semibold">FREE</span>
+                  </label>
+                  <label className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer ${shippingType === 'express' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}>
+                    <div className="flex items-center space-x-3">
+                      <input
+                        type="radio"
+                        name="shippingType"
+                        value="express"
+                        checked={shippingType === 'express'}
+                        onChange={() => setShippingType('express')}
+                        className="form-radio text-blue-600"
+                      />
+                      <span className="font-medium text-gray-900">Express (2 business days)</span>
+                    </div>
+                    <span className="text-gray-900 font-semibold">$24.99</span>
+                  </label>
+                </div>
+              </div>
+
                   `Proceed to Secure Payment`
                 )}
               </button>
