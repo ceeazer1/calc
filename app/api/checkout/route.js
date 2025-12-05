@@ -59,7 +59,8 @@ export async function POST(request) {
     const amountStr = amountUsd.toFixed(2)
 
     // HoodPay API config
-    const API_BASE = (process.env.HOODPAY_API_BASE || 'https://api.hoodpay.io/v1').replace(/\/$/, '')
+    // SDK paths already include /v1, so base should be the API root without version suffix
+    const API_BASE = (process.env.HOODPAY_API_BASE || 'https://api.hoodpay.io').replace(/\/$/, '')
     const API_KEY = process.env.HOODPAY_API_KEY
     const BUSINESS_ID = process.env.HOODPAY_BUSINESS_ID
 
