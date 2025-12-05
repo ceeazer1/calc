@@ -143,17 +143,22 @@ export async function POST(request) {
         amount: Number(amountUsd),
         currency: 'USD',
         name: orderName,
-        description: `${orderName} – ${Array.isArray(cartItems) && cartItems.length > 0 ? cartItems.length : 1} item(s)`,
         redirectUrl: successUrl,
         notifyUrl,
         customerEmail: formData?.email || undefined,
-        customerIp,
-        customerUserAgent,
         metadata: baseMetadata
       })
       checkoutUrl = hpRes?.data?.url || null
     } catch (err) {
-      console.error('HoodPay SDK create error:', err?.message || err)
+      const upstream = {
+        message: err?.message || null,
+        status: err?.response?.status || null,
+        data: err?.response?.data || null
+      }
+      console.error('HoodPay SDK create error:', upstream, err)
+      // Return detailed error so the client can show it for fast debugging
+      if (fallbackUrl) return NextResponse.json({ url: fallbackUrl, upstream })
+      return NextResponse.json({ error: 'Failed to create HoodPay payment', upstream }, { status: 502 })
     }
 
     if (checkoutUrl) {
