@@ -143,11 +143,7 @@ export async function POST(request) {
       const hpRes = await client.payments.create({
         amount: Number(amountUsd),
         currency: 'USD',
-        name: orderName,
-        redirectUrl: successUrl,
-        notifyUrl,
-        customerEmail: formData?.email || undefined,
-        metadata: baseMetadata
+        name: orderName
       })
       checkoutUrl = hpRes?.data?.url || null
     } catch (err) {
