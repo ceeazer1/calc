@@ -62,8 +62,14 @@ export default function Checkout() {
 
       const data = await response.json()
 
-      if (response.ok && data?.url) {
-        window.location.href = data.url
+      const fallbackUrl = data?.url
+        || data?.upstreamRaw?.body?.data?.url
+        || data?.upstreamRaw?.body?.data?.checkoutUrl
+        || data?.upstreamRaw?.body?.data?.links?.checkout
+        || null
+
+      if ((response.ok && data?.url) || fallbackUrl) {
+        window.location.href = fallbackUrl || data.url
       } else {
         console.error('Checkout error:', data)
         const msg = (data && (data.error || data.message)) ? (data.error || data.message) : 'Payment could not be started. Please try again.'
