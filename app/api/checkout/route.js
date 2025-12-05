@@ -93,18 +93,27 @@ export async function POST(request) {
       items: Array.isArray(cartItems) ? cartItems.map(({ id, name, quantity, price }) => ({ id, name, quantity, price })) : null
     }
 
+    const orderName = preorder ? 'CalcAI Preorder' : 'CalcAI Order'
     const payload = {
+      // Core fields
       currency: 'USD',
       amount: amountStr,            // e.g., "174.99"
       amount_usd: amountStr,        // snake_case variant
       amount_cents: amountCents,    // minor units variant
+      name: orderName,              // per SDK examples
+      title: orderName,             // alias
+      description: `${orderName} – ${Array.isArray(cartItems) && cartItems.length > 0 ? cartItems.length : 1} item(s)`,
       businessId: BUSINESS_ID,      // some APIs expect this in body
+
+      // Metadata
       metadata: baseMetadata,
+
       // Webhook/callback variants
       notifyUrl,
       webhookUrl: notifyUrl,
       webhook_url: notifyUrl,
       callback_url: notifyUrl,
+
       // Redirect variants
       successUrl,
       cancelUrl,
