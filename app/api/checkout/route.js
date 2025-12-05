@@ -179,6 +179,46 @@ export async function POST(request) {
         upstreamRaw = { error: e2?.message || String(e2) }
       }
 
+      // If SDK errored but raw API succeeded and returned a checkout URL, use it
+      try {
+        const b = upstreamRaw && upstreamRaw.status === 200 ? upstreamRaw.body : null
+
+        // Known shapes
+        let urlCandidate = b?.data?.url || b?.url || b?.data?.checkoutUrl || b?.data?.links?.checkout || b?.data?.payment?.url || b?.data?.payment?.checkoutUrl || b?.data?.payment_url || b?.data?.checkout_url || null
+
+        // Fallback: search deeply for the first http(s) URL
+        if (!urlCandidate && b) {
+          const findUrlDeep = (val, depth = 0) => {
+            if (!val || depth > 6) return null
+            if (typeof val === 'string') {
+              if (/^https?:\/\//i.test(val)) return val
+              return null
+            }
+            if (Array.isArray(val)) {
+              for (const item of val) {
+                const res = findUrlDeep(item, depth + 1)
+                if (res) return res
+              }
+              return null
+            }
+            if (typeof val === 'object') {
+              for (const k of Object.keys(val)) {
+                const v = val[k]
+                if (typeof v === 'string' && (/^https?:\/\//i.test(v) || /url/i.test(k))) return v
+                const res = findUrlDeep(v, depth + 1)
+                if (res) return res
+              }
+            }
+            return null
+          }
+          urlCandidate = findUrlDeep(b)
+        }
+
+        if (urlCandidate && typeof urlCandidate === 'string') {
+          return NextResponse.json({ url: urlCandidate, processToken, sdk: false, via: 'raw' })
+        }
+      } catch (_) { /* ignore */ }
+
       const debug = { upstream, upstreamRaw }
       console.error('HoodPay SDK create error:', debug)
       // Return detailed error so the client can show it for fast debugging

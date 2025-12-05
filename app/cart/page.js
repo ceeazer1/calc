@@ -225,24 +225,12 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <button
-                  onClick={handleCheckout}
-                  disabled={isProcessing}
-                  className={`w-full py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 text-sm sm:text-base ${
-                    isProcessing
-                      ? 'bg-gray-600 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md'
-                  } text-white`}
+                <Link
+                  href="/checkout"
+                  className="w-full py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 text-sm sm:text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md text-white text-center block"
                 >
-                  {isProcessing ? (
-                    <div className="flex items-center justify-center space-x-2">
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      <span>Processing...</span>
-                    </div>
-                  ) : (
-                    'Proceed to Secure Checkout'
-                  )}
-                </button>
+                  Proceed to Checkout
+                </Link>
 
                 <Link
                   href="/product"
