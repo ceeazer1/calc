@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@internal-labs/hoodpay": "^0.1.6",
     "@vercel/postgres": "^0.10.0",
     "flag-icons": "^7.5.0",
     "framer-motion": "^10.16.16",

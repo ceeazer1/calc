@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server'
+import { HoodPayClient } from '@internal-labs/hoodpay'
+
 
 // HoodPay Orders API integration: creates a payment via API and returns checkout URL.
 // Env required in Vercel:
@@ -123,42 +125,35 @@ export async function POST(request) {
       return_url: successUrl
     }
 
-    async function tryCreate(url, headers, bodyObj) {
-      const r = await fetch(url, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(bodyObj)
-      })
-      let j = null
-      let t = null
-      try { j = await r.json() } catch {
-        try { t = await r.text() } catch {}
-      }
-      return { ok: r.ok, status: r.status, json: j, text: t }
-    }
+    // Use official HoodPay SDK
+    const client = new HoodPayClient({
+      apiKey: API_KEY,
+      businessId: BUSINESS_ID,
+      baseUrl: API_BASE
+    })
 
-    const headers = {
-      'Authorization': `Bearer ${API_KEY}`,
-      'X-API-KEY': API_KEY,
-      'x-api-key': API_KEY,
-      'Content-Type': 'application/json'
-    }
+    // Derive customer IP and User-Agent for better fraud signals
+    const xfwd = request.headers.get('x-forwarded-for') || ''
+    const customerIp = (xfwd.split(',')[0] || '').trim() || null
+    const customerUserAgent = request.headers.get('user-agent') || null
 
-    const attemptUrls = [
-      `${API_BASE}/businesses/${BUSINESS_ID}/payments`,
-      `${API_BASE}/payments`
-    ]
-
-    const attempts = []
     let checkoutUrl = null
-    for (const u of attemptUrls) {
-      const r = await tryCreate(u, headers, payload)
-      attempts.push({ url: u, status: r.status, body: r.json || r.text })
-      if (r.ok) {
-        const d = r.json?.data || r.json || {}
-        checkoutUrl = d.checkoutUrl || d.checkout_url || d.url || d.paymentUrl || d.payment_url || d.link || d.checkoutLink
-        if (checkoutUrl) break
-      }
+    try {
+      const hpRes = await client.payments.create({
+        amount: Number(amountUsd),
+        currency: 'USD',
+        name: orderName,
+        description: `${orderName} – ${Array.isArray(cartItems) && cartItems.length > 0 ? cartItems.length : 1} item(s)`,
+        redirectUrl: successUrl,
+        notifyUrl,
+        customerEmail: formData?.email || undefined,
+        customerIp,
+        customerUserAgent,
+        metadata: baseMetadata
+      })
+      checkoutUrl = hpRes?.data?.url || null
+    } catch (err) {
+      console.error('HoodPay SDK create error:', err?.message || err)
     }
 
     if (checkoutUrl) {
@@ -166,8 +161,8 @@ export async function POST(request) {
     }
 
     // Last-resort fallback
-    if (fallbackUrl) return NextResponse.json({ url: fallbackUrl, attempts })
-    return NextResponse.json({ error: 'Failed to create HoodPay payment', attempts }, { status: 502 })
+    if (fallbackUrl) return NextResponse.json({ url: fallbackUrl })
+    return NextResponse.json({ error: 'Failed to create HoodPay payment' }, { status: 502 })
   } catch (error) {
     console.error('Error creating HoodPay checkout:', error)
     return NextResponse.json(
