@@ -162,12 +162,12 @@ export async function POST(request) {
     }
 
     if (checkoutUrl) {
-      return NextResponse.json({ url: checkoutUrl, processToken })
+      return NextResponse.json({ url: checkoutUrl, processToken, sdk: true })
     }
 
     // Last-resort fallback
-    if (fallbackUrl) return NextResponse.json({ url: fallbackUrl })
-    return NextResponse.json({ error: 'Failed to create HoodPay payment' }, { status: 502 })
+    if (fallbackUrl) return NextResponse.json({ url: fallbackUrl, sdk: true })
+    return NextResponse.json({ error: 'Failed to create HoodPay payment', sdk: true }, { status: 502 })
   } catch (error) {
     console.error('Error creating HoodPay checkout:', error)
     return NextResponse.json(
