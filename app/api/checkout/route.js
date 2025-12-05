@@ -154,10 +154,31 @@ export async function POST(request) {
         baseUrl: API_BASE,
         path: `/v1/businesses/${BUSINESS_ID}/payments`
       }
-      console.error('HoodPay SDK create error:', upstream, err)
+
+      // Try a raw fetch to capture the real error body from HoodPay (SDK discards it)
+      let upstreamRaw = null
+      try {
+        const rawRes = await fetch(`${API_BASE}/v1/businesses/${BUSINESS_ID}/payments`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ amount: Number(amountUsd), currency: 'USD', name: orderName })
+        })
+        const rawText = await rawRes.text()
+        let rawJson = null
+        try { rawJson = JSON.parse(rawText) } catch { /* ignore */ }
+        upstreamRaw = { status: rawRes.status, body: rawJson || rawText }
+      } catch (e2) {
+        upstreamRaw = { error: e2?.message || String(e2) }
+      }
+
+      const debug = { upstream, upstreamRaw }
+      console.error('HoodPay SDK create error:', debug)
       // Return detailed error so the client can show it for fast debugging
-      if (fallbackUrl) return NextResponse.json({ url: fallbackUrl, upstream })
-      return NextResponse.json({ error: 'Failed to create HoodPay payment', upstream }, { status: 502 })
+      if (fallbackUrl) return NextResponse.json({ url: fallbackUrl, ...debug })
+      return NextResponse.json({ error: 'Failed to create HoodPay payment', ...debug }, { status: 502 })
     }
 
     if (checkoutUrl) {
