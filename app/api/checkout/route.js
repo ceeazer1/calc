@@ -154,7 +154,9 @@ export async function POST(request) {
       const upstream = {
         message: err?.message || null,
         status: err?.response?.status || null,
-        data: err?.response?.data || null
+        data: err?.response?.data || null,
+        baseUrl: API_BASE,
+        path: `/v1/businesses/${BUSINESS_ID}/payments`
       }
       console.error('HoodPay SDK create error:', upstream, err)
       // Return detailed error so the client can show it for fast debugging
