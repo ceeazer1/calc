@@ -496,41 +496,6 @@ export default function Checkout() {
                     <span>Redirecting to Secure Payment...</span>
                   </div>
                 ) : (
-              {/* Shipping Method */
-              <div className="bg-white rounded-xl shadow-lg p-8">
-                <h3 className="text-xl font-semibold text-gray-900 mb-6">Shipping Method</h3>
-                <div className="space-y-3">
-                  <label className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer ${shippingType === 'standard' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}>
-                    <div className="flex items-center space-x-3">
-                      <input
-                        type="radio"
-                        name="shippingType"
-                        value="standard"
-                        checked={shippingType === 'standard'}
-                        onChange={() => setShippingType('standard')}
-                        className="form-radio text-blue-600"
-                      />
-                      <span className="font-medium text-gray-900">Standard (5-7 business days)</span>
-                    </div>
-                    <span className="text-gray-900 font-semibold">FREE</span>
-                  </label>
-                  <label className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer ${shippingType === 'express' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}>
-                    <div className="flex items-center space-x-3">
-                      <input
-                        type="radio"
-                        name="shippingType"
-                        value="express"
-                        checked={shippingType === 'express'}
-                        onChange={() => setShippingType('express')}
-                        className="form-radio text-blue-600"
-                      />
-                      <span className="font-medium text-gray-900">Express (2 business days)</span>
-                    </div>
-                    <span className="text-gray-900 font-semibold">$24.99</span>
-                  </label>
-                </div>
-              </div>
-
                   `Proceed to Secure Payment`
                 )}
               </button>
