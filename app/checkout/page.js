@@ -428,7 +428,7 @@ export default function Checkout() {
                 </div>
               </div>
 
-              {/* Shipping Method */
+              {/* Shipping Method */}
               <div className="bg-white rounded-xl shadow-lg p-8">
                 <h3 className="text-xl font-semibold text-gray-900 mb-6">Shipping Method</h3>
                 <div className="space-y-3">
@@ -496,7 +496,7 @@ export default function Checkout() {
                     <span>Redirecting to Secure Payment...</span>
                   </div>
                 ) : (
-                  `Proceed to Secure Payment`
+                  'Proceed to Secure Payment'
                 )}
               </button>
 
