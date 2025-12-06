@@ -44,17 +44,32 @@ export default function CartPage() {
   const getTotalPrice = () => {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)
   }
-  const SHIPPING_COST = 13.00
-  const getTotalWithShipping = () => ( (parseFloat(getTotalPrice()) + SHIPPING_COST).toFixed(2) )
-
+  // Shipping is calculated at Stripe Checkout (US only)
 
   const getTotalItems = () => {
     return cart.reduce((total, item) => total + item.quantity, 0)
   }
 
-  const handleCheckout = () => {
-    setIsProcessing(true)
-    router.push('/pay')
+  const handleCheckout = async () => {
+    try {
+      setIsProcessing(true)
+      const res = await fetch('/api/checkout/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cart })
+      })
+      if (!res.ok) throw new Error('Failed to initialize checkout')
+      const data = await res.json()
+      if (data?.url) {
+        window.location.href = data.url
+      } else {
+        throw new Error('No checkout URL returned')
+      }
+    } catch (err) {
+      console.error(err)
+      alert('Checkout is temporarily unavailable. Please try again.')
+      setIsProcessing(false)
+    }
   }
 
   if (loading) {
@@ -185,7 +200,7 @@ export default function CartPage() {
             <div className="lg:col-span-1">
               <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-6 sticky top-8">
                 <h2 className="text-xl font-semibold text-white mb-4">Order Summary</h2>
-<p className="text-xs text-gray-400 mb-3">Shipping: US only - $13 flat rate</p>
+<p className="text-xs text-gray-400 mb-3">Shipping calculated at checkout (US only)</p>
 
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between">
@@ -193,18 +208,12 @@ export default function CartPage() {
                     <span className="font-semibold text-white">${getTotalPrice()}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-300">Shipping (US only)</span>
-                    <span className="font-semibold text-white">$13.00</span>
-                  </div>
-
-
-                  <div className="flex justify-between">
                     <span className="text-gray-300">Tax</span>
                     <span className="font-semibold text-white">$0.00</span>
                   </div>
                   <div className="border-t border-gray-700 pt-3 flex justify-between text-lg">
                     <span className="font-bold text-white">Total</span>
-                    <span className="font-bold text-white">${getTotalWithShipping()}</span>
+                    <span className="font-bold text-white">${getTotalPrice()}</span>
                   </div>
                 </div>
 
