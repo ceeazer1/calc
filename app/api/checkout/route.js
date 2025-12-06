@@ -1,13 +1,20 @@
 import { NextResponse } from 'next/server'
-import { Client, Environment } from 'square'
 import crypto from 'node:crypto'
 
 export const runtime = 'nodejs'
 
-function getSquareClient() {
+async function getSquareExports() {
+  const mod = await import('square')
+  const Client = mod?.Client || mod?.default?.Client
+  const Environment = mod?.Environment || mod?.default?.Environment
+  return { Client, Environment }
+}
+
+async function getSquareClient() {
   const accessToken = process.env.SQUARE_ACCESS_TOKEN
   const envVar = (process.env.SQUARE_ENV || '').toLowerCase()
-  // Guard against cases where Environment is undefined in certain bundlers/runtimes
+  const { Client, Environment } = await getSquareExports()
+  if (!Client) throw new Error('Square SDK not loaded: Client missing')
   const env =
     (typeof Environment !== 'undefined'
       ? (envVar === 'production' ? Environment.Production : Environment.Sandbox)
@@ -58,7 +65,7 @@ export async function POST(request) {
       }
     ]
 
-    const client = getSquareClient()
+    const client = await getSquareClient()
 
     const idempotencyKey = crypto.randomUUID()
     const siteUrl = getSiteUrl()
