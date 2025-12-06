@@ -454,7 +454,7 @@ export default function ProductPage() {
                 ) : (
                   <span className="text-gray-400">Checking availability…</span>
                 )}
-                <span className="text-gray-400"> • Shipping: see options at checkout</span>
+                <span className="text-gray-400"> • Shipping: US only — $13 flat rate</span>
               </div>
               {preorderEnabled && (preorderPrice || preorderShipDate) ? (
                 <div className="mt-2 text-xs text-gray-400">
@@ -524,7 +524,7 @@ export default function ProductPage() {
               )}
 
               <div className="text-center text-xs text-gray-400 mt-2">
-                <p>Secure payment via HoodPay</p>
+                <p>Secure payment via Poof</p>
               </div>
 
               {/* SMS restock alert opt-in (with proof of consent) */}

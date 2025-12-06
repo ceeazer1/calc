@@ -26,7 +26,7 @@ export default function CartPage() {
       return
     }
 
-    const updatedCart = cart.map(item => 
+    const updatedCart = cart.map(item =>
       item.id === productId ? { ...item, quantity: newQuantity } : item
     )
     setCart(updatedCart)
@@ -42,6 +42,9 @@ export default function CartPage() {
   const getTotalPrice = () => {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)
   }
+  const SHIPPING_COST = 13.00
+  const getTotalWithShipping = () => ( (parseFloat(getTotalPrice()) + SHIPPING_COST).toFixed(2) )
+
 
   const getTotalItems = () => {
     return cart.reduce((total, item) => total + item.quantity, 0)
@@ -140,7 +143,7 @@ export default function CartPage() {
             <ShoppingCart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-white mb-2">Your cart is empty</h2>
             <p className="text-gray-300 mb-6">Add some products to get started!</p>
-            <Link 
+            <Link
               href="/product"
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 inline-block text-sm sm:text-base shadow-md"
             >
@@ -163,7 +166,7 @@ export default function CartPage() {
                         className="w-full h-full object-contain"
                       />
                     </div>
-                    
+
                     <div className="flex-1">
                       <h3 className="font-semibold text-white">{item.name}</h3>
                       <p className="text-gray-300">${item.price}</p>
@@ -207,13 +210,18 @@ export default function CartPage() {
             <div className="lg:col-span-1">
               <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-6 sticky top-8">
                 <h2 className="text-xl font-semibold text-white mb-4">Order Summary</h2>
-<p className="text-xs text-gray-400 mb-3">Shipping: see options at checkout</p>
-                
+<p className="text-xs text-gray-400 mb-3">Shipping: US only - $13 flat rate</p>
+
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between">
                     <span className="text-gray-300">Subtotal ({getTotalItems()} items)</span>
                     <span className="font-semibold text-white">${getTotalPrice()}</span>
                   </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Shipping (US only)</span>
+                    <span className="font-semibold text-white">$13.00</span>
+                  </div>
+
 
                   <div className="flex justify-between">
                     <span className="text-gray-300">Tax</span>
@@ -221,16 +229,17 @@ export default function CartPage() {
                   </div>
                   <div className="border-t border-gray-700 pt-3 flex justify-between text-lg">
                     <span className="font-bold text-white">Total</span>
-                    <span className="font-bold text-white">${getTotalPrice()}</span>
+                    <span className="font-bold text-white">${getTotalWithShipping()}</span>
                   </div>
                 </div>
 
-                <Link
-                  href="/checkout"
-                  className="w-full py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 text-sm sm:text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md text-white text-center block"
+                <button
+                  onClick={handleCheckout}
+                  disabled={isProcessing || cart.length === 0}
+                  className="w-full py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 text-sm sm:text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md text-white text-center block disabled:opacity-60 disabled:hover:scale-100"
                 >
-                  Proceed to Checkout
-                </Link>
+                  {isProcessing ? 'Starting checkout…' : 'Proceed to Checkout'}
+                </button>
 
                 <Link
                   href="/product"
