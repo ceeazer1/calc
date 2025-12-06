@@ -18,12 +18,44 @@ export async function POST(req) {
     }
 
     const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+    // Fetch authoritative pricing and stock from dashboard via internal proxy
+    const settingsRes = await fetch(new URL('/api/website-settings', req.url).toString(), { cache: 'no-store' })
+    let settings = null
+    if (settingsRes.ok) {
+      try { settings = await settingsRes.json() } catch {}
+    }
+    const price = Number(settings?.price)
+    const inStock = Boolean(settings?.inStock)
+    const stockCount = typeof settings?.stockCount === 'number' ? settings.stockCount : null
+
+    if (!Number.isFinite(price) || price <= 0) {
+      return new Response(
+        JSON.stringify({ error: 'Server not configured: price missing' }),
+        { status: 500, headers: { 'content-type': 'application/json' } }
+      )
+    }
+
+    if (!inStock || (typeof stockCount === 'number' && stockCount <= 0)) {
+      return new Response(
+        JSON.stringify({ error: 'Out of stock' }),
+        { status: 400, headers: { 'content-type': 'application/json' } }
+      )
+    }
+
+    const totalQty = Array.isArray(cart) ? cart.reduce((t, it) => t + (Number(it.quantity) || 1), 0) : 1
+    if (typeof stockCount === 'number' && totalQty > stockCount) {
+      return new Response(
+        JSON.stringify({ error: 'Insufficient stock for requested quantity' }),
+        { status: 400, headers: { 'content-type': 'application/json' } }
+      )
+    }
+
 
     // Instantiate Stripe lazily after confirming the secret exists
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
     const line_items = cart.map((item) => {
-      const unitAmount = Math.max(0, Math.round(Number(item.price) * 100))
+      const unitAmount = Math.max(0, Math.round(Number(price) * 100))
       return {
         price_data: {
           currency: 'usd',
