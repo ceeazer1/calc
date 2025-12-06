@@ -29,9 +29,12 @@ export async function middleware(req: NextRequest) {
       const data = await r.json()
       // Be tolerant to different shapes coming from the dashboard
       const m = (data?.maintenance ?? data) || {}
-      maintenanceEnabled = Boolean(
-        m.enabled ?? data?.maintenanceEnabled ?? data?.enabled ?? false
-      )
+      const raw = (m.enabled ?? data?.maintenanceEnabled ?? data?.enabled ?? false)
+      // Robust boolean coercion: handle booleans, strings ("true"/"false"), numbers (1/0)
+      if (typeof raw === 'boolean') maintenanceEnabled = raw
+      else if (typeof raw === 'string') maintenanceEnabled = /^(true|1|yes)$/i.test(raw.trim())
+      else if (typeof raw === 'number') maintenanceEnabled = raw === 1
+      else maintenanceEnabled = false
     }
   } catch {
     // If settings fail to load, default to site being open
