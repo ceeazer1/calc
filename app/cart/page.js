@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Poppins } from 'next/font/google'
+import { useRouter } from 'next/navigation'
 import { Trash2, Plus, Minus, ShoppingCart, ArrowLeft, MessageCircle } from 'lucide-react'
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
@@ -12,6 +13,7 @@ export default function CartPage() {
   const [cart, setCart] = useState([])
   const [loading, setLoading] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     // Load cart from localStorage
@@ -50,36 +52,9 @@ export default function CartPage() {
     return cart.reduce((total, item) => total + item.quantity, 0)
   }
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     setIsProcessing(true)
-
-    try {
-      // Request checkout URL from server
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          cartItems: cart,
-          totalAmount: Math.round(parseFloat(getTotalPrice()) * 100) // Convert to cents
-        }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok && data?.url) {
-        window.location.href = data.url
-      } else {
-        console.error('Checkout error:', data?.error)
-        alert('Payment could not be started. Please try again.')
-      }
-    } catch (error) {
-      console.error('Error:', error)
-      alert('Something went wrong. Please try again.')
-    } finally {
-      setIsProcessing(false)
-    }
+    router.push('/pay')
   }
 
   if (loading) {
