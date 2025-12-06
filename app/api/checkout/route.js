@@ -2,9 +2,16 @@ import { NextResponse } from 'next/server'
 import { Client, Environment } from 'square'
 import crypto from 'node:crypto'
 
+export const runtime = 'nodejs'
+
 function getSquareClient() {
   const accessToken = process.env.SQUARE_ACCESS_TOKEN
-  const env = process.env.SQUARE_ENV === 'production' ? Environment.Production : Environment.Sandbox
+  const envVar = (process.env.SQUARE_ENV || '').toLowerCase()
+  // Guard against cases where Environment is undefined in certain bundlers/runtimes
+  const env =
+    (typeof Environment !== 'undefined'
+      ? (envVar === 'production' ? Environment.Production : Environment.Sandbox)
+      : (envVar === 'production' ? 'production' : 'sandbox'))
   if (!accessToken) throw new Error('Missing SQUARE_ACCESS_TOKEN')
   return new Client({ accessToken, environment: env })
 }
