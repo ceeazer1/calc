@@ -25,7 +25,7 @@ async function getSquareClient() {
 
 export async function POST(request) {
   try {
-    const { token, cartItems = [] } = await request.json()
+    const { token, cartItems = [], buyer } = await request.json()
 
     if (!token) {
       return NextResponse.json({ error: 'Missing payment token' }, { status: 400 })
@@ -67,12 +67,27 @@ export async function POST(request) {
     const client = await getSquareClient()
     const idempotencyKey = crypto.randomUUID()
 
+    // Compose optional order note with shipping details for visibility in Square
+    const noteParts = []
+    if (buyer?.fullName) noteParts.push(`Ship To: ${buyer.fullName}`)
+    const addr = buyer?.address
+    if (addr?.line1 || addr?.city || addr?.state || addr?.postal) {
+      noteParts.push(
+        `Address: ${[addr?.line1, addr?.line2, addr?.city, addr?.state, addr?.postal, addr?.country || 'US']
+          .filter(Boolean)
+          .join(', ')}`
+      )
+    }
+    if (buyer?.email) noteParts.push(`Email: ${buyer.email}`)
+    const orderNote = noteParts.join(' | ')
+
     // Create an order for itemization (optional but recommended)
     const orderRes = await client.orders.createOrder({
       idempotencyKey,
       order: {
         locationId,
-        lineItems
+        lineItems,
+        ...(orderNote ? { note: orderNote } : {})
       }
     })
 
@@ -85,7 +100,8 @@ export async function POST(request) {
       locationId,
       amountMoney: { amount: BigInt(totalCents), currency: 'USD' },
       orderId,
-      autocomplete: true
+      autocomplete: true,
+      ...(buyer?.email ? { buyerEmailAddress: String(buyer.email) } : {})
     })
 
     const payment = paymentRes?.payment
