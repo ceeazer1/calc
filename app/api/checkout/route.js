@@ -3,24 +3,24 @@ import crypto from 'node:crypto'
 
 export const runtime = 'nodejs'
 
+// Square SDK v43+ exports SquareClient and SquareEnvironment
 async function getSquareExports() {
   const mod = await import('square')
-  const Client = mod?.Client || mod?.default?.Client
-  const Environment = mod?.Environment || mod?.default?.Environment
-  return { Client, Environment }
+  const SquareClient = mod?.SquareClient || mod?.default?.SquareClient
+  const SquareEnvironment = mod?.SquareEnvironment || mod?.default?.SquareEnvironment
+  return { SquareClient, SquareEnvironment }
 }
 
 async function getSquareClient() {
   const accessToken = process.env.SQUARE_ACCESS_TOKEN
   const envVar = (process.env.SQUARE_ENV || '').toLowerCase()
-  const { Client, Environment } = await getSquareExports()
-  if (!Client) throw new Error('Square SDK not loaded: Client missing')
-  const env =
-    (typeof Environment !== 'undefined'
-      ? (envVar === 'production' ? Environment.Production : Environment.Sandbox)
-      : (envVar === 'production' ? 'production' : 'sandbox'))
+  const { SquareClient, SquareEnvironment } = await getSquareExports()
+  if (!SquareClient) throw new Error('Square SDK not loaded: SquareClient missing')
   if (!accessToken) throw new Error('Missing SQUARE_ACCESS_TOKEN')
-  return new Client({ accessToken, environment: env })
+  const environment = envVar === 'production'
+    ? (SquareEnvironment?.Production ?? 'https://connect.squareup.com')
+    : (SquareEnvironment?.Sandbox ?? 'https://connect.squareupsandbox.com')
+  return new SquareClient({ token: accessToken, environment })
 }
 
 function getSiteUrl() {
@@ -89,7 +89,7 @@ export async function POST(request) {
       }
     }
 
-    const { result } = await client.checkoutApi.createPaymentLink(body)
+    const result = await client.checkout.paymentLinks.create(body)
     const url = result?.paymentLink?.url
     if (!url) {
       return NextResponse.json({ error: 'Failed to create checkout link' }, { status: 502 })
