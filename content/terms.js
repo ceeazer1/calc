@@ -35,11 +35,11 @@ export const TERMS_HTML_V2 = `
 <h2>3) Acceptable use</h2>
 <p>Do not use CalcAI to break laws, infringe rights, harass people, generate illegal content, bypass technical protections, or perform medical/legal/financial decisions without qualified human review. We may throttle or refuse service for abuse.</p>
 
-<h2>4) Third‑party services (OpenAI, Twilio, Poof)</h2>
+<h2>4) Third‑party services (OpenAI, Twilio, Payments)</h2>
 <ul>
   <li><strong>AI providers.</strong> When you use cloud features, your prompts, images, and outputs go to the provider (e.g., OpenAI) under their terms/privacy. Don’t submit secrets you don’t want processed in the cloud.</li>
   <li><strong>SMS.</strong> If you opt in, restock texts are sent via Twilio. Reply STOP to unsubscribe; HELP for help.</li>
-  <li><strong>Payments.</strong> All payments are processed by Poof. We do not store full card numbers or CVCs.</li>
+  <li><strong>Payments.</strong> All payments are processed by our payment provider. We do not store full card numbers or CVCs.</li>
 </ul>
 
 <h2>5) Privacy (short summary)</h2>
@@ -56,12 +56,12 @@ export const TERMS_HTML_V2 = `
   <li>Installing unapproved firmware, opening the device, or altering wiring may void the limited warranty.</li>
 </ul>
 
-<h2>7) Orders, shipping, returns, Poof payments</h2>
+<h2>7) Orders, shipping, returns, payments</h2>
 <ul>
   <li>Prices can change until checkout. We may cancel suspected-fraud orders with a prompt refund.</li>
   <li>Taxes/duties are your responsibility. Risk of loss passes to you when we give the package to the carrier.</li>
   <li>Unused stock units: limited return window (e.g., 14 days) may apply; shipping is non‑refundable. Custom/send‑in work is generally final sale except for defects we caused.</li>
-  <li>Payments run through Poof. Refunds (if any) go back to the original method per Poof timelines.</li>
+  <li>Payments run through our payment provider. Refunds (if any) go back to the original method per provider timelines.</li>
 </ul>
 
 <h2>8) Limited warranty (workmanship)</h2>

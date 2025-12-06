@@ -35,7 +35,7 @@ export default function Checkout() {
   const shippingAmount = shippingPrices[shippingType] ?? 0
   const total = (subtotal + shippingAmount).toFixed(2)
 
-  const [isProcessing, setIsProcessing] = useState(true)
+  const [isProcessing, setIsProcessing] = useState(false)
   const [orderComplete, setOrderComplete] = useState(false)
 
   const handleInputChange = (e) => {
@@ -46,104 +46,15 @@ export default function Checkout() {
     }))
   }
 
-  // API-only: immediately create checkout on mount and redirect to Poof
-  const startPoofCheckout = async (overrideBody) => {
-    try {
-      setIsProcessing(true)
-      let cartItems = []
-      try { cartItems = JSON.parse(localStorage.getItem('cart') || '[]') } catch {}
-      const body = overrideBody || { cartItems }
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      })
-      const data = await response.json()
-      if (response.ok && data?.url) {
-        window.location.href = data.url
-        return
-      }
-      throw new Error(data?.error || 'Failed to start Poof checkout')
-    } catch (err) {
-      console.error('Poof checkout error:', err)
-      alert('Payment could not be started. Please try again.')
-    } finally {
-      setIsProcessing(false)
-    }
-  }
+
 
   useEffect(() => {
-    // Auto-start checkout when page loads
-    startPoofCheckout()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setIsProcessing(false)
   }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setIsProcessing(true)
-
-    try {
-      // API-only path: always use our server to create a Poof checkout URL
-      await startPoofCheckout()
-      return
-      // Build Poof payload for client-side checkout
-      const payload = {
-        username: process.env.NEXT_PUBLIC_POOF_USERNAME || 'Poof',
-        amount: total,
-        default: {
-          name: `${formData.firstName} ${formData.lastName}`.trim(),
-          email: formData.email,
-          phone: formData.phone,
-          address: formData.address,
-          address2: formData.address2,
-          city: formData.city,
-          state: formData.state,
-          zip: formData.zipCode,
-          country: formData.country
-        },
-        metadata: {
-          shippingType,
-          shippingCost: shippingAmount
-        }
-      }
-
-      const loadScript = (src) => new Promise((resolve, reject) => {
-        if (document.querySelector(`script[src="${src}"]`)) return resolve()
-        const s = document.createElement('script')
-        s.src = src
-        s.async = true
-        s.onload = () => resolve()
-        s.onerror = () => reject(new Error(`Failed to load ${src}`))
-        document.body.appendChild(s)
-      })
-
-      // Try Poof client SDK first for instant checkout
-      await loadScript('https://www.poof.io/static/api/checkout_v2.js')
-      await loadScript('https://www.poof.io/static/api/sdk.js')
-      window.payload = payload
-      if (typeof window.request === 'function') {
-        window.request()
-        return
-      }
-
-      // Fallback: ask our server to create a checkout link
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ formData, shippingType })
-      })
-      const data = await response.json()
-      if (response.ok && data?.url) {
-        window.location.href = data.url
-      } else {
-        throw new Error(data?.error || 'Failed to start Poof checkout')
-      }
-    } catch (error) {
-      console.error('Error:', error)
-      alert('Something went wrong starting checkout. Please try again.')
-    } finally {
-      setIsProcessing(false)
-    }
+    alert('Checkout is temporarily unavailable while we switch payment providers.')
   }
 
   if (orderComplete) {
@@ -173,8 +84,8 @@ export default function Checkout() {
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center space-y-2">
           <div className="w-8 h-8 border-2 border-white/60 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-          <p className="text-lg">Redirecting to Poof checkout…</p>
-          <p className="text-sm text-gray-400">US-only shipping • $13 flat rate</p>
+          <p className="text-lg">Checkout is currently unavailable</p>
+          <p className="text-sm text-gray-400">We’re switching payment providers. Please try again later.</p>
         </div>
       </div>
     )
@@ -183,10 +94,9 @@ export default function Checkout() {
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
       <div className="text-center space-y-2">
-        <p className="text-lg">Starting secure Poof checkout…</p>
-        <p className="text-sm text-gray-400">US-only shipping • $13 flat rate</p>
+        <p className="text-lg">Checkout is currently unavailable</p>
+        <p className="text-sm text-gray-400">We’re switching payment providers. Please check back soon.</p>
         <div className="mt-3 flex items-center justify-center gap-3">
-          <button onClick={() => startPoofCheckout()} className="btn-primary">Try Again</button>
           <Link href="/cart" className="btn-secondary">Back to Cart</Link>
         </div>
       </div>
@@ -559,15 +469,15 @@ export default function Checkout() {
               <div className="bg-white rounded-xl shadow-lg p-8">
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">Payment</h3>
                 <p className="text-gray-600">
-                  You’ll complete your payment securely with Poof after clicking the button below.
+                  Checkout is currently unavailable while we switch payment providers.
                 </p>
                 <div className="mt-4 p-4 bg-blue-50 rounded-lg">
                   <div className="flex items-center space-x-2 text-blue-800">
                     <Lock className="w-5 h-5" />
-                    <span className="text-sm font-medium">Secure checkout via Poof</span>
+                    <span className="text-sm font-medium">Secure checkout</span>
                   </div>
                   <p className="text-sm text-blue-700 mt-1">
-                    We never store your card or wallet details. Payments are processed by Poof.
+                    We never store your card or wallet details.
                   </p>
                 </div>
               </div>

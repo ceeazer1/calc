@@ -236,9 +236,13 @@ export default function CartPage() {
                 <button
                   onClick={handleCheckout}
                   disabled={isProcessing || cart.length === 0}
-                  className="w-full py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 text-sm sm:text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md text-white text-center block disabled:opacity-60 disabled:hover:scale-100"
+                  className={`w-full py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 transform text-sm sm:text-base text-white text-center block ${
+                    isProcessing || cart.length === 0
+                      ? 'bg-gray-700 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
+                  }`}
                 >
-                  {isProcessing ? 'Starting checkout…' : 'Proceed to Checkout'}
+                  {isProcessing ? 'Redirecting…' : 'Proceed to Checkout'}
                 </button>
 
                 <Link

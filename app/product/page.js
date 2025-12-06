@@ -253,29 +253,7 @@ export default function ProductPage() {
     })()
   }, [])
   const handlePreorderCheckout = async () => {
-    try {
-      const label = getProductName() + ' — Preorder' + (preorderShipDate ? ` (Ships ${preorderShipDate})` : '')
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          preorder: true,
-          cartItems: [{
-            id: 'calcai-ti84-preorder',
-            name: label,
-            price: preorderPrice,
-            quantity,
-            image: '/ti84.png'
-          }]
-        })
-      })
-      const data = await response.json()
-      if (!response.ok || !data.url) throw new Error(data.error || 'Checkout error')
-      window.location.href = data.url
-    } catch (e) {
-      alert('Could not start preorder checkout. Please try again or contact support.')
-      console.error(e)
-    }
+    alert('Checkout is temporarily unavailable while we switch payment providers.')
   }
 
   return (
@@ -524,7 +502,7 @@ export default function ProductPage() {
               )}
 
               <div className="text-center text-xs text-gray-400 mt-2">
-                <p>Secure payment via Poof</p>
+                <p>Secure checkout</p>
               </div>
 
               {/* SMS restock alert opt-in (with proof of consent) */}
