@@ -179,6 +179,20 @@ export default function Checkout() {
       </div>
     )
   }
+  // Fallback: if not processing and we haven't redirected, show dark handoff with retry
+  return (
+    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
+      <div className="text-center space-y-2">
+        <p className="text-lg">Starting secure Poof checkout…</p>
+        <p className="text-sm text-gray-400">US-only shipping • $13 flat rate</p>
+        <div className="mt-3 flex items-center justify-center gap-3">
+          <button onClick={() => startPoofCheckout()} className="btn-primary">Try Again</button>
+          <Link href="/cart" className="btn-secondary">Back to Cart</Link>
+        </div>
+      </div>
+    </div>
+  )
+
 
 
   return (
