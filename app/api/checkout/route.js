@@ -47,11 +47,11 @@ export async function POST(request) {
     const lineItems = cartItems.map((item) => {
       const qty = Math.max(1, Number(item.quantity || 1))
       const price = Number(item.price || 0)
-      const amount = Math.round(price * 100) // cents
+      const amountCents = Math.round(price * 100) // cents
       return {
         name: String(item.name || 'Item'),
         quantity: String(qty),
-        basePriceMoney: { amount, currency: 'USD' }
+        basePriceMoney: { amount: BigInt(amountCents), currency: 'USD' }
       }
     })
 
@@ -59,7 +59,7 @@ export async function POST(request) {
     const serviceCharges = [
       {
         name: 'Shipping',
-        amountMoney: { amount: 1300, currency: 'USD' },
+        amountMoney: { amount: BigInt(1300), currency: 'USD' },
         calculationPhase: 'TOTAL_PHASE',
         taxable: false
       }
