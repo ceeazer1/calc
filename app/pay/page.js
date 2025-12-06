@@ -43,7 +43,7 @@ export default function PayPage() {
               backgroundColor: 'rgb(10,10,10)',
               color: '#ffffff',
               fontSize: '16px',
-              placeholderColor: '#A0A0A0'
+              placeholderColor: '#a0a0a0'
             }
           }
         })
