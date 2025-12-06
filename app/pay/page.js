@@ -101,27 +101,27 @@ export default function PayPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         <div className="rounded-2xl border border-white/10 bg-gray-900/50 p-6">
-          <h1 className="text-xl font-bold mb-4">Pay ${'{'}total.toFixed(2){'}'}</h1>
+          <h1 className="text-xl font-bold mb-4">Pay ${total.toFixed(2)}</h1>
           <p className="text-xs text-gray-400 mb-4">Shipping: US only - $13 flat rate</p>
 
           {error && (
             <div className="mb-4 text-sm text-red-300">{error}</div>
           )}
 
+          <div id="card-container" className="rounded-lg border border-white/10 bg-black p-4" />
           {loading ? (
-            <div className="flex items-center gap-3 text-sm text-gray-300">
+            <div className="mt-4 flex items-center gap-3 text-sm text-gray-300">
               <div className="w-5 h-5 border-2 border-white/60 border-t-transparent rounded-full animate-spin" />
               Initializing secure payment…
             </div>
           ) : (
             <>
-              <div id="card-container" className="rounded-lg border border-white/10 bg-black p-4" />
               <button
                 onClick={handlePay}
                 disabled={!card}
                 className={`mt-4 w-full py-3 rounded-lg font-semibold transition-all ${!card ? 'bg-gray-700 cursor-not-allowed' : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'}`}
               >
-                Pay ${'{'}total.toFixed(2){'}'}
+                Pay ${total.toFixed(2)}
               </button>
               <p className="mt-3 text-xs text-gray-400">Your card data is handled by Square. We do not store or see your card details.</p>
             </>
