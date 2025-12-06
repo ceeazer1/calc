@@ -44,16 +44,28 @@ export async function POST(req) {
       shipping_options: [
         {
           shipping_rate_data: {
-            display_name: 'US Shipping',
+            display_name: 'USPS Priority Mail',
             type: 'fixed_amount',
-            fixed_amount: { amount: 1300, currency: 'usd' },
+            fixed_amount: { amount: 1500, currency: 'usd' },
             delivery_estimate: {
-              minimum: { unit: 'business_day', value: 3 },
-              maximum: { unit: 'business_day', value: 7 },
+              minimum: { unit: 'business_day', value: 2 },
+              maximum: { unit: 'business_day', value: 5 },
+            },
+          },
+        },
+        {
+          shipping_rate_data: {
+            display_name: 'USPS Priority Mail Express®',
+            type: 'fixed_amount',
+            fixed_amount: { amount: 4500, currency: 'usd' },
+            delivery_estimate: {
+              minimum: { unit: 'business_day', value: 1 },
+              maximum: { unit: 'business_day', value: 2 },
             },
           },
         },
       ],
+      allow_promotion_codes: true,
       success_url: `${origin}/success`,
       cancel_url: `${origin}/cart`,
     })
