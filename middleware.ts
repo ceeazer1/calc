@@ -23,8 +23,19 @@ export async function middleware(req: NextRequest) {
 
   let maintenanceEnabled = false
   try {
+    // 1) Preferred: internal proxy (node env can read DASHBOARD_URL)
     const url = new URL('/api/website-settings', req.url)
-    const r = await fetch(url.toString(), { cache: 'no-store' })
+    let r = await fetch(url.toString(), { cache: 'no-store' })
+
+    // 2) Fallback: fetch dashboard public endpoint directly from edge using NEXT_PUBLIC_DASHBOARD_URL
+    if (!r.ok) {
+      const dash = process.env.NEXT_PUBLIC_DASHBOARD_URL
+      if (dash) {
+        const base = dash.replace(/\/+$/, '')
+        r = await fetch(`${base}/api/website-public/settings`, { cache: 'no-store' })
+      }
+    }
+
     if (r.ok) {
       const data = await r.json()
       // Be tolerant to different shapes coming from the dashboard
