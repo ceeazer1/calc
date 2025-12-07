@@ -5,7 +5,8 @@ import { NextResponse } from 'next/server'
 // server-side and can read either DASHBOARD_URL or NEXT_PUBLIC_DASHBOARD_URL.
 export async function GET() {
   try {
-    const dashURL = process.env.DASHBOARD_URL || process.env.NEXT_PUBLIC_DASHBOARD_URL
+    const dashURLRaw = process.env.DASHBOARD_URL || process.env.NEXT_PUBLIC_DASHBOARD_URL
+    const dashURL = (dashURLRaw || '').trim()
     if (!dashURL) {
       return NextResponse.json({ error: 'Dashboard URL not configured' }, { status: 500 })
     }
@@ -17,6 +18,7 @@ export async function GET() {
     const json = await r.json()
     const res = NextResponse.json(json)
     res.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
+    res.headers.set('x-source', 'dashboard-proxy')
     return res
   } catch (e) {
     return NextResponse.json({ error: 'Unexpected error' }, { status: 500 })

@@ -3,19 +3,35 @@ import type { NextRequest } from 'next/server'
 
 // Gate the entire site behind /maintenance when settings enable it.
 export async function middleware(req: NextRequest) {
-  const { pathname, searchParams } = req.nextUrl
+  const urlObj = req.nextUrl
+  const pathname = urlObj.pathname
+  const searchParams = urlObj.searchParams
 
-  // Admin emergency bypass: cookie or query ?maintenance=off
+  // Admin emergency bypass helpers via query/cookie
   const hasBypassCookie = req.cookies.get('maintenance')?.value === 'off'
-  const bypassParam = searchParams.get('maintenance') === 'off'
-  if (bypassParam || hasBypassCookie) {
+  const maintenanceParam = searchParams.get('maintenance')
+  if (maintenanceParam === 'off') {
+    const clean = new URL(req.url)
+    clean.searchParams.delete('maintenance')
+    const res = NextResponse.redirect(clean)
+    res.cookies.set('maintenance', 'off', { path: '/', maxAge: 60 * 60 * 24 })
+    res.headers.set('Cache-Control', 'no-store')
+    res.headers.set('x-maintenance', 'bypass-set')
+    return res
+  }
+  if (maintenanceParam === 'on' || maintenanceParam === 'reset') {
+    const clean = new URL(req.url)
+    clean.searchParams.delete('maintenance')
+    const res = NextResponse.redirect(clean)
+    res.cookies.set('maintenance', '', { path: '/', maxAge: 0 })
+    res.headers.set('Cache-Control', 'no-store')
+    res.headers.set('x-maintenance', 'bypass-clear')
+    return res
+  }
+  if (hasBypassCookie) {
     const res = NextResponse.next()
     res.headers.set('Cache-Control', 'no-store')
     res.headers.set('x-maintenance', 'bypass')
-    if (bypassParam && !hasBypassCookie) {
-      // persist bypass for subsequent requests
-      res.cookies.set('maintenance', 'off', { path: '/', maxAge: 60 * 60 * 24 })
-    }
     return res
   }
 
@@ -50,7 +66,7 @@ export async function middleware(req: NextRequest) {
 
     // 2) Fallback: fetch dashboard public endpoint directly from edge using NEXT_PUBLIC_DASHBOARD_URL
     if (!r.ok) {
-      const dash = process.env.NEXT_PUBLIC_DASHBOARD_URL
+      const dash = (process.env.NEXT_PUBLIC_DASHBOARD_URL || '').trim()
       if (dash) {
         const base = dash.replace(/\/+$/, '')
         r = await fetch(`${base}/api/website-public/settings`, { cache: 'no-store' })
