@@ -30,20 +30,21 @@ export async function middleware(req: NextRequest) {
 
   let maintenanceEnabled = false
   try {
-    // 1) Preferred: internal proxy (node env can read DASHBOARD_URL)
-    const url = new URL('/api/website-settings', req.url)
-    let r = await fetch(url.toString(), { cache: 'no-store' })
-
-    // 2) Fallback: fetch dashboard public endpoint directly from edge using NEXT_PUBLIC_DASHBOARD_URL
-    if (!r.ok) {
-      const dash = (process.env.NEXT_PUBLIC_DASHBOARD_URL || '').trim()
-      if (dash) {
-        const base = dash.replace(/\/+$/, '')
-        r = await fetch(`${base}/api/website-public/settings`, { cache: 'no-store' })
-      }
+    // 1) Preferred: fetch dashboard public endpoint directly from Edge using NEXT_PUBLIC_DASHBOARD_URL
+    const dash = (process.env.NEXT_PUBLIC_DASHBOARD_URL || '').trim()
+    let r: Response | null = null
+    if (dash) {
+      const base = dash.replace(/\/+$/, '')
+      r = await fetch(`${base}/api/website-public/settings`, { cache: 'no-store' })
     }
 
-    if (r.ok) {
+    // 2) Fallback: internal proxy (node env can read DASHBOARD_URL)
+    if (!r || !r.ok) {
+      const url = new URL('/api/website-settings', req.url)
+      r = await fetch(url.toString(), { cache: 'no-store' })
+    }
+
+    if (r && r.ok) {
       const data = await r.json()
       // Be tolerant to different shapes coming from the dashboard
       const m = (data?.maintenance ?? data) || {}
