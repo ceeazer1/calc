@@ -3,37 +3,7 @@ import type { NextRequest } from 'next/server'
 
 // Gate the entire site behind /maintenance when settings enable it.
 export async function middleware(req: NextRequest) {
-  const urlObj = req.nextUrl
-  const pathname = urlObj.pathname
-  const searchParams = urlObj.searchParams
-
-  // Admin emergency bypass helpers via query/cookie
-  const hasBypassCookie = req.cookies.get('maintenance')?.value === 'off'
-  const maintenanceParam = searchParams.get('maintenance')
-  if (maintenanceParam === 'off') {
-    const clean = new URL(req.url)
-    clean.searchParams.delete('maintenance')
-    const res = NextResponse.redirect(clean)
-    res.cookies.set('maintenance', 'off', { path: '/', maxAge: 60 * 60 * 24 })
-    res.headers.set('Cache-Control', 'no-store')
-    res.headers.set('x-maintenance', 'bypass-set')
-    return res
-  }
-  if (maintenanceParam === 'on' || maintenanceParam === 'reset') {
-    const clean = new URL(req.url)
-    clean.searchParams.delete('maintenance')
-    const res = NextResponse.redirect(clean)
-    res.cookies.set('maintenance', '', { path: '/', maxAge: 0 })
-    res.headers.set('Cache-Control', 'no-store')
-    res.headers.set('x-maintenance', 'bypass-clear')
-    return res
-  }
-  if (hasBypassCookie) {
-    const res = NextResponse.next()
-    res.headers.set('Cache-Control', 'no-store')
-    res.headers.set('x-maintenance', 'bypass')
-    return res
-  }
+  const { pathname } = req.nextUrl
 
   // Always allow these paths
   const allowedPrefixes = [
