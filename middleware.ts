@@ -3,22 +3,43 @@ import type { NextRequest } from 'next/server'
 
 // Gate the entire site behind /maintenance when settings enable it.
 export async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl
+  const { pathname, searchParams } = req.nextUrl
+
+  // Admin emergency bypass: cookie or query ?maintenance=off
+  const hasBypassCookie = req.cookies.get('maintenance')?.value === 'off'
+  const bypassParam = searchParams.get('maintenance') === 'off'
+  if (bypassParam || hasBypassCookie) {
+    const res = NextResponse.next()
+    res.headers.set('Cache-Control', 'no-store')
+    res.headers.set('x-maintenance', 'bypass')
+    if (bypassParam && !hasBypassCookie) {
+      // persist bypass for subsequent requests
+      res.cookies.set('maintenance', 'off', { path: '/', maxAge: 60 * 60 * 24 })
+    }
+    return res
+  }
 
   // Always allow these paths
   const allowedPrefixes = [
     '/maintenance',
     '/api/website-settings',
+    '/api/test-env',
     '/_next',
   ]
   if (allowedPrefixes.some((p) => pathname.startsWith(p))) {
-    return NextResponse.next()
+    const res = NextResponse.next()
+    res.headers.set('Cache-Control', 'no-store')
+    res.headers.set('x-maintenance', 'allowed')
+    return res
   }
 
   // Allow common static assets
   const staticAsset = /\.(?:png|jpg|jpeg|svg|gif|webp|ico|css|js|map|txt|woff2?|ttf|otf)$/i
   if (staticAsset.test(pathname) || pathname === '/favicon.ico') {
-    return NextResponse.next()
+    const res = NextResponse.next()
+    res.headers.set('Cache-Control', 'no-store')
+    res.headers.set('x-maintenance', 'static')
+    return res
   }
 
   let maintenanceEnabled = false
@@ -53,10 +74,16 @@ export async function middleware(req: NextRequest) {
 
   if (maintenanceEnabled) {
     const target = new URL('/maintenance', req.url)
-    return NextResponse.rewrite(target)
+    const res = NextResponse.rewrite(target)
+    res.headers.set('Cache-Control', 'no-store')
+    res.headers.set('x-maintenance', 'on')
+    return res
   }
 
-  return NextResponse.next()
+  const res = NextResponse.next()
+  res.headers.set('Cache-Control', 'no-store')
+  res.headers.set('x-maintenance', 'off')
+  return res
 }
 
 export const config = {
