@@ -23,7 +23,8 @@ async function getSettings() {
 export default async function MaintenancePage() {
   const data = await getSettings()
   const m = (data?.maintenance ?? data) || {}
-  const target = m.until || m.maintenanceUntil || process.env.NEXT_PUBLIC_MAINTENANCE_UNTIL || '2025-12-31T00:00:00Z'
+  const rawUntil = (m.until ?? m.maintenanceUntil ?? '').toString()
+  const target = rawUntil.trim()
   const discord = m.discordUrl || process.env.NEXT_PUBLIC_DISCORD_URL || '#'
 
   return (
@@ -33,7 +34,7 @@ export default async function MaintenancePage() {
           <Image src="/logo.png" alt="CalcAI" width={120} height={120} priority className="rounded-xl" />
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold">We will be back</h1>
-        <MaintenanceCountdown target={target} />
+        {target ? <MaintenanceCountdown target={target} /> : null}
         <div className="pt-2">
           <a href={discord} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors">
             <Image src="/discord-logo.svg" alt="Discord" width={20} height={20} />
