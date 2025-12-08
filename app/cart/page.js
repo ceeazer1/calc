@@ -58,7 +58,11 @@ export default function CartPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cart })
       })
-      if (!res.ok) throw new Error('Failed to initialize checkout')
+      if (!res.ok) {
+        let msg = 'Failed to initialize checkout'
+        try { const j = await res.json(); if (j?.error) msg = j.error } catch {}
+        throw new Error(msg)
+      }
       const data = await res.json()
       if (data?.url) {
         window.location.href = data.url

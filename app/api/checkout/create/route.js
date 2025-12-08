@@ -18,36 +18,82 @@ export async function POST(req) {
     }
 
     const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    // Fetch authoritative pricing and stock from dashboard via internal proxy
-    const settingsRes = await fetch(new URL('/api/website-settings', req.url).toString(), { cache: 'no-store' })
+
+    // Fetch authoritative pricing/stock: prefer dashboard public endpoint, fallback to internal proxy
+    const dashURLRaw = process.env.DASHBOARD_URL || process.env.NEXT_PUBLIC_DASHBOARD_URL
+    const dashBase = (dashURLRaw || '').trim().replace(/\/+$/, '')
+
     let settings = null
-    if (settingsRes.ok) {
-      try { settings = await settingsRes.json() } catch {}
+    let settingsSource = 'none'
+    if (dashBase) {
+      try {
+        const r = await fetch(`${dashBase}/api/website-public/settings`, { cache: 'no-store' })
+        if (r.ok) {
+          settings = await r.json()
+          settingsSource = 'dashboard-direct'
+        }
+      } catch {}
     }
-    const price = Number(settings?.price)
-    const inStock = Boolean(settings?.inStock)
-    const stockCount = typeof settings?.stockCount === 'number' ? settings.stockCount : null
+    if (!settings) {
+      try {
+        const r2 = await fetch(new URL('/api/website-settings', req.url).toString(), { cache: 'no-store' })
+        if (r2.ok) {
+          settings = await r2.json()
+          settingsSource = 'proxy'
+        }
+      } catch {}
+    }
+
+    const rawPrice = settings?.price
+    const price = Number(rawPrice)
+
+    const rawInStock = (settings?.inStock ?? settings?.available ?? settings?.stock?.available ?? false)
+    let inStock = false
+    if (typeof rawInStock === 'boolean') inStock = rawInStock
+    else if (typeof rawInStock === 'string') inStock = /^(true|1|yes)$/i.test(rawInStock.trim())
+    else if (typeof rawInStock === 'number') inStock = rawInStock === 1
+
+    const rawStock = settings?.stockCount
+    const stockCount = Number.isFinite(Number(rawStock)) ? Number(rawStock) : null
 
     if (!Number.isFinite(price) || price <= 0) {
-      return new Response(
+      const res = new Response(
         JSON.stringify({ error: 'Server not configured: price missing' }),
         { status: 500, headers: { 'content-type': 'application/json' } }
       )
+      res.headers.set('Cache-Control', 'no-store')
+      res.headers.set('x-settings-source', settingsSource)
+      return res
     }
 
-    if (!inStock || (typeof stockCount === 'number' && stockCount <= 0)) {
-      return new Response(
+    if (!inStock) {
+      const res = new Response(
         JSON.stringify({ error: 'Out of stock' }),
         { status: 400, headers: { 'content-type': 'application/json' } }
       )
+      res.headers.set('Cache-Control', 'no-store')
+      res.headers.set('x-settings-source', settingsSource)
+      return res
     }
 
     const totalQty = Array.isArray(cart) ? cart.reduce((t, it) => t + (Number(it.quantity) || 1), 0) : 1
+    if (typeof stockCount === 'number' && stockCount <= 0) {
+      const res = new Response(
+        JSON.stringify({ error: 'Out of stock' }),
+        { status: 400, headers: { 'content-type': 'application/json' } }
+      )
+      res.headers.set('Cache-Control', 'no-store')
+      res.headers.set('x-settings-source', settingsSource)
+      return res
+    }
     if (typeof stockCount === 'number' && totalQty > stockCount) {
-      return new Response(
+      const res = new Response(
         JSON.stringify({ error: 'Insufficient stock for requested quantity' }),
         { status: 400, headers: { 'content-type': 'application/json' } }
       )
+      res.headers.set('Cache-Control', 'no-store')
+      res.headers.set('x-settings-source', settingsSource)
+      return res
     }
 
 
