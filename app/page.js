@@ -135,7 +135,7 @@ export default function Home() {
             </h1>
 
             <p className="max-w-xl text-base font-light leading-relaxed tracking-tight text-slate-300/80 sm:text-lg">
-              The world's most advanced AI calculator. Experience the future of mathematics with generative surfaces and neural precision.
+              The world&apos;s most advanced AI calculator. Experience the future of mathematics with generative surfaces and neural precision.
             </p>
 
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">

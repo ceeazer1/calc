@@ -60,7 +60,7 @@ export default function FAQs() {
                     </Accordion>
 
                     <p className="text-gray-400 text-center font-light tracking-tight">
-                        Can't find what you're looking for? Contact our{' '}
+                        Can&apos;t find what you&apos;re looking for? Contact our{' '}
                         <Link
                             href="/community"
                             className="text-blue-400 font-medium hover:underline">

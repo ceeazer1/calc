@@ -415,7 +415,7 @@ export default function ProductPage() {
                   <p className="text-xs text-gray-400 mb-4">Enter your phone number for a restock text.</p>
 
                   {smsResult?.ok ? (
-                    <div className="text-green-400 text-xs">✓ You're subscribed. We'll text you when CalcAI is back in stock.</div>
+                    <div className="text-green-400 text-xs">✓ You&apos;re subscribed. We&apos;ll text you when CalcAI is back in stock.</div>
                   ) : (
                     <form onSubmit={handleSmsSubscribe} className="space-y-3">
                       <PhoneInput
