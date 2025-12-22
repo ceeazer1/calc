@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Manrope } from "next/font/google"
 
-const manrope = Manrope({ subsets: ['latin'], weight: ['400','500','600'] })
+const manrope = Manrope({ subsets: ['latin'], weight: ['400', '500', '600'] })
 
 export default function Hero() {
   return (
@@ -46,9 +46,11 @@ export default function Hero() {
             className="relative w-full flex justify-center"
           >
             <div className="mx-auto max-w-[240px] sm:max-w-[300px] md:max-w-[360px] lg:max-w-[420px] xl:max-w-[500px] mt-16 sm:mt-20 md:mt-24 lg:mt-28"
-                 style={{ WebkitMaskImage: 'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 52%, rgba(255,255,255,0) 92%, rgba(255,255,255,0) 100%)',
-                          maskImage: 'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 52%, rgba(255,255,255,0) 92%, rgba(255,255,255,0) 100%)' }}>
-              <Image src="/ti84.png" alt="CalcAI TI-84" width={1200} height={1600} className="w-full h-auto object-contain" priority />
+              style={{
+                WebkitMaskImage: 'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 52%, rgba(255,255,255,0) 92%, rgba(255,255,255,0) 100%)',
+                maskImage: 'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 52%, rgba(255,255,255,0) 92%, rgba(255,255,255,0) 100%)'
+              }}>
+              <Image src="/calcai-new.png" alt="CalcAI TI-84" width={1200} height={1600} className="w-full h-auto object-contain" priority />
             </div>
           </motion.div>
         </div>

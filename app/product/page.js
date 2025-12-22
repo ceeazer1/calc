@@ -1,75 +1,78 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Poppins } from 'next/font/google'
-import { Star, CheckCircle, ShoppingCart, ArrowLeft, ArrowRight, Shield, Truck, RotateCcw, MessageCircle, Calculator } from 'lucide-react'
-import CountdownBanner from '../../components/CountdownBanner'
-
-const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
+import { useRouter } from 'next/navigation'
+import FAQs from '../../components/FAQs'
+import { Input as NumberInput } from '../../components/ui/number-input'
+import { PhoneInput } from '../../components/ui/phone-input'
+import { ShoppingCart, Shield, Truck, Lock } from 'lucide-react'
 
 // Country list (dial codes); patterns kept light — we can switch to libphonenumber-js formatting next
 const COUNTRIES = [
-  { code:'US', name:'United States', dial:'1', nsn:[10], pattern:[3,3,4], placeholder:'(555) 123-4567' },
-  { code:'CA', name:'Canada', dial:'1', nsn:[10], pattern:[3,3,4], placeholder:'(555) 123-4567' },
-  { code:'MX', name:'Mexico', dial:'52', nsn:[10], pattern:[], placeholder:'Phone number' },
-  { code:'BR', name:'Brazil', dial:'55', nsn:[10,11], pattern:[], placeholder:'Phone number' },
-  { code:'AR', name:'Argentina', dial:'54', nsn:[10], pattern:[], placeholder:'Phone number' },
-  { code:'GB', name:'United Kingdom', dial:'44', nsn:[9,10], pattern:[4,3,3], placeholder:'7123 456 789' },
-  { code:'IE', name:'Ireland', dial:'353', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'FR', name:'France', dial:'33', nsn:[9], pattern:[2,2,2,3], placeholder:'6 12 34 567' },
-  { code:'DE', name:'Germany', dial:'49', nsn:[10,11], pattern:[3,3,4], placeholder:'151 234 5678' },
-  { code:'ES', name:'Spain', dial:'34', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'IT', name:'Italy', dial:'39', nsn:[9,10], pattern:[], placeholder:'Phone number' },
-  { code:'NL', name:'Netherlands', dial:'31', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'BE', name:'Belgium', dial:'32', nsn:[8,9], pattern:[], placeholder:'Phone number' },
-  { code:'SE', name:'Sweden', dial:'46', nsn:[9,10], pattern:[], placeholder:'Phone number' },
-  { code:'NO', name:'Norway', dial:'47', nsn:[8], pattern:[], placeholder:'Phone number' },
-  { code:'DK', name:'Denmark', dial:'45', nsn:[8], pattern:[], placeholder:'Phone number' },
-  { code:'FI', name:'Finland', dial:'358', nsn:[9,10], pattern:[], placeholder:'Phone number' },
-  { code:'PT', name:'Portugal', dial:'351', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'CH', name:'Switzerland', dial:'41', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'AT', name:'Austria', dial:'43', nsn:[10,11], pattern:[], placeholder:'Phone number' },
-  { code:'PL', name:'Poland', dial:'48', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'CZ', name:'Czechia', dial:'420', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'SK', name:'Slovakia', dial:'421', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'HU', name:'Hungary', dial:'36', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'RO', name:'Romania', dial:'40', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'GR', name:'Greece', dial:'30', nsn:[10], pattern:[], placeholder:'Phone number' },
-  { code:'TR', name:'Türkiye', dial:'90', nsn:[10], pattern:[], placeholder:'Phone number' },
-  { code:'IL', name:'Israel', dial:'972', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'AE', name:'United Arab Emirates', dial:'971', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'SA', name:'Saudi Arabia', dial:'966', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'ZA', name:'South Africa', dial:'27', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'EG', name:'Egypt', dial:'20', nsn:[9,10], pattern:[], placeholder:'Phone number' },
-  { code:'MA', name:'Morocco', dial:'212', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'NG', name:'Nigeria', dial:'234', nsn:[8,10], pattern:[], placeholder:'Phone number' },
-  { code:'KE', name:'Kenya', dial:'254', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'GH', name:'Ghana', dial:'233', nsn:[9], pattern:[], placeholder:'Phone number' },
-  { code:'IN', name:'India', dial:'91', nsn:[10], pattern:[5,5], placeholder:'98765 43210' },
-  { code:'PK', name:'Pakistan', dial:'92', nsn:[10], pattern:[], placeholder:'Phone number' },
-  { code:'BD', name:'Bangladesh', dial:'880', nsn:[10], pattern:[], placeholder:'Phone number' },
-  { code:'SG', name:'Singapore', dial:'65', nsn:[8], pattern:[], placeholder:'Phone number' },
-  { code:'MY', name:'Malaysia', dial:'60', nsn:[9,10], pattern:[], placeholder:'Phone number' },
-  { code:'ID', name:'Indonesia', dial:'62', nsn:[9,10,11], pattern:[], placeholder:'Phone number' },
-  { code:'PH', name:'Philippines', dial:'63', nsn:[10], pattern:[], placeholder:'Phone number' },
-  { code:'TH', name:'Thailand', dial:'66', nsn:[9,10], pattern:[], placeholder:'Phone number' },
-  { code:'VN', name:'Vietnam', dial:'84', nsn:[9,10], pattern:[], placeholder:'Phone number' },
-  { code:'KR', name:'South Korea', dial:'82', nsn:[9,10], pattern:[], placeholder:'Phone number' },
-  { code:'JP', name:'Japan', dial:'81', nsn:[10], pattern:[], placeholder:'Phone number' },
-  { code:'AU', name:'Australia', dial:'61', nsn:[9], pattern:[4,3,2], placeholder:'4123 456 78' },
-  { code:'NZ', name:'New Zealand', dial:'64', nsn:[8,9], pattern:[], placeholder:'Phone number' },
+  { code: 'US', name: 'United States', dial: '1', nsn: [10], pattern: [3, 3, 4], placeholder: '(555) 123-4567' },
+  { code: 'CA', name: 'Canada', dial: '1', nsn: [10], pattern: [3, 3, 4], placeholder: '(555) 123-4567' },
+  { code: 'MX', name: 'Mexico', dial: '52', nsn: [10], pattern: [], placeholder: 'Phone number' },
+  { code: 'BR', name: 'Brazil', dial: '55', nsn: [10, 11], pattern: [], placeholder: 'Phone number' },
+  { code: 'AR', name: 'Argentina', dial: '54', nsn: [10], pattern: [], placeholder: 'Phone number' },
+  { code: 'GB', name: 'United Kingdom', dial: '44', nsn: [9, 10], pattern: [4, 3, 3], placeholder: '7123 456 789' },
+  { code: 'IE', name: 'Ireland', dial: '353', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'FR', name: 'France', dial: '33', nsn: [9], pattern: [2, 2, 2, 3], placeholder: '6 12 34 567' },
+  { code: 'DE', name: 'Germany', dial: '49', nsn: [10, 11], pattern: [3, 3, 4], placeholder: '151 234 5678' },
+  { code: 'ES', name: 'Spain', dial: '34', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'IT', name: 'Italy', dial: '39', nsn: [9, 10], pattern: [], placeholder: 'Phone number' },
+  { code: 'NL', name: 'Netherlands', dial: '31', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'BE', name: 'Belgium', dial: '32', nsn: [8, 9], pattern: [], placeholder: 'Phone number' },
+  { code: 'SE', name: 'Sweden', dial: '46', nsn: [9, 10], pattern: [], placeholder: 'Phone number' },
+  { code: 'NO', name: 'Norway', dial: '47', nsn: [8], pattern: [], placeholder: 'Phone number' },
+  { code: 'DK', name: 'Denmark', dial: '45', nsn: [8], pattern: [], placeholder: 'Phone number' },
+  { code: 'FI', name: 'Finland', dial: '358', nsn: [9, 10], pattern: [], placeholder: 'Phone number' },
+  { code: 'PT', name: 'Portugal', dial: '351', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'CH', name: 'Switzerland', dial: '41', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'AT', name: 'Austria', dial: '43', nsn: [10, 11], pattern: [], placeholder: 'Phone number' },
+  { code: 'PL', name: 'Poland', dial: '48', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'CZ', name: 'Czechia', dial: '420', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'SK', name: 'Slovakia', dial: '421', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'HU', name: 'Hungary', dial: '36', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'RO', name: 'Romania', dial: '40', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'GR', name: 'Greece', dial: '30', nsn: [10], pattern: [], placeholder: 'Phone number' },
+  { code: 'TR', name: 'Türkiye', dial: '90', nsn: [10], pattern: [], placeholder: 'Phone number' },
+  { code: 'IL', name: 'Israel', dial: '972', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'AE', name: 'United Arab Emirates', dial: '971', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'SA', name: 'Saudi Arabia', dial: '966', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'ZA', name: 'South Africa', dial: '27', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'EG', name: 'Egypt', dial: '20', nsn: [9, 10], pattern: [], placeholder: 'Phone number' },
+  { code: 'MA', name: 'Morocco', dial: '212', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'NG', name: 'Nigeria', dial: '234', nsn: [8, 10], pattern: [], placeholder: 'Phone number' },
+  { code: 'KE', name: 'Kenya', dial: '254', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'GH', name: 'Ghana', dial: '233', nsn: [9], pattern: [], placeholder: 'Phone number' },
+  { code: 'IN', name: 'India', dial: '91', nsn: [10], pattern: [5, 5], placeholder: '98765 43210' },
+  { code: 'PK', name: 'Pakistan', dial: '92', nsn: [10], pattern: [], placeholder: 'Phone number' },
+  { code: 'BD', name: 'Bangladesh', dial: '880', nsn: [10], pattern: [], placeholder: 'Phone number' },
+  { code: 'SG', name: 'Singapore', dial: '65', nsn: [8], pattern: [], placeholder: 'Phone number' },
+  { code: 'MY', name: 'Malaysia', dial: '60', nsn: [9, 10], pattern: [], placeholder: 'Phone number' },
+  { code: 'ID', name: 'Indonesia', dial: '62', nsn: [9, 10, 11], pattern: [], placeholder: 'Phone number' },
+  { code: 'PH', name: 'Philippines', dial: '63', nsn: [10], pattern: [], placeholder: 'Phone number' },
+  { code: 'TH', name: 'Thailand', dial: '66', nsn: [9, 10], pattern: [], placeholder: 'Phone number' },
+  { code: 'VN', name: 'Vietnam', dial: '84', nsn: [9, 10], pattern: [], placeholder: 'Phone number' },
+  { code: 'KR', name: 'South Korea', dial: '82', nsn: [9, 10], pattern: [], placeholder: 'Phone number' },
+  { code: 'JP', name: 'Japan', dial: '81', nsn: [10], pattern: [], placeholder: 'Phone number' },
+  { code: 'AU', name: 'Australia', dial: '61', nsn: [9], pattern: [4, 3, 2], placeholder: '4123 456 78' },
+  { code: 'NZ', name: 'New Zealand', dial: '64', nsn: [8, 9], pattern: [], placeholder: 'Phone number' },
 ]
 
-const onlyDigits = (s) => String(s||'').replace(/\D/g, '')
+const PRODUCT_IMAGES = ['/Calc_Front_New.png', '/Calc_Back_New.png']
+const PRODUCT_FALLBACK_IMAGE = '/84p.png'
+
+const onlyDigits = (s) => String(s || '').replace(/\D/g, '')
 const nsnMax = (c) => Math.max(...c.nsn)
 const nsnMin = (c) => Math.min(...c.nsn)
-function formatNational(c, digits){
+function formatNational(c, digits) {
   const d = onlyDigits(digits).slice(0, nsnMax(c))
   // Special US/CA formatting
-  if ((c.code==='US' || c.code==='CA')){
-    const a = d.slice(0,3), b = d.slice(3,6), x = d.slice(6,10)
+  if ((c.code === 'US' || c.code === 'CA')) {
+    const a = d.slice(0, 3), b = d.slice(3, 6), x = d.slice(6, 10)
     if (d.length <= 3) return a
     if (d.length <= 6) return `(${a}) ${b}`
     return `(${a}) ${b}-${x}`
@@ -77,9 +80,9 @@ function formatNational(c, digits){
   const p = c.pattern || []
   if (!p.length) return d.replace(/(\d{3})(?=\d)/g, '$1 ').trim()
   let res = '', i = 0
-  for (const g of p){
+  for (const g of p) {
     if (i >= d.length) break
-    const nxt = d.slice(i, i+g)
+    const nxt = d.slice(i, i + g)
     if (!nxt) break
     res += (res ? ' ' : '') + nxt
     i += g
@@ -87,6 +90,46 @@ function formatNational(c, digits){
   if (i < d.length) res += ' ' + d.slice(i)
   return res
 }
+
+const ProductImages = memo(function ProductImages() {
+  const [imgError, setImgError] = useState(false)
+
+  return (
+    <div className="relative">
+      {/* Main Product Image with hover flip */}
+      <div
+        className="relative aspect-square rounded-2xl overflow-hidden group"
+        role="img"
+        aria-label="Calculator images"
+      >
+        <div className="relative z-10 w-full h-full flex items-center justify-center">
+          {/* Front image - fades out on hover */}
+          <Image
+            src={imgError ? PRODUCT_FALLBACK_IMAGE : PRODUCT_IMAGES[0]}
+            alt="CalcAI Calculator - Front"
+            width={800}
+            height={800}
+            className="absolute inset-0 w-full h-full object-contain transform scale-110 group-hover:scale-[1.15] transition-all duration-700 group-hover:opacity-0"
+            priority
+            onError={() => setImgError(true)}
+          />
+          {/* Back image - fades in on hover */}
+          <Image
+            src={imgError ? PRODUCT_FALLBACK_IMAGE : PRODUCT_IMAGES[1]}
+            alt="CalcAI Calculator - Back"
+            width={800}
+            height={800}
+            className="absolute inset-0 w-full h-full object-contain transform scale-110 group-hover:scale-[1.15] transition-all duration-700 opacity-0 group-hover:opacity-100"
+            onError={() => setImgError(true)}
+          />
+        </div>
+      </div>
+      <div className="flex items-center justify-center mt-3">
+        <p className="text-xs text-gray-500">Hover over to view back</p>
+      </div>
+    </div>
+  )
+})
 
 export default function ProductPage() {
 
@@ -97,6 +140,7 @@ export default function ProductPage() {
   const [compareAt, setCompareAt] = useState(199.99)
   const [inStock, setInStock] = useState(true)
   const [stockCount, setStockCount] = useState(null)
+  const router = useRouter()
   // Preorder controls (from dashboard)
   const [preorderEnabled, setPreorderEnabled] = useState(false)
   const [preorderPrice, setPreorderPrice] = useState(200.00)
@@ -113,7 +157,7 @@ export default function ProductPage() {
   const [countryOpen, setCountryOpen] = useState(false)
 
 
-  async function handleSmsSubscribe(e){
+  async function handleSmsSubscribe(e) {
     e.preventDefault()
     if (!smsPhone.trim() || smsSubmitting) return
     setSmsSubmitting(true)
@@ -125,34 +169,21 @@ export default function ProductPage() {
         body: JSON.stringify({ phone: smsPhone, consent: true })
       })
       let j = null
-      try { j = await r.json() } catch {}
+      try { j = await r.json() } catch { }
       const ok = r.ok && (j?.ok !== false)
-      if (ok){
-        setSmsResult({ ok:true })
+      if (ok) {
+        setSmsResult({ ok: true })
         setSmsPhone('')
         setSmsNational('')
       } else {
-        setSmsResult({ ok:false, error: j?.error || 'subscribe_failed' })
+        setSmsResult({ ok: false, error: j?.error || 'subscribe_failed' })
       }
     } catch (e) {
-      setSmsResult({ ok:false, error: 'network_error' })
+      setSmsResult({ ok: false, error: 'network_error' })
     } finally {
       setSmsSubmitting(false)
     }
   }
-
-  // Product image carousel
-  const images = ['/Calc_Front.jpg', '/Calc_Back.jpg']
-  const fallbackImage = '/84p.png'
-  const [imgIndex, setImgIndex] = useState(0)
-  const [imgError, setImgError] = useState(false)
-  useEffect(() => {
-    const id = setInterval(() => {
-      setImgIndex((i) => (i + 1) % images.length)
-      setImgError(false)
-    }, 15000)
-    return () => clearInterval(id)
-  }, [])
 
   // Update cart count on component mount and when cart changes
   useEffect(() => {
@@ -212,8 +243,14 @@ export default function ProductPage() {
     setCartItemCount(totalItems)
 
     // Show success message
+    // Show success message
     setAddedToCart(true)
     setTimeout(() => setAddedToCart(false), 3000)
+  }
+
+  const handleBuyNow = () => {
+    handleAddToCart()
+    router.push('/cart')
   }
 
   // Load price/stock from dashboard (via public env or local proxy) then mark loaded
@@ -244,25 +281,27 @@ export default function ProductPage() {
       } catch { return null }
     }
 
-    ;(async () => {
-      let j = null
-      if (DASHBOARD_URL) j = await fetchDirect()
-      if (!j) j = await fetchViaProxy()
-      doApply(j)
-      setLoaded(true)
-    })()
+      ; (async () => {
+        let j = null
+        if (DASHBOARD_URL) j = await fetchDirect()
+        if (!j) j = await fetchViaProxy()
+        doApply(j)
+        setLoaded(true)
+      })()
   }, [])
   const handlePreorderCheckout = async () => {
     alert('Checkout is temporarily unavailable while we switch payment providers.')
   }
 
+  const soldOut = loaded && (!inStock || (typeof stockCount === 'number' && stockCount <= 0))
+  const canPurchase = loaded && !soldOut
+
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Restock Countdown Banner (above nav) */}
-      <CountdownBanner target="2025-11-15T00:00:00" />
+
 
       {/* Navigation */}
-      <nav className={`${poppins.className} sticky top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10`}>
+      <nav className={`sticky top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 items-center h-14">
             {/* Left: Community, Specifications */}
@@ -300,114 +339,37 @@ export default function ProductPage() {
       </nav>
 
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         {/* Breadcrumb */}
-        <div className="flex items-center space-x-2 text-sm text-gray-400 mb-8">
+        <div className="flex items-center space-x-2 text-sm text-gray-400 mb-10 sm:mb-12">
           <Link href="/" className="hover:text-white transition-colors">Home</Link>
           <span className="text-gray-600">/</span>
           <span className="text-white font-medium">CalcAI TI-84 Plus</span>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
           {/* Product Images */}
-          <div className="relative">
-            {/* Main Product Image with carousel */}
-            <div
-              className="relative aspect-square rounded-lg overflow-hidden group border border-white/10 bg-gray-900/40 cursor-pointer"
-              onClick={() => { setImgIndex((imgIndex + 1) % images.length); setImgError(false) }}
-              role="button"
-              aria-label="Next image"
-              title="Next image"
-            >
-              {/* Visible arrows */}
-              <button
-                type="button"
-                className="absolute left-3 top-1/2 -translate-y-1/2 z-20 rounded-full bg-black/60 border border-white/20 p-2 text-white hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/40"
-                aria-label="Previous image"
-                onClick={(e) => { e.stopPropagation(); setImgIndex((imgIndex - 1 + images.length) % images.length); setImgError(false) }}
-              >
-                <ArrowLeft className="w-5 h-5" aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-20 rounded-full bg-black/60 border border-white/20 p-2 text-white hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/40"
-                aria-label="Next image"
-                onClick={(e) => { e.stopPropagation(); setImgIndex((imgIndex + 1) % images.length); setImgError(false) }}
-              >
-                <ArrowRight className="w-5 h-5" aria-hidden="true" />
-              </button>
-
-              <div className="relative z-10 w-full h-full flex items-center justify-center">
-                <Image
-                  src={imgError ? fallbackImage : images[imgIndex]}
-                  alt={imgIndex === 0 ? 'CalcAI Calculator - Front' : 'CalcAI Calculator - Back'}
-                  width={600}
-                  height={600}
-                  className="w-4/5 h-4/5 object-contain transform group-hover:scale-105 transition-all duration-300"
-                  priority
-                  onError={() => setImgError(true)}
-                />
-              </div>
-            </div>
-            <div className="flex items-center justify-center gap-2 mt-3">
-              {images.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => { setImgIndex(i); setImgError(false) }}
-                  className={`h-2.5 w-2.5 rounded-full transition-colors ${i === imgIndex ? 'bg-white' : 'bg-gray-600 hover:bg-gray-500'}`}
-                  aria-label={`Show image ${i + 1}`}
-                />
-              ))}
-            </div>
-          </div>
+          <ProductImages />
 
           {/* Product Info */}
-          <div className="space-y-8">
+          <div className="space-y-10 lg:space-y-12">
             {/* Header Section */}
             <div className="space-y-3">
-              <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-purple-400">
+              <h1 className="text-5xl font-light tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-300 to-purple-400">
                 CalcAI
               </h1>
-              <h2 className="text-xl text-gray-300">
-                TI-84 Plus with AI Integration
-              </h2>
-              <p className="text-gray-400">
-                Get notified when the next restock is available.
+              <p className="text-sm sm:text-base font-light tracking-tight text-slate-300/80 max-w-xl">
+                TI‑84 Plus with discreet ChatGPT integration.
               </p>
             </div>
 
-            {/* What's Included */}
-            <div className="bg-gray-900/50 border border-white/10 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-white mb-3">What&apos;s included</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li className="flex items-center space-x-2">
-                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                  <span>CalcAI TI-84 Plus with integrated PCB</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                  <span>Built-in camera module</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                  <span>2-week free warranty</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                  <span>Free unlimited support</span>
-                </li>
-                <li className="flex items-center space-x-2 text-gray-400">
-                  <div className="w-1.5 h-1.5 bg-gray-500 rounded-full"></div>
-                  <span>Batteries not included</span>
-                </li>
-              </ul>
-            </div>
+
 
 
 
 
             {/* Price Section */}
-            <div className="bg-gray-900 p-4 rounded-lg border border-gray-800">
+            <div>
               <div className="flex items-center justify-between gap-3 flex-wrap">
                 <div className="text-2xl font-bold text-white flex items-center gap-3">
                   {compareAt && compareAt > price ? (
@@ -432,7 +394,6 @@ export default function ProductPage() {
                 ) : (
                   <span className="text-gray-400">Checking availability…</span>
                 )}
-                <span className="text-gray-400"> • Shipping: US only — $13 flat rate</span>
               </div>
               {preorderEnabled && (preorderPrice || preorderShipDate) ? (
                 <div className="mt-2 text-xs text-gray-400">
@@ -446,206 +407,121 @@ export default function ProductPage() {
 
 
 
-            {/* Quantity and Add to Cart */}
+            {/* Purchase */}
             <div className="space-y-6">
-              {/* Quantity Selector */}
-              <div className="bg-gray-900 p-4 rounded-lg border border-gray-800">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium text-gray-300">Quantity:</label>
-                  <select
-                    value={quantity}
-                    onChange={(e) => setQuantity(parseInt(e.target.value))}
-                    className="border border-gray-700 bg-gray-800 text-white rounded-lg px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
-                  >
-                    {[1,2,3,4,5].map(num => (
-                      <option key={num} value={num}>{num}</option>
-                    ))}
-                  </select>
+              {soldOut ? (
+                <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-5 sm:p-6 max-w-full sm:max-w-[340px]">
+                  <h3 className="text-sm font-medium text-white mb-2">Out of stock</h3>
+                  <p className="text-xs text-gray-400 mb-4">Enter your phone number for a restock text.</p>
+
+                  {smsResult?.ok ? (
+                    <div className="text-green-400 text-xs">✓ You're subscribed. We'll text you when CalcAI is back in stock.</div>
+                  ) : (
+                    <form onSubmit={handleSmsSubscribe} className="space-y-3">
+                      <PhoneInput
+                        value={smsPhone}
+                        onChange={(raw, formatted) => setSmsPhone(formatted)}
+                        placeholder="Enter your phone number"
+                        defaultCountry="US"
+                        disabled={smsSubmitting}
+                        size="sm"
+                        className="bg-gray-900 border-gray-800 rounded-lg w-full"
+                      />
+                      {smsResult?.error && (
+                        <div className="text-red-400 text-xs">
+                          {smsResult.error === 'invalid_phone' ? 'Please enter a valid phone number' : 'Could not subscribe. Try again.'}
+                        </div>
+                      )}
+                      <button
+                        type="submit"
+                        disabled={!smsPhone || smsSubmitting}
+                        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white text-xs font-medium py-2 px-4 rounded-lg transition-colors"
+                      >
+                        {smsSubmitting ? 'Subscribing…' : 'Notify me by SMS'}
+                      </button>
+                    </form>
+                  )}
                 </div>
-              </div>
-
-              {/* CTAs: Add to Cart + Preorder (optional) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button
-                  onClick={handleAddToCart}
-                  disabled={!loaded || !inStock || (typeof stockCount === 'number' && stockCount <= 0)}
-                  className={`w-full ${loaded && inStock && !(typeof stockCount === 'number' && stockCount <= 0) ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-700 cursor-not-allowed'} text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm`}
-                >
-                  <div className="flex items-center justify-center space-x-2">
-                    <ShoppingCart className="w-4 h-4" />
-                    <span>{loaded ? (inStock ? (addedToCart ? 'Added to Cart!' : `Add to Cart - $${getPrice().toFixed(2)}`) : 'Out of Stock') : 'Loading...'}</span>
+              ) : (
+                <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-5 sm:p-6 max-w-full sm:max-w-[340px]">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <div className="text-xs font-medium tracking-tight text-gray-300">Quantity</div>
+                    </div>
+                    <NumberInput
+                      value={quantity}
+                      min={1}
+                      max={5}
+                      onChange={(val) => setQuantity(val)}
+                      size="sm"
+                    />
                   </div>
-                </button>
 
-                {preorderEnabled ? (
-                  <button
-                    onClick={handlePreorderCheckout}
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-lg font-medium transition-all duration-200 text-sm"
-                  >
-                    {`Preorder - $${preorderPrice.toFixed(2)}${preorderShipDate ? ` \u2022 Ships ${preorderShipDate}` : ''}`}
-                    {/*
-                    {`Preorder - $${preorderPrice.toFixed(2)}${preorderShipDate ? ` • Ships ${preorderShipDate}` : ''}`}
-                    */}
-                  </button>
-                ) : null}
-              </div>
+                  <div className="mt-4 grid grid-cols-1 gap-3">
+                    <button
+                      onClick={handleAddToCart}
+                      disabled={!canPurchase}
+                      className={`w-full rounded-2xl border px-6 py-3 text-sm font-light tracking-tight transition-all duration-300 focus:outline-none focus:ring-2 ${canPurchase ? 'border-white/10 bg-blue-600/15 text-blue-50 backdrop-blur-sm hover:bg-blue-600/25 focus:ring-white/20' : 'border-gray-700 bg-gray-700/50 text-gray-400 cursor-not-allowed backdrop-blur-sm'}`}
+                    >
+                      <div className="flex items-center justify-center space-x-2">
+                        <ShoppingCart className="w-4 h-4" />
+                        <span>{!loaded ? 'Loading…' : addedToCart ? 'Added to cart!' : 'Add to cart'}</span>
+                      </div>
+                    </button>
 
-              {addedToCart && (
-                <div className="text-center">
-                  <Link
-                    href="/cart"
-                    className="text-blue-400 hover:text-blue-300 underline text-sm"
-                  >
-                    View Cart & Checkout
-                  </Link>
+                    <button
+                      onClick={handleBuyNow}
+                      disabled={!canPurchase}
+                      className={`w-full rounded-2xl border px-6 py-3 text-sm font-light tracking-tight transition-all duration-300 focus:outline-none focus:ring-2 ${canPurchase ? 'border-white/10 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 focus:ring-white/20' : 'border-gray-700 bg-gray-700/50 text-gray-400 cursor-not-allowed backdrop-blur-sm'}`}
+                    >
+                      Buy now
+                    </button>
+
+                    {preorderEnabled ? (
+                      <button
+                        onClick={handlePreorderCheckout}
+                        className="w-full rounded-2xl border border-white/10 bg-purple-600/10 text-purple-50 backdrop-blur-sm hover:bg-purple-600/20 px-6 py-3 font-light tracking-tight transition-all duration-300 text-sm focus:outline-none focus:ring-2 focus:ring-white/20"
+                      >
+                        {`Preorder - $${preorderPrice.toFixed(2)}${preorderShipDate ? ` • Ships ${preorderShipDate}` : ''}`}
+                      </button>
+                    ) : null}
+                  </div>
+
+                  {addedToCart && (
+                    <div className="mt-4 text-center">
+                      <Link
+                        href="/cart"
+                        className="text-blue-400 hover:text-blue-300 underline text-sm"
+                      >
+                        View cart & checkout
+                      </Link>
+                    </div>
+                  )}
+
+                  <div className="mt-5 grid grid-cols-1 gap-2 text-xs text-gray-300">
+                    <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-3 py-2">
+                      <Truck className="w-4 h-4 text-blue-200/60" />
+                      <span>Shipping: US only</span>
+                    </div>
+                    <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-3 py-2">
+                      <Shield className="w-4 h-4 text-blue-200/60" />
+                      <span>2‑week warranty</span>
+                    </div>
+                    <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-3 py-2">
+                      <Lock className="w-4 h-4 text-blue-200/60" />
+                      <span>Secure checkout by Stripe</span>
+                    </div>
+                  </div>
                 </div>
               )}
-
-              <div className="text-center text-xs text-gray-400 mt-2">
-                <p>Secure checkout</p>
-              </div>
-
-              {/* SMS restock alert opt-in (with proof of consent) */}
-              <div className="border-t border-gray-700 pt-4 mt-4">
-                {smsResult?.ok ? (
-                  <div className="text-green-400 text-xs">✓ You’re subscribed. We’ll text you when CalcAI is back in stock.</div>
-                ) : (
-                  <form onSubmit={handleSmsSubscribe} className="space-y-2">
-                    <div className="flex gap-2">
-                      <div className="relative">
-                        <button
-                          type="button"
-                          onClick={() => setCountryOpen(v => !v)}
-                          disabled={smsSubmitting}
-                          aria-label="Country"
-                          className="px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm text-white flex items-center gap-2"
-                        >
-                          <span className={`fi fi-${smsCountry.code.toLowerCase()}`}></span>
-                        </button>
-                        {countryOpen && (
-                          <div className="absolute z-20 mt-1 max-h-56 overflow-auto bg-gray-800 border border-gray-700 rounded shadow-lg w-60">
-                            {COUNTRIES.map(c => (
-                              <button
-                                type="button"
-                                key={c.code}
-                                onClick={() => {
-                                  setCountryOpen(false)
-                                  const capped = smsNational.slice(0, nsnMax(c))
-                                  setSmsCountry(c)
-                                  setSmsNational(capped)
-                                  const e164 = capped ? `+${c.dial}${capped}` : ''
-                                  setSmsPhone(e164)
-                                }}
-                                className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-700 text-sm text-white"
-                              >
-                                <span className={`fi fi-${c.code.toLowerCase()}`}></span>
-                                <span className="truncate">{c.name}</span>
-                                <span className="ml-auto text-gray-400">+{c.dial}</span>
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex-1 flex items-center">
-                        <span className="px-2 py-2 bg-gray-800 border border-gray-700 border-r-0 rounded-l text-sm text-gray-300">+{smsCountry.dial}</span>
-                        <input
-                          type="tel"
-                          inputMode="numeric"
-                          value={formatNational(smsCountry, smsNational)}
-                          onChange={(e) => {
-                            const digits = onlyDigits(e.target.value)
-                            const capped = digits.slice(0, nsnMax(smsCountry))
-                            setSmsNational(capped)
-                            const e164 = capped ? `+${smsCountry.dial}${capped}` : ''
-                            setSmsPhone(e164)
-                          }}
-                          placeholder={smsCountry.placeholder}
-                          className="w-full px-3 py-2 bg-gray-800 border border-gray-700 border-l-0 rounded-r text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
-                          disabled={smsSubmitting}
-                        />
-                      </div>
-                    </div>
-                    <p className="text-[10px] leading-4 text-gray-500">
-                      By pressing <span className="text-gray-300">“Notify me by SMS”</span>, you agree to receive SMS restock alerts from CalcAI at the number provided. Msg & data rates may apply. Reply STOP to opt out, HELP for help. Consent not required to buy. See our <a className="underline" href="/terms" target="_blank" rel="noreferrer">Terms</a> and <a className="underline" href="/privacy" target="_blank" rel="noreferrer">Privacy Policy</a>.
-                    </p>
-                    {smsResult?.error && (
-                      <div className="text-red-400 text-xs">
-                        {smsResult.error === 'invalid_phone' ? 'Please enter a valid phone number' : 'Could not subscribe. Try again.'}
-                      </div>
-                    )}
-                    <button
-                      type="submit"
-                      disabled={onlyDigits(smsNational).length < nsnMin(smsCountry) || smsSubmitting}
-                      className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white text-sm font-medium py-2 px-4 rounded transition-colors"
-                    >
-                      {smsSubmitting ? 'Subscribing…' : 'Notify me by SMS'}
-                    </button>
-                  </form>
-                )}
-              </div>
-            </div>
-
-            {/* Guarantees */}
-            <div className="border-t border-gray-700 pt-6 space-y-3">
-              <div className="flex items-center space-x-3">
-                <Shield className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-300">Secure checkout</span>
-              </div>
-            </div>
-
-            {/* Shipping & Fulfillment Timeline */}
-            <div className="border-t border-gray-700 pt-6 mt-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Shipping & Fulfillment</h3>
-              <div className="space-y-4 text-sm text-gray-300">
-                <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xs">
-                      1
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-1">In Stock</h4>
-                      <p className="text-gray-400 leading-relaxed">
-                        If the product shows <span className="text-green-400 font-medium">&quot;In Stock&quot;</span>, your order will be fulfilled. Depending on current inventory, your CalcAI may ship immediately (if a unit is ready) or be made to order within <span className="text-blue-400 font-medium">up to 5 business days</span>.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-xs">
-                      2
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-1">Out of Stock</h4>
-                      <p className="text-gray-400 leading-relaxed">
-                        If the product shows <span className="text-red-400 font-medium">&quot;Out of Stock&quot;</span>, we currently have no units on hand and are low on supplies. For the most accurate restock updates, join our{' '}
-                        <a href="https://discord.gg/calcai" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">
-                          Discord server
-                        </a>
-                        {' '}or subscribe to SMS alerts above.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-xs">
-                      📦
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-1">Shipping & Tracking</h4>
-                      <p className="text-gray-400 leading-relaxed">
-                        All orders ship via <span className="text-blue-400 font-medium">USPS Priority Mail</span>, which typically delivers in <span className="text-blue-400 font-medium">2-4 business days</span> depending on your location within the United States. Your tracking number will be sent to the email address you provide during checkout.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
+
         </div>
+      </div>
+
+      <div className="mt-16 border-t border-white/5 pt-8">
+        <FAQs />
       </div>
     </div>
   )

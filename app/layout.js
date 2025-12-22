@@ -1,5 +1,6 @@
 import './globals.css'
-import 'flag-icons/css/flag-icons.min.css'
+
+
 import { Space_Grotesk } from 'next/font/google'
 import ThemeBackground from '../components/ThemeBackground'
 

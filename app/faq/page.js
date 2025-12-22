@@ -1,14 +1,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Poppins } from 'next/font/google'
-
-const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
 
 export default function FAQ() {
   return (
     <div className="min-h-screen bg-black">
       {/* Navigation */}
-      <nav className={`${poppins.className} fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10`}>
+      <nav className={`fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 items-center h-14">
             {/* Left: Community, Specifications */}
@@ -41,23 +38,23 @@ export default function FAQ() {
       <main className="pt-24 pb-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-white mb-4">
+            <h1 className="text-6xl font-light tracking-tight text-white mb-4">
               Frequently Asked Questions
             </h1>
-            <p className="text-lg text-gray-400">Find quick answers below. For setup help, see <Link href="/help" className="text-blue-400 hover:text-blue-300">Help</Link>.</p>
+            <p className="text-lg text-gray-400 font-light tracking-tight">Find quick answers below. For setup help, see <Link href="/help" className="text-blue-400 hover:text-blue-300">Help</Link>.</p>
           </div>
 
           <div className="space-y-12">
             {/* Device & Usage */}
             <section>
-              <h2 className="text-xl font-semibold text-white mb-4">Device & Usage</h2>
+              <h2 className="text-xl font-light tracking-tight text-white mb-4">Device & Usage</h2>
               <div className="rounded-2xl border border-white/10 bg-gray-900/40 p-6 divide-y divide-white/10">
                 <div className="py-4">
-                  <h3 className="text-white font-medium">What camera does it use?</h3>
+                  <h3 className="text-white font-light tracking-tight text-lg">What camera does it use?</h3>
                   <p className="text-gray-300">OV5640 — high‑quality 5MP sensor used with the XIAO ESP32S3 Sense.</p>
                 </div>
                 <div className="py-4">
-                  <h3 className="text-white font-medium">Why can the camera response take 10–20 seconds?</h3>
+                  <h3 className="text-white font-light tracking-tight text-lg">Why can the camera response take 10–20 seconds?</h3>
                   <p className="text-gray-300">Images are processed by GPT‑5 (more complex than text‑only), so 10–20s is typical. If it&apos;s slower:</p>
                   <ul className="list-disc pl-5 text-gray-300 mt-2 space-y-1">
                     <li>Check your internet connection and keep your hotspot close.</li>
@@ -67,7 +64,7 @@ export default function FAQ() {
                   </ul>
                 </div>
                 <div className="py-4">
-                  <h3 className="text-white font-medium">Stuck on “Processing”</h3>
+                  <h3 className="text-white font-light tracking-tight text-lg">Stuck on “Processing”</h3>
                   <p className="text-gray-300">Usually Wi‑Fi couldn’t reach the server or the network briefly disconnected.</p>
                   <ul className="list-disc pl-5 text-gray-300 mt-2 space-y-1">
                     <li>Make sure Wi‑Fi is connected; try again after a few seconds.</li>
@@ -75,15 +72,15 @@ export default function FAQ() {
                   </ul>
                 </div>
                 <div className="py-4">
-                  <h3 className="text-white font-medium">The back of my calculator is warm</h3>
+                  <h3 className="text-white font-light tracking-tight text-lg">The back of my calculator is warm</h3>
                   <p className="text-gray-300">This is normal during Wi‑Fi and camera use.</p>
                 </div>
                 <div className="py-4">
-                  <h3 className="text-white font-medium">I select a function and it loads forever</h3>
+                  <h3 className="text-white font-light tracking-tight text-lg">I select a function and it loads forever</h3>
                   <p className="text-gray-300">Turn the calculator off and back on, then wait 5–10 seconds before selecting anything.</p>
                 </div>
                 <div className="py-4">
-                  <h3 className="text-white font-medium">Wi‑Fi portal SSID isn’t showing on my phone</h3>
+                  <h3 className="text-white font-light tracking-tight text-lg">Wi‑Fi portal SSID isn’t showing on my phone</h3>
                   <ul className="list-disc pl-5 text-gray-300 space-y-1">
                     <li>It can take up to ~30 seconds to appear.</li>
                     <li>If it doesn’t, close the portal on the calculator and open it again.</li>
@@ -91,7 +88,7 @@ export default function FAQ() {
                   </ul>
                 </div>
                 <div className="py-4">
-                  <h3 className="text-white font-medium">Unable to connect to my Wi‑Fi</h3>
+                  <h3 className="text-white font-light tracking-tight text-lg">Unable to connect to my Wi‑Fi</h3>
                   <ul className="list-disc pl-5 text-gray-300 space-y-1">
                     <li>When adding the network in the config portal, confirm it showed “Connected”.</li>
                     <li>Stay near your router and minimize interference.</li>
@@ -99,7 +96,7 @@ export default function FAQ() {
                   </ul>
                 </div>
                 <div className="py-4">
-                  <h3 className="text-white font-medium">Why do my batteries run out fast?</h3>
+                  <h3 className="text-white font-light tracking-tight text-lg">Why do my batteries run out fast?</h3>
                   <p className="text-gray-300">Heavy Wi‑Fi + camera usage draws more power. Lithium batteries last longest; keep a spare set.</p>
                 </div>
               </div>
@@ -107,26 +104,26 @@ export default function FAQ() {
 
             {/* Ordering & General */}
             <section>
-              <h2 className="text-xl font-semibold text-white mb-4">Ordering & General</h2>
+              <h2 className="text-xl font-light tracking-tight text-white mb-4">Ordering & General</h2>
               <div className="rounded-2xl border border-white/10 bg-gray-900/40 p-6 divide-y divide-white/10">
                 <div className="py-4">
-                  <h3 className="text-white font-medium">How long is the warranty?</h3>
+                  <h3 className="text-white font-light tracking-tight text-lg">How long is the warranty?</h3>
                   <p className="text-gray-300">2 weeks. Opening/modifying the calculator voids the warranty. Physical damage isn’t covered.</p>
                 </div>
                 <div className="py-4">
-                  <h3 className="text-white font-medium">Shipping and processing time</h3>
+                  <h3 className="text-white font-light tracking-tight text-lg">Shipping and processing time</h3>
                   <p className="text-gray-300">Starting Nov 15: processing 1–3 days; shipping 2–5 days (location dependent). If in stock and ordered before 3pm ET, ships same day. Check availability at <Link href="/product" className="text-blue-400 hover:text-blue-300">calcai.cc/product</Link>.</p>
                 </div>
                 <div className="py-4">
-                  <h3 className="text-white font-medium">Do you accept international orders?</h3>
+                  <h3 className="text-white font-light tracking-tight text-lg">Do you accept international orders?</h3>
                   <p className="text-gray-300">Not yet — we’re working on it.</p>
                 </div>
                 <div className="py-4">
-                  <h3 className="text-white font-medium">Is CalcAI available on other calculator models?</h3>
+                  <h3 className="text-white font-light tracking-tight text-lg">Is CalcAI available on other calculator models?</h3>
                   <p className="text-gray-300">Not at the moment — planned for the future.</p>
                 </div>
                 <div className="py-4">
-                  <h3 className="text-white font-medium">Support hours</h3>
+                  <h3 className="text-white font-light tracking-tight text-lg">Support hours</h3>
                   <p className="text-gray-300">Typically 9am–6pm (Mon–Fri). Weekend availability varies.</p>
                 </div>
               </div>

@@ -3,10 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Poppins } from 'next/font/google'
-import { ArrowRight, ShoppingCart, MessageCircle, Users, Video, Camera } from 'lucide-react'
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
+import { ArrowRight, ShoppingCart, MessageCircle, Users, Video, Camera } from 'lucide-react'
 
 export default function Community() {
   const [cartItemCount, setCartItemCount] = useState(0)
@@ -65,7 +63,8 @@ export default function Community() {
   return (
     <div className="min-h-screen bg-black">
       {/* Navigation */}
-      <nav className={`${poppins.className} fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10`}>
+      {/* Navigation */}
+      <nav className={`fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 items-center h-14">
             {/* Left: Community, Specifications */}
@@ -106,10 +105,10 @@ export default function Community() {
       <section className="pt-20 pb-8 bg-black text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-extrabold mb-4 text-white">
+            <h1 className="text-6xl font-light tracking-tight mb-4 text-white">
               Community
             </h1>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto font-light tracking-tight">
               Connect with other CalcAI users, get support, and stay updated with the latest news and features
             </p>
           </div>
@@ -139,7 +138,7 @@ export default function Community() {
                     />
                   </div>
                   <div className="flex-1">
-                    <div className="text-white font-semibold">{social.name}</div>
+                    <div className="text-white font-light tracking-tight text-lg">{social.name}</div>
                     <div className="text-sm text-gray-400">{social.description}</div>
                   </div>
                   <div className="hidden sm:flex items-center text-white/80 text-sm">
