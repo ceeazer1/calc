@@ -262,79 +262,83 @@ export default function Home() {
                     Tune performance and answer length in seconds.
                   </p>
 
-                  <div className="mt-5 grid grid-cols-1 sm:grid-cols-[1fr_320px] gap-6 items-stretch">
-                    {/* Left: feature description (not option listing) */}
-                    <div className="flex flex-col justify-center">
-                      <div className="text-xl sm:text-2xl font-semibold tracking-tight text-white/90">
-                        Pick your GPT model and max tokens.
-                      </div>
-                      <div className="mt-2 text-sm sm:text-base text-white/70">
-                        Adjust speed, accuracy, and answer length anytime.
-                      </div>
+                  {/* Details on top */}
+                  <div className="mt-5">
+                    <div className="text-xl sm:text-2xl font-semibold tracking-tight text-white/90">
+                      Pick your GPT model and max tokens.
                     </div>
+                    <div className="mt-2 text-sm sm:text-base text-white/70">
+                      Adjust speed, accuracy, and answer length anytime.
+                    </div>
+                  </div>
 
-                    {/* Right: controls (fill the side) */}
-                    <div className="sm:justify-self-end w-full sm:w-[320px] h-full">
-                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4 h-full">
-                        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 to-transparent" />
+                  {/* Controls side-by-side at the bottom, with a faded/skeleton preview feel */}
+                  <div className="relative mt-6 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
+                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 via-black/45 to-transparent" />
 
-                        <div className="relative flex flex-col gap-4">
-                          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
-                            <div className="text-[11px] uppercase tracking-wide text-white/60">GPT Model</div>
-                            <div className="mt-2 space-y-2">
-                              {[
-                                { name: "GPT 5.2", desc: "Accuracy", selected: true },
-                                { name: "GPT 5.1", desc: "Balanced", selected: false },
-                                { name: "GPT 5 mini", desc: "Fast", selected: false },
-                                { name: "GPT 5 nano", desc: "Ultra fast", selected: false },
-                              ].map((m) => (
-                                <button
-                                  key={m.name}
-                                  type="button"
-                                  className={
-                                    "w-full rounded-xl border px-3 py-2 text-left transition-colors " +
-                                    (m.selected
-                                      ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
-                                      : "border-white/10 bg-white/[0.04] text-white/85 hover:bg-white/[0.06]")
-                                  }
-                                >
-                                  <div className="text-xs font-medium leading-none">{m.name}</div>
-                                  <div className={"mt-1 text-[10px] leading-none " + (m.selected ? "text-blue-100/70" : "text-white/55")}>
-                                    {m.desc}
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
+                    <div
+                      className="relative grid grid-cols-1 sm:grid-cols-2 gap-4"
+                      style={{
+                        WebkitMaskImage:
+                          'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 70%, rgba(255,255,255,0) 100%)',
+                        maskImage:
+                          'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 70%, rgba(255,255,255,0) 100%)',
+                      }}
+                    >
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                        <div className="text-[11px] uppercase tracking-wide text-white/60">GPT Model</div>
+                        <div className="mt-2 space-y-2">
+                          {[
+                            { name: "GPT 5.2", desc: "Accuracy", selected: true },
+                            { name: "GPT 5.1", desc: "Balanced", selected: false },
+                            { name: "GPT 5 mini", desc: "Fast", selected: false },
+                            { name: "GPT 5 nano", desc: "Ultra fast", selected: false },
+                          ].map((m) => (
+                            <button
+                              key={m.name}
+                              type="button"
+                              className={
+                                "w-full rounded-xl border px-3 py-1.5 text-left transition-colors " +
+                                (m.selected
+                                  ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
+                                  : "border-white/10 bg-white/[0.04] text-white/85 hover:bg-white/[0.06]")
+                              }
+                            >
+                              <div className="text-[11px] font-medium leading-none">{m.name}</div>
+                              <div className={"mt-1 text-[10px] leading-none " + (m.selected ? "text-blue-100/70" : "text-white/55")}>
+                                {m.desc}
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
 
-                          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
-                            <div className="text-[11px] uppercase tracking-wide text-white/60">Max Tokens</div>
-                            <div className="mt-2 space-y-2">
-                              {[
-                                { name: "1k", desc: "Quick", selected: false },
-                                { name: "2k", desc: "Balanced", selected: true },
-                                { name: "4k", desc: "Long", selected: false },
-                                { name: "8k", desc: "Full steps", selected: false },
-                              ].map((t) => (
-                                <button
-                                  key={t.name}
-                                  type="button"
-                                  className={
-                                    "w-full rounded-xl border px-3 py-2 text-left transition-colors " +
-                                    (t.selected
-                                      ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
-                                      : "border-white/10 bg-white/[0.04] text-white/85 hover:bg-white/[0.06]")
-                                  }
-                                >
-                                  <div className="text-xs font-medium leading-none">{t.name}</div>
-                                  <div className={"mt-1 text-[10px] leading-none " + (t.selected ? "text-blue-100/70" : "text-white/55")}>
-                                    {t.desc}
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                        <div className="text-[11px] uppercase tracking-wide text-white/60">Max Tokens</div>
+                        <div className="mt-2 space-y-2">
+                          {[
+                            { name: "1k", desc: "Quick", selected: false },
+                            { name: "2k", desc: "Balanced", selected: true },
+                            { name: "4k", desc: "Long", selected: false },
+                            { name: "8k", desc: "Full steps", selected: false },
+                          ].map((t) => (
+                            <button
+                              key={t.name}
+                              type="button"
+                              className={
+                                "w-full rounded-xl border px-3 py-1.5 text-left transition-colors " +
+                                (t.selected
+                                  ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
+                                  : "border-white/10 bg-white/[0.04] text-white/85 hover:bg-white/[0.06]")
+                              }
+                            >
+                              <div className="text-[11px] font-medium leading-none">{t.name}</div>
+                              <div className={"mt-1 text-[10px] leading-none " + (t.selected ? "text-blue-100/70" : "text-white/55")}>
+                                {t.desc}
+                              </div>
+                            </button>
+                          ))}
                         </div>
                       </div>
                     </div>
