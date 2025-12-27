@@ -359,7 +359,7 @@ export default function Home() {
               </div>
 
               {/* Card 3: Notes → Calculator */}
-              <div className="md:col-span-5 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+              <div className="md:col-span-12 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
                 <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
                 <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan-500/15 via-transparent to-transparent" />
                 <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-cyan-500/15 blur-3xl" />
@@ -389,55 +389,6 @@ export default function Home() {
                       >
                         Send note
                       </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Card 4: Pair & Devices */}
-              <div className="md:col-span-7 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
-                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
-                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-500/15 via-transparent to-transparent" />
-                <div aria-hidden className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-blue-500/15 blur-3xl" />
-
-                <div className="relative p-6">
-                  <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Pair & devices</h3>
-                  <p className="mt-1.5 text-sm text-white/70 font-light tracking-tight">
-                    Connect your calculator and manage it from the dashboard.
-                  </p>
-
-                  <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
-                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
-
-                    <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                        <div className="text-[11px] text-white/50 mb-1">Pairing code</div>
-                        <div className="font-mono text-2xl tracking-widest text-white">482‑193</div>
-                        <div className="mt-2 text-xs text-white/60">Enter this on your CalcAI to connect.</div>
-                      </div>
-
-                      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="text-[11px] text-white/50">Device</div>
-                          <span className="text-[11px] px-2 py-0.5 rounded-full border border-white/10 bg-white/[0.05] text-white/70">
-                            Connected
-                          </span>
-                        </div>
-                        <div className="mt-2 text-sm font-medium text-white/90">CalcAI • Desk unit</div>
-                        <div className="mt-2 text-xs text-white/60">Last sync: 12s ago</div>
-                        <div className="mt-3 flex items-center gap-2">
-                          <div className="h-2 w-2 rounded-full bg-emerald-500" />
-                          <div className="text-xs text-white/60">Online</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="relative mt-4 flex items-center justify-between">
-                      <div className="text-xs text-white/50">Secure pairing • One device at a time</div>
-                      <div className="inline-flex items-center gap-2 text-xs font-medium text-white/70">
-                        Manage <ArrowRight className="w-4 h-4" />
-                      </div>
                     </div>
                   </div>
                 </div>
