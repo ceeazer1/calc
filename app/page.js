@@ -258,9 +258,6 @@ export default function Home() {
 
                 <div className="relative p-6">
                   <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Model controls</h3>
-                  <p className="mt-1.5 text-sm text-white/70 font-light tracking-tight">
-                    Tune performance and answer length in seconds.
-                  </p>
 
                   {/* Details on top */}
                   <div className="mt-5">
@@ -388,13 +385,10 @@ export default function Home() {
 
                 <div className="relative p-6">
                   <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Notes</h3>
-                  <p className="mt-1.5 text-sm text-white/70 font-light tracking-tight">
-                    Write and send notes to your calculator.
-                  </p>
 
-                  {/* Narrow preview box (no nested "box inside a box") */}
-                  <div className="relative mt-5">
-                    <div className="relative mx-auto w-[38ch] max-w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
+                  <div className="mt-5 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-6 items-start">
+                    {/* Note box (left) */}
+                    <div className="relative w-[38ch] max-w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
                       <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
                       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 via-black/45 to-transparent" />
 
@@ -421,6 +415,18 @@ export default function Home() {
                         >
                           Send note
                         </button>
+                      </div>
+                    </div>
+
+                    {/* Details (right) */}
+                    <div className="pt-1">
+                      <div className="text-sm sm:text-base text-white/80 font-light tracking-tight">
+                        Write and send notes to your calculator.
+                      </div>
+                      <div className="mt-3 space-y-2 text-sm text-white/70">
+                        <div>Save formulas, reminders, and steps.</div>
+                        <div>Send notes before class or a quiz.</div>
+                        <div>Keep everything synced in your dashboard.</div>
                       </div>
                     </div>
                   </div>
