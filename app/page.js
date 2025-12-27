@@ -6,7 +6,7 @@ import Image from 'next/image'
 import DarkVeil from '../components/DarkVeil'
 import SpotlightSection from '../components/SpotlightSection'
 import CountdownBanner from '../components/CountdownBanner'
-import { ShoppingCart, ArrowRight, Instagram, Youtube, Maximize2, MessageCircle, Sliders, Clock, Image as ImageIcon } from 'lucide-react'
+import { ShoppingCart, ArrowRight, Instagram, Youtube, Maximize2 } from 'lucide-react'
 import {
   Dialog,
   DialogTrigger,
@@ -248,132 +248,179 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Combined tiles */}
-            <div className="rounded-2xl overflow-hidden">
-              <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                {/* Feature 1: Model controls */}
-                <div className="p-6 flex flex-col min-h-[340px]">
-                  <div className="mb-5 flex flex-col items-center justify-center gap-2 text-center">
-                    <Sliders className="w-5 h-5 text-blue-200/70" />
-                    <div className="text-xl font-medium tracking-tight text-white/90">Model Controls</div>
-                  </div>
+            {/* Dashboard feature tiles (screenshot-inspired marketing cards) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Card 1: Model Controls */}
+              <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-blue-500/90 via-blue-600/90 to-indigo-600/90 shadow-[0_30px_90px_rgba(0,0,0,0.45)] flex flex-col">
+                <div aria-hidden className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-white/20 blur-3xl" />
+                <div aria-hidden className="pointer-events-none absolute -bottom-28 -right-28 h-80 w-80 rounded-full bg-indigo-200/20 blur-3xl" />
 
-                  <div className="grid grid-rows-2 gap-4 flex-1">
-                    <div className="rounded-xl border border-white/10 bg-black/20 p-4 h-full">
-                      <div className="text-xs text-white/50 mb-3">GPT Model</div>
-                      <div className="space-y-2">
-                        {[
-                          { name: "GPT 5.2", desc: "Best accuracy" },
-                          { name: "GPT 5.1", desc: "Balanced" },
-                          { name: "GPT 5 mini", desc: "Fastest" },
-                        ].map((m, i) => (
-                          <div
-                            key={m.name}
-                            className={
-                              "flex items-center justify-between gap-3 rounded-xl border px-3 py-2 " +
-                              (i === 0
-                                ? "border-blue-400/40 bg-blue-500/15 text-blue-50"
-                                : "border-white/10 bg-white/5 text-white/80")
-                            }
-                          >
-                            <div className="text-sm font-medium">{m.name}</div>
-                            <div className={"text-xs text-right " + (i === 0 ? "text-blue-100/70" : "text-white/50")}>
-                              {m.desc}
+                <div className="relative p-8 pb-6">
+                  <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white">Model controls</h3>
+                  <p className="mt-2 text-sm sm:text-base text-white/80 font-light tracking-tight">
+                    Choose the GPT model and max tokens for your calculator.
+                  </p>
+                </div>
+
+                <div className="relative px-8 pb-8 flex-1">
+                  <div className="h-full rounded-3xl border border-white/15 bg-black/25 backdrop-blur p-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <div className="text-[11px] uppercase tracking-wide text-white/60 mb-2">GPT Model</div>
+                        <div className="space-y-2">
+                          {[
+                            { name: "GPT 5.2", desc: "Best accuracy" },
+                            { name: "GPT 5.1", desc: "Balanced" },
+                            { name: "GPT 5 mini", desc: "Fastest" },
+                          ].map((m, i) => (
+                            <div
+                              key={m.name}
+                              className={
+                                "flex items-center justify-between gap-3 rounded-2xl border px-3 py-2 " +
+                                (i === 0
+                                  ? "border-white/25 bg-white/10 text-white"
+                                  : "border-white/15 bg-white/5 text-white/90")
+                              }
+                            >
+                              <div className="text-sm font-medium">{m.name}</div>
+                              <div className={"text-xs text-right " + (i === 0 ? "text-white/75" : "text-white/60")}>
+                                {m.desc}
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="rounded-xl border border-white/10 bg-black/20 p-4 h-full">
-                      <div className="text-xs text-white/50 mb-3">Max Tokens</div>
-                      <div className="space-y-2">
-                        {[
-                          { name: "1k", desc: "Quick" },
-                          { name: "2k", desc: "Balanced" },
-                          { name: "4k", desc: "Long answers" },
-                          { name: "8k", desc: "Full steps" },
-                        ].map((t, i) => (
-                          <div
-                            key={t.name}
-                            className={
-                              "flex items-center justify-between gap-3 rounded-xl border px-3 py-2 " +
-                              (i === 1
-                                ? "border-blue-400/40 bg-blue-500/15 text-blue-50"
-                                : "border-white/10 bg-white/5 text-white/80")
-                            }
-                          >
-                            <div className="text-sm font-medium">{t.name}</div>
-                            <div className={"text-xs text-right " + (i === 1 ? "text-blue-100/70" : "text-white/50")}>
-                              {t.desc}
+                      <div>
+                        <div className="text-[11px] uppercase tracking-wide text-white/60 mb-2">Max Tokens</div>
+                        <div className="space-y-2">
+                          {[
+                            { name: "1k", desc: "Quick" },
+                            { name: "2k", desc: "Balanced" },
+                            { name: "4k", desc: "Long answers" },
+                            { name: "8k", desc: "Full steps" },
+                          ].map((t, i) => (
+                            <div
+                              key={t.name}
+                              className={
+                                "flex items-center justify-between gap-3 rounded-2xl border px-3 py-2 " +
+                                (i === 1
+                                  ? "border-white/25 bg-white/10 text-white"
+                                  : "border-white/15 bg-white/5 text-white/90")
+                              }
+                            >
+                              <div className="text-sm font-medium">{t.name}</div>
+                              <div className={"text-xs text-right " + (i === 1 ? "text-white/75" : "text-white/60")}>
+                                {t.desc}
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                {/* Feature 2: Prompt history */}
-                <div className="p-6 flex flex-col min-h-[340px]">
-                  <div className="mb-5 flex flex-col items-center justify-center gap-2 text-center">
-                    <Clock className="w-5 h-5 text-blue-200/70" />
-                    <div className="text-xl font-medium tracking-tight text-white/90">Prompt History</div>
-                  </div>
+              {/* Card 2: Prompt History */}
+              <div className="relative overflow-hidden rounded-[32px] border border-black/10 bg-[#F3F6FF] shadow-[0_30px_90px_rgba(0,0,0,0.35)] flex flex-col">
+                <div className="p-8 pb-6">
+                  <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">Prompt history</h3>
+                  <p className="mt-2 text-sm sm:text-base text-slate-600 font-light tracking-tight">
+                    Review recent questions and answers at a glance.
+                  </p>
+                </div>
 
-                  <div className="space-y-3 flex-1">
-                    <div className="rounded-xl border border-white/10 bg-black/20 p-4">
-                      <div className="text-[11px] text-white/50 mb-1">Prompt</div>
-                      <div className="text-sm text-white/85 mb-2">
-                        Differentiate: x² + 3x − 5
-                      </div>
-                      <div className="text-[11px] text-white/50 mb-1">Answer</div>
-                      <div className="text-sm text-white/65">2x + 3</div>
-                    </div>
-                    <div className="rounded-xl border border-white/10 bg-black/20 p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="text-[11px] text-white/50">Prompt</div>
-                        <span className="text-[10px] px-2 py-0.5 rounded-full border border-white/10 bg-white/5 text-white/60">
-                          Image
-                        </span>
-                      </div>
-                      <div className="mt-2 flex items-start gap-3">
-                        <div className="h-10 w-10 rounded-lg border border-white/10 bg-gradient-to-br from-blue-500/20 via-blue-400/10 to-purple-500/10 flex items-center justify-center">
-                          <ImageIcon className="w-5 h-5 text-blue-100/80" />
+                <div className="px-8 pb-8 flex-1">
+                  <div className="h-full rounded-3xl border border-black/10 bg-white p-5">
+                    <div className="space-y-3">
+                      {[
+                        { p: "Differentiate: x² + 3x − 5", a: "2x + 3" },
+                        { p: "Solve: 2x + 5 = 15", a: "x = 5" },
+                        { p: "Factor: x² − 9", a: "(x − 3)(x + 3)" },
+                      ].map((row) => (
+                        <div key={row.p} className="rounded-2xl border border-black/10 bg-[#F6F8FF] p-4">
+                          <div className="text-[11px] text-slate-500 mb-1">Prompt</div>
+                          <div className="text-sm text-slate-900 font-medium">{row.p}</div>
+                          <div className="mt-2 text-[11px] text-slate-500 mb-1">Answer</div>
+                          <div className="text-sm text-slate-700">{row.a}</div>
                         </div>
-                        <div className="text-sm text-white/85">
-                          Photo: Solve 2x + 5 = 15
-                        </div>
-                      </div>
-                      <div className="mt-3 text-[11px] text-white/50 mb-1">Answer</div>
-                      <div className="text-sm text-white/65">x = 5</div>
+                      ))}
                     </div>
                   </div>
                 </div>
+              </div>
 
-                {/* Feature 3: Notes */}
-                <div className="p-6 flex flex-col min-h-[340px]">
-                  <div className="mb-5 flex flex-col items-center justify-center gap-2 text-center">
-                    <MessageCircle className="w-5 h-5 text-blue-200/70" />
-                    <div className="text-xl font-medium tracking-tight text-white/90">Notes → Calculator</div>
-                  </div>
+              {/* Card 3: Notes → Calculator */}
+              <div className="relative overflow-hidden rounded-[32px] border border-black/10 bg-[#F3F6FF] shadow-[0_30px_90px_rgba(0,0,0,0.35)] flex flex-col">
+                <div className="p-8 pb-6">
+                  <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">Notes → calculator</h3>
+                  <p className="mt-2 text-sm sm:text-base text-slate-600 font-light tracking-tight">
+                    Send study notes straight to CalcAI so they&apos;re always on hand.
+                  </p>
+                </div>
 
-                  <div className="rounded-xl border border-white/10 bg-black/20 p-4 flex flex-col flex-1">
+                <div className="px-8 pb-8 flex-1">
+                  <div className="h-full rounded-3xl border border-black/10 bg-white p-5 flex flex-col">
                     <textarea
                       readOnly
-                      className="w-full flex-1 min-h-[220px] rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-sm text-white/80 placeholder:text-white/30 focus:outline-none resize-none"
+                      className="w-full flex-1 min-h-[180px] rounded-2xl border border-black/10 bg-[#F6F8FF] px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none resize-none"
                       defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x`}
                     />
-                    <div className="mt-3 flex items-center justify-between">
-                      <div className="text-xs text-white/40">
-                        Target: <span className="text-white/60">Calculator</span>
+                    <div className="mt-4 flex items-center justify-between">
+                      <div className="text-xs text-slate-500">
+                        Target: <span className="text-slate-700">CalcAI</span>
                       </div>
                       <button
                         type="button"
-                        className="rounded-full border border-white/10 bg-blue-500/15 hover:bg-blue-500/25 text-blue-100 px-4 py-1.5 text-xs transition-colors"
+                        className="rounded-full border border-black/10 bg-slate-900 text-white px-4 py-1.5 text-xs font-medium hover:bg-slate-800 transition-colors"
                       >
                         Send note
                       </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 4: Pair & Devices */}
+              <div className="relative overflow-hidden rounded-[32px] border border-black/10 bg-[#F3F6FF] shadow-[0_30px_90px_rgba(0,0,0,0.35)] flex flex-col">
+                <div className="p-8 pb-6">
+                  <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">Pair & devices</h3>
+                  <p className="mt-2 text-sm sm:text-base text-slate-600 font-light tracking-tight">
+                    Connect your calculator and manage it from the dashboard.
+                  </p>
+                </div>
+
+                <div className="px-8 pb-8 flex-1">
+                  <div className="h-full rounded-3xl border border-black/10 bg-white p-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="rounded-2xl border border-black/10 bg-[#F6F8FF] p-4">
+                        <div className="text-[11px] text-slate-500 mb-1">Pairing code</div>
+                        <div className="font-mono text-2xl tracking-widest text-slate-900">482‑193</div>
+                        <div className="mt-2 text-xs text-slate-600">Enter this on your CalcAI to connect.</div>
+                      </div>
+
+                      <div className="rounded-2xl border border-black/10 bg-[#F6F8FF] p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="text-[11px] text-slate-500">Device</div>
+                          <span className="text-[11px] px-2 py-0.5 rounded-full border border-black/10 bg-white text-slate-700">
+                            Connected
+                          </span>
+                        </div>
+                        <div className="mt-2 text-sm font-medium text-slate-900">CalcAI • Desk unit</div>
+                        <div className="mt-2 text-xs text-slate-600">Last sync: 12s ago</div>
+                        <div className="mt-3 flex items-center gap-2">
+                          <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                          <div className="text-xs text-slate-600">Online</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 flex items-center justify-between">
+                      <div className="text-xs text-slate-500">Secure pairing • One device at a time</div>
+                      <div className="inline-flex items-center gap-2 text-xs font-medium text-slate-700">
+                        Manage <ArrowRight className="w-4 h-4" />
+                      </div>
                     </div>
                   </div>
                 </div>
