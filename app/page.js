@@ -390,7 +390,7 @@ export default function Home() {
                     {/* Note box (left) */}
                     <div className="relative w-[38ch] max-w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
                       <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 via-black/45 to-transparent" />
+                      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
 
                       <div className="relative">
                         <textarea
@@ -401,7 +401,7 @@ export default function Home() {
                         {/* Bottom fade (preview/skeleton feel) */}
                         <div
                           aria-hidden
-                          className="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/75 via-black/35 to-transparent"
+                          className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/90 via-black/55 to-transparent"
                         />
                       </div>
 
@@ -420,13 +420,11 @@ export default function Home() {
 
                     {/* Details (right) */}
                     <div className="pt-1">
-                      <div className="text-sm sm:text-base text-white/80 font-light tracking-tight">
+                      <div className="text-lg sm:text-xl font-semibold tracking-tight text-white/90">
                         Write and send notes to your calculator.
                       </div>
-                      <div className="mt-3 space-y-2 text-sm text-white/70">
-                        <div>Save formulas, reminders, and steps.</div>
-                        <div>Send notes before class or a quiz.</div>
-                        <div>Keep everything synced in your dashboard.</div>
+                      <div className="mt-2 text-sm sm:text-base text-white/70">
+                        Keep formulas, reminders, and steps ready on CalcAI.
                       </div>
                     </div>
                   </div>
