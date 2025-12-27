@@ -325,10 +325,10 @@ export default function Home() {
               </div>
 
               {/* Card 2: Prompt History */}
-              <div className="md:col-span-5 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+              <div className="md:col-span-5 md:row-span-2 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
                 <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
-                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-transparent to-transparent" />
-                <div aria-hidden className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-indigo-500/20 blur-3xl" />
+                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-500/18 via-transparent to-transparent" />
+                <div aria-hidden className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-blue-500/18 blur-3xl" />
 
                 <div className="relative p-6">
                   <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Prompt history</h3>
@@ -359,15 +359,15 @@ export default function Home() {
               </div>
 
               {/* Card 3: Notes → Calculator */}
-              <div className="md:col-span-12 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+              <div className="md:col-span-7 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
                 <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
-                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan-500/15 via-transparent to-transparent" />
-                <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-cyan-500/15 blur-3xl" />
+                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-500/14 via-transparent to-transparent" />
+                <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-blue-500/14 blur-3xl" />
 
                 <div className="relative p-6">
-                  <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Notes → calculator</h3>
+                  <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Notes</h3>
                   <p className="mt-1.5 text-sm text-white/70 font-light tracking-tight">
-                    Send notes to CalcAI so they&apos;re always available.
+                    Write and send notes to your calculator.
                   </p>
 
                   <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
@@ -376,7 +376,7 @@ export default function Home() {
 
                     <textarea
                       readOnly
-                      className="relative w-full min-h-[160px] rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
+                      className="relative w-full min-h-[140px] rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
                       defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x`}
                     />
                     <div className="relative mt-4 flex items-center justify-between">
