@@ -396,7 +396,7 @@ export default function Home() {
                     <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
                     <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 via-black/45 to-transparent" />
 
-                    <div className="relative mx-auto w-full max-w-[46ch]">
+                    <div className="relative mx-auto w-[38ch] max-w-full">
                       <div className="relative">
                         <textarea
                           readOnly
