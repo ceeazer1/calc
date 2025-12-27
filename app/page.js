@@ -259,68 +259,86 @@ export default function Home() {
                 <div className="relative p-6">
                   <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Model controls</h3>
                   <p className="mt-1.5 text-sm text-white/70 font-light tracking-tight">
-                    Pick your GPT model and max tokens.
+                    Tune performance and answer length in seconds.
                   </p>
 
-                  <div className="mt-5 grid grid-cols-1 sm:grid-cols-[1fr_320px] gap-6 items-start">
-                    {/* Left: details inside tile */}
+                  <div className="mt-5 grid grid-cols-1 sm:grid-cols-[1fr_320px] gap-6 items-stretch">
+                    {/* Left: feature description (not option listing) */}
                     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                      <div className="text-sm font-medium text-white/90">Details</div>
-                      <div className="mt-2 space-y-3">
-                        <div>
-                          <div className="text-[11px] uppercase tracking-wide text-white/50">GPT Model</div>
-                          <div className="mt-1 text-sm text-white/70">
-                            GPT 5.2 (best accuracy), GPT 5.1 (balanced), GPT 5 mini (fastest)
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-[11px] uppercase tracking-wide text-white/50">Max Tokens</div>
-                          <div className="mt-1 text-sm text-white/70">
-                            1k quick • 2k balanced • 4k long answers • 8k full steps
-                          </div>
-                        </div>
+                      <div className="text-sm font-medium text-white/90">Customize responses</div>
+                      <div className="mt-2 text-sm text-white/70">
+                        Pick your GPT model and max tokens.
+                      </div>
+                      <ul className="mt-3 space-y-2 text-sm text-white/65">
+                        <li>
+                          <span className="text-white/85">Speed vs accuracy:</span> choose the model that fits your workflow.
+                        </li>
+                        <li>
+                          <span className="text-white/85">Answer length:</span> increase tokens for full step‑by‑step solutions.
+                        </li>
+                      </ul>
+                      <div className="mt-3 text-xs text-white/50">
+                        Changes apply instantly on your calculator.
                       </div>
                     </div>
 
-                    {/* Right: compact controls pushed to the side */}
-                    <div className="sm:justify-self-end w-full sm:w-[320px]">
-                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
+                    {/* Right: controls (fill the side) */}
+                    <div className="sm:justify-self-end w-full sm:w-[320px] h-full">
+                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4 h-full">
                         <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                        <div className="relative space-y-5">
-                          <div>
-                            <div className="text-[11px] uppercase tracking-wide text-white/60 mb-2">GPT Model</div>
-                            <div className="flex flex-wrap gap-2 sm:justify-end">
-                              {["GPT 5.2", "GPT 5.1", "GPT 5 mini"].map((m, i) => (
-                                <span
-                                  key={m}
+                        <div className="relative grid grid-rows-2 gap-4 h-full">
+                          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                            <div className="text-[11px] uppercase tracking-wide text-white/60">GPT Model</div>
+                            <div className="mt-2 grid grid-cols-2 gap-2">
+                              {[
+                                { name: "GPT 5.2", desc: "Accuracy", selected: true, wide: false },
+                                { name: "GPT 5.1", desc: "Balanced", selected: false, wide: false },
+                                { name: "GPT 5 mini", desc: "Fast", selected: false, wide: true },
+                              ].map((m) => (
+                                <button
+                                  key={m.name}
+                                  type="button"
                                   className={
-                                    "inline-flex items-center rounded-full px-3 py-1 text-xs border " +
-                                    (i === 0
+                                    "w-full rounded-xl border px-3 py-2 text-left transition-colors " +
+                                    (m.wide ? "col-span-2 " : "") +
+                                    (m.selected
                                       ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
-                                      : "border-white/10 bg-white/[0.04] text-white/80")
+                                      : "border-white/10 bg-white/[0.04] text-white/85 hover:bg-white/[0.06]")
                                   }
                                 >
-                                  {m}
-                                </span>
+                                  <div className="text-xs font-medium leading-none">{m.name}</div>
+                                  <div className={"mt-1 text-[10px] leading-none " + (m.selected ? "text-blue-100/70" : "text-white/55")}>
+                                    {m.desc}
+                                  </div>
+                                </button>
                               ))}
                             </div>
                           </div>
 
-                          <div>
-                            <div className="text-[11px] uppercase tracking-wide text-white/60 mb-2">Max Tokens</div>
-                            <div className="flex flex-wrap gap-2 sm:justify-end">
-                              {["1k", "2k", "4k", "8k"].map((t, i) => (
-                                <span
-                                  key={t}
+                          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                            <div className="text-[11px] uppercase tracking-wide text-white/60">Max Tokens</div>
+                            <div className="mt-2 grid grid-cols-2 gap-2">
+                              {[
+                                { name: "1k", desc: "Quick", selected: false },
+                                { name: "2k", desc: "Balanced", selected: true },
+                                { name: "4k", desc: "Long", selected: false },
+                                { name: "8k", desc: "Full steps", selected: false },
+                              ].map((t) => (
+                                <button
+                                  key={t.name}
+                                  type="button"
                                   className={
-                                    "inline-flex items-center rounded-full px-3 py-1 text-xs border " +
-                                    (i === 1
+                                    "w-full rounded-xl border px-3 py-2 text-left transition-colors " +
+                                    (t.selected
                                       ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
-                                      : "border-white/10 bg-white/[0.04] text-white/80")
+                                      : "border-white/10 bg-white/[0.04] text-white/85 hover:bg-white/[0.06]")
                                   }
                                 >
-                                  {t}
-                                </span>
+                                  <div className="text-xs font-medium leading-none">{t.name}</div>
+                                  <div className={"mt-1 text-[10px] leading-none " + (t.selected ? "text-blue-100/70" : "text-white/55")}>
+                                    {t.desc}
+                                  </div>
+                                </button>
                               ))}
                             </div>
                           </div>
