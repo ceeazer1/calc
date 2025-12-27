@@ -1,9 +1,11 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import { Phone, CheckCircle, XCircle } from "lucide-react";
+import { AsYouType, parsePhoneNumberFromString, type CountryCode } from "libphonenumber-js";
 import {
     Select,
     SelectContent,
@@ -13,12 +15,17 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 
+const DEFAULT_ALLOWED_COUNTRIES: CountryCode[] = ["US"];
+
+function flagSrc(countryCode: string) {
+    return `https://flagcdn.com/w20/${countryCode.toLowerCase()}.png`;
+}
+
 // Country data with phone codes, patterns, and placeholders
 const countries = [
     {
         code: "US",
         name: "United States",
-        flag: "🇺🇸",
         phoneCode: "+1",
         placeholder: "(555) 123-4567",
         pattern: /^(\([0-9]{3}\))\s?[0-9]{3}-?[0-9]{4}$/,
@@ -27,7 +34,6 @@ const countries = [
     {
         code: "GB",
         name: "United Kingdom",
-        flag: "🇬🇧",
         phoneCode: "+44",
         placeholder: "7911 123456",
         pattern: /^[0-9]{10,11}$/,
@@ -36,7 +42,6 @@ const countries = [
     {
         code: "CA",
         name: "Canada",
-        flag: "🇨🇦",
         phoneCode: "+1",
         placeholder: "(555) 123-4567",
         pattern: /^(\([0-9]{3}\))\s?[0-9]{3}-?[0-9]{4}$/,
@@ -45,7 +50,6 @@ const countries = [
     {
         code: "AU",
         name: "Australia",
-        flag: "🇦🇺",
         phoneCode: "+61",
         placeholder: "412 345 678",
         pattern: /^[0-9]{9,10}$/,
@@ -54,7 +58,6 @@ const countries = [
     {
         code: "DE",
         name: "Germany",
-        flag: "🇩🇪",
         phoneCode: "+49",
         placeholder: "151 12345678",
         pattern: /^[0-9]{10,12}$/,
@@ -63,7 +66,6 @@ const countries = [
     {
         code: "FR",
         name: "France",
-        flag: "🇫🇷",
         phoneCode: "+33",
         placeholder: "6 12 34 56 78",
         pattern: /^[0-9]{10}$/,
@@ -72,7 +74,6 @@ const countries = [
     {
         code: "IT",
         name: "Italy",
-        flag: "🇮🇹",
         phoneCode: "+39",
         placeholder: "312 345 6789",
         pattern: /^[0-9]{9,10}$/,
@@ -81,7 +82,6 @@ const countries = [
     {
         code: "ES",
         name: "Spain",
-        flag: "🇪🇸",
         phoneCode: "+34",
         placeholder: "612 34 56 78",
         pattern: /^[0-9]{9}$/,
@@ -90,7 +90,6 @@ const countries = [
     {
         code: "NL",
         name: "Netherlands",
-        flag: "🇳🇱",
         phoneCode: "+31",
         placeholder: "6 12345678",
         pattern: /^[0-9]{9}$/,
@@ -99,7 +98,6 @@ const countries = [
     {
         code: "BE",
         name: "Belgium",
-        flag: "🇧🇪",
         phoneCode: "+32",
         placeholder: "470 12 34 56",
         pattern: /^[0-9]{9}$/,
@@ -108,7 +106,6 @@ const countries = [
     {
         code: "CH",
         name: "Switzerland",
-        flag: "🇨🇭",
         phoneCode: "+41",
         placeholder: "78 123 45 67",
         pattern: /^[0-9]{9}$/,
@@ -117,7 +114,6 @@ const countries = [
     {
         code: "AT",
         name: "Austria",
-        flag: "🇦🇹",
         phoneCode: "+43",
         placeholder: "664 123456",
         pattern: /^[0-9]{10,11}$/,
@@ -126,7 +122,6 @@ const countries = [
     {
         code: "SE",
         name: "Sweden",
-        flag: "🇸🇪",
         phoneCode: "+46",
         placeholder: "70 123 45 67",
         pattern: /^[0-9]{9}$/,
@@ -135,7 +130,6 @@ const countries = [
     {
         code: "NO",
         name: "Norway",
-        flag: "🇳🇴",
         phoneCode: "+47",
         placeholder: "412 34 567",
         pattern: /^[0-9]{8}$/,
@@ -144,7 +138,6 @@ const countries = [
     {
         code: "DK",
         name: "Denmark",
-        flag: "🇩🇰",
         phoneCode: "+45",
         placeholder: "20 12 34 56",
         pattern: /^[0-9]{8}$/,
@@ -153,7 +146,6 @@ const countries = [
     {
         code: "FI",
         name: "Finland",
-        flag: "🇫🇮",
         phoneCode: "+358",
         placeholder: "50 123 4567",
         pattern: /^[0-9]{9,10}$/,
@@ -162,7 +154,6 @@ const countries = [
     {
         code: "PL",
         name: "Poland",
-        flag: "🇵🇱",
         phoneCode: "+48",
         placeholder: "512 123 456",
         pattern: /^[0-9]{9}$/,
@@ -171,7 +162,6 @@ const countries = [
     {
         code: "CZ",
         name: "Czech Republic",
-        flag: "🇨🇿",
         phoneCode: "+420",
         placeholder: "601 123 456",
         pattern: /^[0-9]{9}$/,
@@ -180,7 +170,6 @@ const countries = [
     {
         code: "HU",
         name: "Hungary",
-        flag: "🇭🇺",
         phoneCode: "+36",
         placeholder: "20 123 4567",
         pattern: /^[0-9]{8,9}$/,
@@ -189,7 +178,6 @@ const countries = [
     {
         code: "PT",
         name: "Portugal",
-        flag: "🇵🇹",
         phoneCode: "+351",
         placeholder: "912 345 678",
         pattern: /^[0-9]{9}$/,
@@ -198,7 +186,6 @@ const countries = [
     {
         code: "GR",
         name: "Greece",
-        flag: "🇬🇷",
         phoneCode: "+30",
         placeholder: "694 123 4567",
         pattern: /^[0-9]{10}$/,
@@ -207,7 +194,6 @@ const countries = [
     {
         code: "TR",
         name: "Turkey",
-        flag: "🇹🇷",
         phoneCode: "+90",
         placeholder: "532 123 45 67",
         pattern: /^[0-9]{10}$/,
@@ -216,7 +202,6 @@ const countries = [
     {
         code: "RU",
         name: "Russia",
-        flag: "🇷🇺",
         phoneCode: "+7",
         placeholder: "912 123-45-67",
         pattern: /^[0-9]{10}$/,
@@ -225,7 +210,6 @@ const countries = [
     {
         code: "JP",
         name: "Japan",
-        flag: "🇯🇵",
         phoneCode: "+81",
         placeholder: "90 1234 5678",
         pattern: /^[0-9]{10,11}$/,
@@ -234,7 +218,6 @@ const countries = [
     {
         code: "KR",
         name: "South Korea",
-        flag: "🇰🇷",
         phoneCode: "+82",
         placeholder: "10 1234 5678",
         pattern: /^[0-9]{10,11}$/,
@@ -243,7 +226,6 @@ const countries = [
     {
         code: "CN",
         name: "China",
-        flag: "🇨🇳",
         phoneCode: "+86",
         placeholder: "138 0013 8000",
         pattern: /^[0-9]{11}$/,
@@ -252,7 +234,6 @@ const countries = [
     {
         code: "IN",
         name: "India",
-        flag: "🇮🇳",
         phoneCode: "+91",
         placeholder: "98765 43210",
         pattern: /^[0-9]{10}$/,
@@ -261,7 +242,6 @@ const countries = [
     {
         code: "SG",
         name: "Singapore",
-        flag: "🇸🇬",
         phoneCode: "+65",
         placeholder: "8123 4567",
         pattern: /^[0-9]{8}$/,
@@ -270,7 +250,6 @@ const countries = [
     {
         code: "MY",
         name: "Malaysia",
-        flag: "🇲🇾",
         phoneCode: "+60",
         placeholder: "12-345 6789",
         pattern: /^[0-9]{9,10}$/,
@@ -279,7 +258,6 @@ const countries = [
     {
         code: "TH",
         name: "Thailand",
-        flag: "🇹🇭",
         phoneCode: "+66",
         placeholder: "81 234 5678",
         pattern: /^[0-9]{9}$/,
@@ -288,7 +266,6 @@ const countries = [
     {
         code: "ID",
         name: "Indonesia",
-        flag: "🇮🇩",
         phoneCode: "+62",
         placeholder: "812-3456-789",
         pattern: /^[0-9]{9,13}$/,
@@ -297,7 +274,6 @@ const countries = [
     {
         code: "PH",
         name: "Philippines",
-        flag: "🇵🇭",
         phoneCode: "+63",
         placeholder: "917 123 4567",
         pattern: /^[0-9]{10}$/,
@@ -306,7 +282,6 @@ const countries = [
     {
         code: "VN",
         name: "Vietnam",
-        flag: "🇻🇳",
         phoneCode: "+84",
         placeholder: "91 234 56 78",
         pattern: /^[0-9]{9,10}$/,
@@ -315,7 +290,6 @@ const countries = [
     {
         code: "BD",
         name: "Bangladesh",
-        flag: "🇧🇩",
         phoneCode: "+880",
         placeholder: "1712-345678",
         pattern: /^[0-9]{10,11}$/,
@@ -324,7 +298,6 @@ const countries = [
     {
         code: "PK",
         name: "Pakistan",
-        flag: "🇵🇰",
         phoneCode: "+92",
         placeholder: "301 2345678",
         pattern: /^[0-9]{10}$/,
@@ -333,7 +306,6 @@ const countries = [
     {
         code: "LK",
         name: "Sri Lanka",
-        flag: "🇱🇰",
         phoneCode: "+94",
         placeholder: "71 234 5678",
         pattern: /^[0-9]{9}$/,
@@ -342,7 +314,6 @@ const countries = [
     {
         code: "AE",
         name: "United Arab Emirates",
-        flag: "🇦🇪",
         phoneCode: "+971",
         placeholder: "50 123 4567",
         pattern: /^[0-9]{9}$/,
@@ -351,7 +322,6 @@ const countries = [
     {
         code: "SA",
         name: "Saudi Arabia",
-        flag: "🇸🇦",
         phoneCode: "+966",
         placeholder: "50 123 4567",
         pattern: /^[0-9]{9}$/,
@@ -360,7 +330,6 @@ const countries = [
     {
         code: "IL",
         name: "Israel",
-        flag: "🇮🇱",
         phoneCode: "+972",
         placeholder: "50-123-4567",
         pattern: /^[0-9]{9}$/,
@@ -369,7 +338,6 @@ const countries = [
     {
         code: "EG",
         name: "Egypt",
-        flag: "🇪🇬",
         phoneCode: "+20",
         placeholder: "10 1234 5678",
         pattern: /^[0-9]{10}$/,
@@ -378,7 +346,6 @@ const countries = [
     {
         code: "ZA",
         name: "South Africa",
-        flag: "🇿🇦",
         phoneCode: "+27",
         placeholder: "82 123 4567",
         pattern: /^[0-9]{9}$/,
@@ -387,7 +354,6 @@ const countries = [
     {
         code: "NG",
         name: "Nigeria",
-        flag: "🇳🇬",
         phoneCode: "+234",
         placeholder: "802 123 4567",
         pattern: /^[0-9]{10}$/,
@@ -396,7 +362,6 @@ const countries = [
     {
         code: "KE",
         name: "Kenya",
-        flag: "🇰🇪",
         phoneCode: "+254",
         placeholder: "712 123456",
         pattern: /^[0-9]{9}$/,
@@ -405,7 +370,6 @@ const countries = [
     {
         code: "GH",
         name: "Ghana",
-        flag: "🇬🇭",
         phoneCode: "+233",
         placeholder: "23 123 4567",
         pattern: /^[0-9]{9}$/,
@@ -414,7 +378,6 @@ const countries = [
     {
         code: "BR",
         name: "Brazil",
-        flag: "🇧🇷",
         phoneCode: "+55",
         placeholder: "(11) 91234-5678",
         pattern: /^[0-9]{10,11}$/,
@@ -423,7 +386,6 @@ const countries = [
     {
         code: "MX",
         name: "Mexico",
-        flag: "🇲🇽",
         phoneCode: "+52",
         placeholder: "55 1234 5678",
         pattern: /^[0-9]{10}$/,
@@ -432,7 +394,6 @@ const countries = [
     {
         code: "AR",
         name: "Argentina",
-        flag: "🇦🇷",
         phoneCode: "+54",
         placeholder: "9 11 1234-5678",
         pattern: /^[0-9]{10,11}$/,
@@ -441,7 +402,6 @@ const countries = [
     {
         code: "CL",
         name: "Chile",
-        flag: "🇨🇱",
         phoneCode: "+56",
         placeholder: "9 8765 4321",
         pattern: /^[0-9]{9}$/,
@@ -450,7 +410,6 @@ const countries = [
     {
         code: "CO",
         name: "Colombia",
-        flag: "🇨🇴",
         phoneCode: "+57",
         placeholder: "321 1234567",
         pattern: /^[0-9]{10}$/,
@@ -459,7 +418,6 @@ const countries = [
     {
         code: "PE",
         name: "Peru",
-        flag: "🇵🇪",
         phoneCode: "+51",
         placeholder: "987 654 321",
         pattern: /^[0-9]{9}$/,
@@ -468,7 +426,6 @@ const countries = [
     {
         code: "VE",
         name: "Venezuela",
-        flag: "🇻🇪",
         phoneCode: "+58",
         placeholder: "412-1234567",
         pattern: /^[0-9]{10}$/,
@@ -477,7 +434,6 @@ const countries = [
     {
         code: "UY",
         name: "Uruguay",
-        flag: "🇺🇾",
         phoneCode: "+598",
         placeholder: "91 123 456",
         pattern: /^[0-9]{8}$/,
@@ -490,12 +446,15 @@ const validatePhoneNumber = (
     phoneNumber: string,
     countryCode: string
 ): boolean => {
-    const country = countries.find((c) => c.code === countryCode);
-    if (!country) return false;
+    const raw = String(phoneNumber || "").trim();
+    if (!raw) return false;
 
-    // Remove spaces, dashes, parentheses for validation
-    const cleanNumber = phoneNumber.replace(/[\s\-\(\)]/g, "");
-    return country.pattern.test(cleanNumber);
+    const cleaned = raw.replace(/[^\d+]/g, "");
+    const parsed = cleaned.startsWith("+")
+        ? parsePhoneNumberFromString(cleaned)
+        : parsePhoneNumberFromString(cleaned, countryCode as CountryCode);
+
+    return parsed?.isValid() ?? false;
 };
 
 const phoneInputVariants = cva(
@@ -523,6 +482,7 @@ const phoneInputVariants = cva(
 export interface PhoneInputProps
     extends VariantProps<typeof phoneInputVariants> {
     value?: string;
+    allowedCountries?: string[];
     onChange?: (
         value: string,
         formattedValue: string,
@@ -542,6 +502,7 @@ export interface PhoneInputProps
 
 export function PhoneInput({
     value = "",
+    allowedCountries,
     onChange,
     placeholder,
     className,
@@ -556,9 +517,21 @@ export function PhoneInput({
     size,
     ...props
 }: PhoneInputProps) {
-    const [selectedCountry, setSelectedCountry] = React.useState(
-        countries.find((c) => c.code === defaultCountry) || countries[0]
-    );
+    const availableCountries = React.useMemo(() => {
+        const rawAllowed =
+            allowedCountries && allowedCountries.length > 0
+                ? allowedCountries
+                : DEFAULT_ALLOWED_COUNTRIES;
+        const allowed = new Set(rawAllowed.map((c) => String(c).toUpperCase()));
+        return countries.filter((c) => allowed.has(c.code));
+    }, [allowedCountries]);
+
+    const [selectedCountry, setSelectedCountry] = React.useState(() => {
+        const preferred =
+            availableCountries.find((c) => c.code === defaultCountry) ||
+            availableCountries[0];
+        return preferred || countries.find((c) => c.code === defaultCountry) || countries[0];
+    });
     const [phoneNumber, setPhoneNumber] = React.useState("");
     const [isValid, setIsValid] = React.useState(false);
 
@@ -566,16 +539,46 @@ export function PhoneInput({
     const effectivePlaceholder = placeholder || selectedCountry.placeholder;
 
     React.useEffect(() => {
-        if (value) {
-            // If value includes country code, try to parse it
-            const countryMatch = countries.find((c) => value.startsWith(c.phoneCode));
-            if (countryMatch) {
-                setSelectedCountry(countryMatch);
-                setPhoneNumber(value.slice(countryMatch.phoneCode.length).trim());
-            } else {
-                setPhoneNumber(value);
-            }
+        // Keep the selected country consistent with allowedCountries/defaultCountry.
+        if (!availableCountries.some((c) => c.code === selectedCountry.code)) {
+            const next =
+                availableCountries.find((c) => c.code === defaultCountry) ||
+                availableCountries[0] ||
+                countries.find((c) => c.code === defaultCountry) ||
+                countries[0];
+            setSelectedCountry(next);
         }
+    }, [availableCountries, defaultCountry, selectedCountry.code]);
+
+    React.useEffect(() => {
+        const s = String(value || "").trim();
+        if (!s) {
+            setPhoneNumber("");
+            return;
+        }
+
+        // If value is E.164, detect country automatically.
+        const cleaned = s.replace(/[^\d+]/g, "");
+        const parsed = cleaned.startsWith("+")
+            ? parsePhoneNumberFromString(cleaned)
+            : parsePhoneNumberFromString(cleaned, selectedCountry.code as CountryCode);
+
+        if (parsed) {
+            const parsedCountry = parsed.country;
+            if (parsedCountry) {
+                const match =
+                    availableCountries.find((c) => c.code === parsedCountry) ||
+                    countries.find((c) => c.code === parsedCountry);
+                if (match) setSelectedCountry(match);
+            }
+            setPhoneNumber(parsed.formatNational());
+            return;
+        }
+
+        // Fallback: format whatever digits we have for the currently selected country.
+        const digits = cleaned.replace(/\D/g, "");
+        const ayt = new AsYouType(selectedCountry.code as CountryCode);
+        setPhoneNumber(ayt.input(digits));
     }, [value]);
 
     // Validate phone number whenever it changes
@@ -589,38 +592,62 @@ export function PhoneInput({
     }, [phoneNumber, selectedCountry.code, onValidationChange]);
 
     const handleCountryChange = (countryCode: string) => {
-        const country = countries.find((c) => c.code === countryCode);
+        const country =
+            availableCountries.find((c) => c.code === countryCode) ||
+            countries.find((c) => c.code === countryCode);
         if (country) {
             setSelectedCountry(country);
-            const formattedValue = `${country.phoneCode}${phoneNumber ? ` ${phoneNumber}` : ""
-                }`;
-            const valid =
-                phoneNumber.length > 0
-                    ? validatePhoneNumber(phoneNumber, country.code)
-                    : false;
-            onChange?.(phoneNumber, formattedValue, country.code, valid);
+
+            const digits = String(phoneNumber || "").replace(/\D/g, "");
+            const ayt = new AsYouType(country.code as CountryCode);
+            const formattedNational = digits ? ayt.input(digits) : "";
+            setPhoneNumber(formattedNational);
+
+            const parsed = digits
+                ? parsePhoneNumberFromString(digits, country.code as CountryCode)
+                : undefined;
+            const e164 = digits ? (parsed?.number || `${country.phoneCode}${digits}`) : "";
+            const valid = parsed?.isValid() ?? false;
+            onChange?.(formattedNational, e164, country.code, valid);
         }
     };
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let newValue = e.target.value.replace(/[^\d\s\-\(\)]/g, "");
+        const raw = String(e.target.value || "").trim();
+        const cleaned = raw.replace(/[^\d+]/g, "");
 
-        // Apply max length limit based on country
-        if (
-            selectedCountry.maxLength &&
-            newValue.length > selectedCountry.maxLength
-        ) {
-            newValue = newValue.slice(0, selectedCountry.maxLength);
+        // Allow pasting full E.164 (e.g. +14155551234).
+        if (cleaned.startsWith("+")) {
+            const parsed = parsePhoneNumberFromString(cleaned);
+            if (parsed) {
+                const parsedCountry = parsed.country;
+                const match =
+                    (parsedCountry &&
+                        (availableCountries.find((c) => c.code === parsedCountry) ||
+                            countries.find((c) => c.code === parsedCountry))) ||
+                    selectedCountry;
+                if (match.code !== selectedCountry.code) setSelectedCountry(match);
+
+                const national = parsed.formatNational();
+                setPhoneNumber(national);
+                onChange?.(national, parsed.number, match.code, parsed.isValid());
+                return;
+            }
         }
 
-        setPhoneNumber(newValue);
-        const formattedValue = `${selectedCountry.phoneCode}${newValue ? ` ${newValue}` : ""
-            }`;
-        const valid =
-            newValue.length > 0
-                ? validatePhoneNumber(newValue, selectedCountry.code)
-                : false;
-        onChange?.(newValue, formattedValue, selectedCountry.code, valid);
+        const digits = cleaned.replace(/\D/g, "");
+        const ayt = new AsYouType(selectedCountry.code as CountryCode);
+        const formattedNational = digits ? ayt.input(digits) : "";
+        setPhoneNumber(formattedNational);
+
+        const parsed = digits
+            ? parsePhoneNumberFromString(digits, selectedCountry.code as CountryCode)
+            : undefined;
+        const e164 = digits
+            ? parsed?.number || `${selectedCountry.phoneCode}${digits}`
+            : "";
+        const valid = parsed?.isValid() ?? false;
+        onChange?.(formattedNational, e164, selectedCountry.code, valid);
     };
 
     return (
@@ -634,13 +661,19 @@ export function PhoneInput({
                 <Select
                     value={selectedCountry.code}
                     onValueChange={handleCountryChange}
-                    disabled={disabled}
+                    disabled={disabled || availableCountries.length <= 1}
                 >
                     <SelectTrigger className="h-auto border-none bg-transparent p-0 shadow-none focus:ring-0 focus-visible:ring-transparent focus-visible:border-transparent focus-visible:outline-transparent active:ring-transparent active:border-transparent active:outline-transparent focus:ring-transparent focus:border-transparent focus:outline-transparent">
                         <SelectValue>
                             <div className="flex items-center gap-1">
                                 {showFlag && (
-                                    <span className="text-sm">{selectedCountry.flag}</span>
+                                    <Image
+                                        src={flagSrc(selectedCountry.code)}
+                                        alt={`${selectedCountry.name} flag`}
+                                        width={20}
+                                        height={15}
+                                        className="rounded-sm"
+                                    />
                                 )}
                                 <span className="text-xs text-muted-foreground">
                                     {selectedCountry.phoneCode}
@@ -649,10 +682,16 @@ export function PhoneInput({
                         </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="max-h-60">
-                        {countries.map((country) => (
+                        {availableCountries.map((country) => (
                             <SelectItem key={country.code} value={country.code}>
                                 <div className="flex items-center gap-2">
-                                    <span>{country.flag}</span>
+                                    <Image
+                                        src={flagSrc(country.code)}
+                                        alt={`${country.name} flag`}
+                                        width={20}
+                                        height={15}
+                                        className="rounded-sm"
+                                    />
                                     <span className="font-medium">{country.name}</span>
                                     <span className="text-xs text-muted-foreground">
                                         {country.phoneCode}
@@ -676,7 +715,6 @@ export function PhoneInput({
                     phoneNumber.length > 0 &&
                     (isValid ? "text-green-600" : "text-red-600")
                 )}
-                maxLength={selectedCountry.maxLength}
             />
 
             {showValidation && phoneNumber.length > 0 && (

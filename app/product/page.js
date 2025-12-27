@@ -458,45 +458,45 @@ export default function ProductPage() {
                   </div>
 
                   <div className="mt-4 grid grid-cols-1 gap-3">
-                    <button
-                      onClick={handleAddToCart}
+                  <button
+                    onClick={handleAddToCart}
                       disabled={!canPurchase}
                       className={`w-full rounded-2xl border px-6 py-3 text-sm font-light tracking-tight transition-all duration-300 focus:outline-none focus:ring-2 ${canPurchase ? 'border-white/10 bg-blue-600/15 text-blue-50 backdrop-blur-sm hover:bg-blue-600/25 focus:ring-white/20' : 'border-gray-700 bg-gray-700/50 text-gray-400 cursor-not-allowed backdrop-blur-sm'}`}
-                    >
-                      <div className="flex items-center justify-center space-x-2">
-                        <ShoppingCart className="w-4 h-4" />
+                  >
+                    <div className="flex items-center justify-center space-x-2">
+                      <ShoppingCart className="w-4 h-4" />
                         <span>{!loaded ? 'Loading…' : addedToCart ? 'Added to cart!' : 'Add to cart'}</span>
-                      </div>
-                    </button>
+                    </div>
+                  </button>
 
-                    <button
-                      onClick={handleBuyNow}
+                  <button
+                    onClick={handleBuyNow}
                       disabled={!canPurchase}
                       className={`w-full rounded-2xl border px-6 py-3 text-sm font-light tracking-tight transition-all duration-300 focus:outline-none focus:ring-2 ${canPurchase ? 'border-white/10 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 focus:ring-white/20' : 'border-gray-700 bg-gray-700/50 text-gray-400 cursor-not-allowed backdrop-blur-sm'}`}
-                    >
+                  >
                       Buy now
+                  </button>
+
+                  {preorderEnabled ? (
+                    <button
+                      onClick={handlePreorderCheckout}
+                      className="w-full rounded-2xl border border-white/10 bg-purple-600/10 text-purple-50 backdrop-blur-sm hover:bg-purple-600/20 px-6 py-3 font-light tracking-tight transition-all duration-300 text-sm focus:outline-none focus:ring-2 focus:ring-white/20"
+                    >
+                      {`Preorder - $${preorderPrice.toFixed(2)}${preorderShipDate ? ` • Ships ${preorderShipDate}` : ''}`}
                     </button>
+                  ) : null}
+              </div>
 
-                    {preorderEnabled ? (
-                      <button
-                        onClick={handlePreorderCheckout}
-                        className="w-full rounded-2xl border border-white/10 bg-purple-600/10 text-purple-50 backdrop-blur-sm hover:bg-purple-600/20 px-6 py-3 font-light tracking-tight transition-all duration-300 text-sm focus:outline-none focus:ring-2 focus:ring-white/20"
-                      >
-                        {`Preorder - $${preorderPrice.toFixed(2)}${preorderShipDate ? ` • Ships ${preorderShipDate}` : ''}`}
-                      </button>
-                    ) : null}
-                  </div>
-
-                  {addedToCart && (
+              {addedToCart && (
                     <div className="mt-4 text-center">
-                      <Link
-                        href="/cart"
-                        className="text-blue-400 hover:text-blue-300 underline text-sm"
-                      >
+                  <Link
+                    href="/cart"
+                    className="text-blue-400 hover:text-blue-300 underline text-sm"
+                  >
                         View cart & checkout
-                      </Link>
-                    </div>
-                  )}
+                  </Link>
+                </div>
+              )}
 
                   <div className="mt-5 grid grid-cols-1 gap-2 text-xs text-gray-300">
                     <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-3 py-2">
@@ -506,13 +506,13 @@ export default function ProductPage() {
                     <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-3 py-2">
                       <Shield className="w-4 h-4 text-blue-200/60" />
                       <span>2‑week warranty</span>
-                    </div>
+                      </div>
                     <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-3 py-2">
                       <Lock className="w-4 h-4 text-blue-200/60" />
                       <span>Secure checkout by Stripe</span>
-                    </div>
-                  </div>
-                </div>
+              </div>
+            </div>
+          </div>
               )}
             </div>
           </div>

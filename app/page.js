@@ -253,46 +253,61 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
                 {/* Feature 1: Model controls */}
                 <div className="p-6 flex flex-col min-h-[340px]">
-                  <div className="flex items-center gap-2 text-lg font-medium text-white/90 mb-5">
+                  <div className="mb-5 flex flex-col items-center justify-center gap-2 text-center">
                     <Sliders className="w-5 h-5 text-blue-200/70" />
-                    Model Controls
+                    <div className="text-xl font-medium tracking-tight text-white/90">Model Controls</div>
                   </div>
 
                   <div className="grid grid-rows-2 gap-4 flex-1">
-                    <div className="rounded-xl border border-white/10 bg-black/20 p-4 h-full flex flex-col justify-between">
-                      <div className="text-xs text-white/50">GPT Model</div>
-                      <div className="flex flex-wrap gap-2">
-                        {["GPT 5.2", "GPT 5.1", "GPT 5 mini"].map((m, i) => (
-                          <span
-                            key={m}
+                    <div className="rounded-xl border border-white/10 bg-black/20 p-4 h-full">
+                      <div className="text-xs text-white/50 mb-3">GPT Model</div>
+                      <div className="space-y-2">
+                        {[
+                          { name: "GPT 5.2", desc: "Best accuracy" },
+                          { name: "GPT 5.1", desc: "Balanced" },
+                          { name: "GPT 5 mini", desc: "Fastest" },
+                        ].map((m, i) => (
+                          <div
+                            key={m.name}
                             className={
-                              "rounded-full px-3 py-1 text-xs border " +
+                              "flex items-center justify-between gap-3 rounded-xl border px-3 py-2 " +
                               (i === 0
-                                ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
-                                : "border-white/10 bg-white/5 text-white/70")
+                                ? "border-blue-400/40 bg-blue-500/15 text-blue-50"
+                                : "border-white/10 bg-white/5 text-white/80")
                             }
                           >
-                            {m}
-                          </span>
+                            <div className="text-sm font-medium">{m.name}</div>
+                            <div className={"text-xs text-right " + (i === 0 ? "text-blue-100/70" : "text-white/50")}>
+                              {m.desc}
+                            </div>
+                          </div>
                         ))}
                       </div>
                     </div>
 
-                    <div className="rounded-xl border border-white/10 bg-black/20 p-4 h-full flex flex-col justify-between">
-                      <div className="text-xs text-white/50">Max Tokens</div>
-                      <div className="flex flex-wrap gap-2">
-                        {["1k", "2k", "4k", "8k"].map((t, i) => (
-                          <span
-                            key={t}
+                    <div className="rounded-xl border border-white/10 bg-black/20 p-4 h-full">
+                      <div className="text-xs text-white/50 mb-3">Max Tokens</div>
+                      <div className="space-y-2">
+                        {[
+                          { name: "1k", desc: "Quick" },
+                          { name: "2k", desc: "Balanced" },
+                          { name: "4k", desc: "Long answers" },
+                          { name: "8k", desc: "Full steps" },
+                        ].map((t, i) => (
+                          <div
+                            key={t.name}
                             className={
-                              "rounded-full px-3 py-1 text-xs border " +
+                              "flex items-center justify-between gap-3 rounded-xl border px-3 py-2 " +
                               (i === 1
-                                ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
-                                : "border-white/10 bg-white/5 text-white/70")
+                                ? "border-blue-400/40 bg-blue-500/15 text-blue-50"
+                                : "border-white/10 bg-white/5 text-white/80")
                             }
                           >
-                            {t}
-                          </span>
+                            <div className="text-sm font-medium">{t.name}</div>
+                            <div className={"text-xs text-right " + (i === 1 ? "text-blue-100/70" : "text-white/50")}>
+                              {t.desc}
+                            </div>
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -301,9 +316,9 @@ export default function Home() {
 
                 {/* Feature 2: Prompt history */}
                 <div className="p-6 flex flex-col min-h-[340px]">
-                  <div className="flex items-center gap-2 text-lg font-medium text-white/90 mb-5">
+                  <div className="mb-5 flex flex-col items-center justify-center gap-2 text-center">
                     <Clock className="w-5 h-5 text-blue-200/70" />
-                    Prompt History
+                    <div className="text-xl font-medium tracking-tight text-white/90">Prompt History</div>
                   </div>
 
                   <div className="space-y-3 flex-1">
@@ -338,9 +353,9 @@ export default function Home() {
 
                 {/* Feature 3: Notes */}
                 <div className="p-6 flex flex-col min-h-[340px]">
-                  <div className="flex items-center gap-2 text-lg font-medium text-white/90 mb-5">
+                  <div className="mb-5 flex flex-col items-center justify-center gap-2 text-center">
                     <MessageCircle className="w-5 h-5 text-blue-200/70" />
-                    Notes → Calculator
+                    <div className="text-xl font-medium tracking-tight text-white/90">Notes → Calculator</div>
                   </div>
 
                   <div className="rounded-xl border border-white/10 bg-black/20 p-4 flex flex-col flex-1">
@@ -377,7 +392,6 @@ export default function Home() {
         <section className="py-20">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl font-light tracking-tight mb-4 text-white">Ready to upgrade your calculator?</h2>
-            <p className="text-lg text-slate-400 mb-8 font-light tracking-tight">Join thousands of students who have enhanced their toolkit with CalcAI.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/product" className="btn-primary inline-flex items-center justify-center rounded-2xl bg-blue-600/90 hover:bg-blue-600 text-white px-8 py-3 transition-all tracking-tight shadow-none hover:shadow-none">
                 Order Now
