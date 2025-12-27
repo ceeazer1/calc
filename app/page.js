@@ -264,21 +264,12 @@ export default function Home() {
 
                   <div className="mt-5 grid grid-cols-1 sm:grid-cols-[1fr_320px] gap-6 items-stretch">
                     {/* Left: feature description (not option listing) */}
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                      <div className="text-sm font-medium text-white/90">Customize responses</div>
-                      <div className="mt-2 text-sm text-white/70">
+                    <div className="flex flex-col justify-center">
+                      <div className="text-xl sm:text-2xl font-semibold tracking-tight text-white/90">
                         Pick your GPT model and max tokens.
                       </div>
-                      <ul className="mt-3 space-y-2 text-sm text-white/65">
-                        <li>
-                          <span className="text-white/85">Speed vs accuracy:</span> choose the model that fits your workflow.
-                        </li>
-                        <li>
-                          <span className="text-white/85">Answer length:</span> increase tokens for full step‑by‑step solutions.
-                        </li>
-                      </ul>
-                      <div className="mt-3 text-xs text-white/50">
-                        Changes apply instantly on your calculator.
+                      <div className="mt-2 text-sm sm:text-base text-white/70">
+                        Adjust speed, accuracy, and answer length anytime.
                       </div>
                     </div>
 
@@ -293,7 +284,8 @@ export default function Home() {
                               {[
                                 { name: "GPT 5.2", desc: "Accuracy", selected: true, wide: false },
                                 { name: "GPT 5.1", desc: "Balanced", selected: false, wide: false },
-                                { name: "GPT 5 mini", desc: "Fast", selected: false, wide: true },
+                                { name: "GPT 5 mini", desc: "Fast", selected: false, wide: false },
+                                { name: "GPT 5 nano", desc: "Ultra fast", selected: false, wide: false },
                               ].map((m) => (
                                 <button
                                   key={m.name}
