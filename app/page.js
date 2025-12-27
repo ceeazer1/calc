@@ -249,22 +249,24 @@ export default function Home() {
             </div>
 
             {/* Dashboard feature tiles (screenshot-inspired marketing cards) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
               {/* Card 1: Model Controls */}
-              <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-blue-500/90 via-blue-600/90 to-indigo-600/90 shadow-[0_30px_90px_rgba(0,0,0,0.45)] flex flex-col">
-                <div aria-hidden className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-white/20 blur-3xl" />
-                <div aria-hidden className="pointer-events-none absolute -bottom-28 -right-28 h-80 w-80 rounded-full bg-indigo-200/20 blur-3xl" />
+              <div className="md:col-span-7 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
+                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-500/25 via-blue-500/5 to-transparent" />
+                <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-blue-500/25 blur-3xl" />
 
-                <div className="relative p-8 pb-6">
-                  <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white">Model controls</h3>
-                  <p className="mt-2 text-sm sm:text-base text-white/80 font-light tracking-tight">
-                    Choose the GPT model and max tokens for your calculator.
+                <div className="relative p-6">
+                  <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Model controls</h3>
+                  <p className="mt-1.5 text-sm text-white/70 font-light tracking-tight">
+                    Pick your GPT model and max tokens.
                   </p>
-                </div>
 
-                <div className="relative px-8 pb-8 flex-1">
-                  <div className="h-full rounded-3xl border border-white/15 bg-black/25 backdrop-blur p-5">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
+                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
+
+                    <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <div className="text-[11px] uppercase tracking-wide text-white/60 mb-2">GPT Model</div>
                         <div className="space-y-2">
@@ -278,8 +280,8 @@ export default function Home() {
                               className={
                                 "flex items-center justify-between gap-3 rounded-2xl border px-3 py-2 " +
                                 (i === 0
-                                  ? "border-white/25 bg-white/10 text-white"
-                                  : "border-white/15 bg-white/5 text-white/90")
+                                  ? "border-blue-400/40 bg-blue-500/15 text-white"
+                                  : "border-white/10 bg-white/[0.04] text-white/90")
                               }
                             >
                               <div className="text-sm font-medium">{m.name}</div>
@@ -305,8 +307,8 @@ export default function Home() {
                               className={
                                 "flex items-center justify-between gap-3 rounded-2xl border px-3 py-2 " +
                                 (i === 1
-                                  ? "border-white/25 bg-white/10 text-white"
-                                  : "border-white/15 bg-white/5 text-white/90")
+                                  ? "border-blue-400/40 bg-blue-500/15 text-white"
+                                  : "border-white/10 bg-white/[0.04] text-white/90")
                               }
                             >
                               <div className="text-sm font-medium">{t.name}</div>
@@ -323,27 +325,32 @@ export default function Home() {
               </div>
 
               {/* Card 2: Prompt History */}
-              <div className="relative overflow-hidden rounded-[32px] border border-black/10 bg-[#F3F6FF] shadow-[0_30px_90px_rgba(0,0,0,0.35)] flex flex-col">
-                <div className="p-8 pb-6">
-                  <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">Prompt history</h3>
-                  <p className="mt-2 text-sm sm:text-base text-slate-600 font-light tracking-tight">
-                    Review recent questions and answers at a glance.
-                  </p>
-                </div>
+              <div className="md:col-span-5 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
+                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-transparent to-transparent" />
+                <div aria-hidden className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-indigo-500/20 blur-3xl" />
 
-                <div className="px-8 pb-8 flex-1">
-                  <div className="h-full rounded-3xl border border-black/10 bg-white p-5">
-                    <div className="space-y-3">
+                <div className="relative p-6">
+                  <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Prompt history</h3>
+                  <p className="mt-1.5 text-sm text-white/70 font-light tracking-tight">
+                    Recent questions & answers at a glance.
+                  </p>
+
+                  <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
+                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
+
+                    <div className="relative space-y-3">
                       {[
                         { p: "Differentiate: x² + 3x − 5", a: "2x + 3" },
                         { p: "Solve: 2x + 5 = 15", a: "x = 5" },
                         { p: "Factor: x² − 9", a: "(x − 3)(x + 3)" },
                       ].map((row) => (
-                        <div key={row.p} className="rounded-2xl border border-black/10 bg-[#F6F8FF] p-4">
-                          <div className="text-[11px] text-slate-500 mb-1">Prompt</div>
-                          <div className="text-sm text-slate-900 font-medium">{row.p}</div>
-                          <div className="mt-2 text-[11px] text-slate-500 mb-1">Answer</div>
-                          <div className="text-sm text-slate-700">{row.a}</div>
+                        <div key={row.p} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                          <div className="text-[11px] text-white/50 mb-1">Prompt</div>
+                          <div className="text-sm text-white/90 font-medium">{row.p}</div>
+                          <div className="mt-2 text-[11px] text-white/50 mb-1">Answer</div>
+                          <div className="text-sm text-white/70">{row.a}</div>
                         </div>
                       ))}
                     </div>
@@ -352,28 +359,33 @@ export default function Home() {
               </div>
 
               {/* Card 3: Notes → Calculator */}
-              <div className="relative overflow-hidden rounded-[32px] border border-black/10 bg-[#F3F6FF] shadow-[0_30px_90px_rgba(0,0,0,0.35)] flex flex-col">
-                <div className="p-8 pb-6">
-                  <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">Notes → calculator</h3>
-                  <p className="mt-2 text-sm sm:text-base text-slate-600 font-light tracking-tight">
-                    Send study notes straight to CalcAI so they&apos;re always on hand.
-                  </p>
-                </div>
+              <div className="md:col-span-5 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
+                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan-500/15 via-transparent to-transparent" />
+                <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-cyan-500/15 blur-3xl" />
 
-                <div className="px-8 pb-8 flex-1">
-                  <div className="h-full rounded-3xl border border-black/10 bg-white p-5 flex flex-col">
+                <div className="relative p-6">
+                  <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Notes → calculator</h3>
+                  <p className="mt-1.5 text-sm text-white/70 font-light tracking-tight">
+                    Send notes to CalcAI so they&apos;re always available.
+                  </p>
+
+                  <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
+                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
+
                     <textarea
                       readOnly
-                      className="w-full flex-1 min-h-[180px] rounded-2xl border border-black/10 bg-[#F6F8FF] px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none resize-none"
+                      className="relative w-full min-h-[160px] rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
                       defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x`}
                     />
-                    <div className="mt-4 flex items-center justify-between">
-                      <div className="text-xs text-slate-500">
-                        Target: <span className="text-slate-700">CalcAI</span>
+                    <div className="relative mt-4 flex items-center justify-between">
+                      <div className="text-xs text-white/50">
+                        Target: <span className="text-white/75">CalcAI</span>
                       </div>
                       <button
                         type="button"
-                        className="rounded-full border border-black/10 bg-slate-900 text-white px-4 py-1.5 text-xs font-medium hover:bg-slate-800 transition-colors"
+                        className="rounded-full border border-white/10 bg-blue-500/15 hover:bg-blue-500/25 text-blue-100 px-4 py-1.5 text-xs font-medium transition-colors"
                       >
                         Send note
                       </button>
@@ -383,42 +395,47 @@ export default function Home() {
               </div>
 
               {/* Card 4: Pair & Devices */}
-              <div className="relative overflow-hidden rounded-[32px] border border-black/10 bg-[#F3F6FF] shadow-[0_30px_90px_rgba(0,0,0,0.35)] flex flex-col">
-                <div className="p-8 pb-6">
-                  <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">Pair & devices</h3>
-                  <p className="mt-2 text-sm sm:text-base text-slate-600 font-light tracking-tight">
+              <div className="md:col-span-7 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
+                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-500/15 via-transparent to-transparent" />
+                <div aria-hidden className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-blue-500/15 blur-3xl" />
+
+                <div className="relative p-6">
+                  <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Pair & devices</h3>
+                  <p className="mt-1.5 text-sm text-white/70 font-light tracking-tight">
                     Connect your calculator and manage it from the dashboard.
                   </p>
-                </div>
 
-                <div className="px-8 pb-8 flex-1">
-                  <div className="h-full rounded-3xl border border-black/10 bg-white p-5">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="rounded-2xl border border-black/10 bg-[#F6F8FF] p-4">
-                        <div className="text-[11px] text-slate-500 mb-1">Pairing code</div>
-                        <div className="font-mono text-2xl tracking-widest text-slate-900">482‑193</div>
-                        <div className="mt-2 text-xs text-slate-600">Enter this on your CalcAI to connect.</div>
+                  <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
+                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
+
+                    <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                        <div className="text-[11px] text-white/50 mb-1">Pairing code</div>
+                        <div className="font-mono text-2xl tracking-widest text-white">482‑193</div>
+                        <div className="mt-2 text-xs text-white/60">Enter this on your CalcAI to connect.</div>
                       </div>
 
-                      <div className="rounded-2xl border border-black/10 bg-[#F6F8FF] p-4">
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
                         <div className="flex items-center justify-between">
-                          <div className="text-[11px] text-slate-500">Device</div>
-                          <span className="text-[11px] px-2 py-0.5 rounded-full border border-black/10 bg-white text-slate-700">
+                          <div className="text-[11px] text-white/50">Device</div>
+                          <span className="text-[11px] px-2 py-0.5 rounded-full border border-white/10 bg-white/[0.05] text-white/70">
                             Connected
                           </span>
                         </div>
-                        <div className="mt-2 text-sm font-medium text-slate-900">CalcAI • Desk unit</div>
-                        <div className="mt-2 text-xs text-slate-600">Last sync: 12s ago</div>
+                        <div className="mt-2 text-sm font-medium text-white/90">CalcAI • Desk unit</div>
+                        <div className="mt-2 text-xs text-white/60">Last sync: 12s ago</div>
                         <div className="mt-3 flex items-center gap-2">
                           <div className="h-2 w-2 rounded-full bg-emerald-500" />
-                          <div className="text-xs text-slate-600">Online</div>
+                          <div className="text-xs text-white/60">Online</div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="mt-4 flex items-center justify-between">
-                      <div className="text-xs text-slate-500">Secure pairing • One device at a time</div>
-                      <div className="inline-flex items-center gap-2 text-xs font-medium text-slate-700">
+                    <div className="relative mt-4 flex items-center justify-between">
+                      <div className="text-xs text-white/50">Secure pairing • One device at a time</div>
+                      <div className="inline-flex items-center gap-2 text-xs font-medium text-white/70">
                         Manage <ArrowRight className="w-4 h-4" />
                       </div>
                     </div>
