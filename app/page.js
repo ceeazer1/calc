@@ -254,7 +254,7 @@ export default function Home() {
               <div className="md:col-span-7 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
                 <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
                 <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-500/25 via-blue-500/5 to-transparent" />
-                <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-blue-500/25 blur-3xl" />
+                <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-blue-500/18 blur-3xl" />
 
                 <div className="relative p-6">
                   <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Model controls</h3>
@@ -262,11 +262,18 @@ export default function Home() {
                     Pick your GPT model and max tokens.
                   </p>
 
-                  <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
-                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
+                  {/* Preview: angled & offset (less static) */}
+                  <div className="relative mt-6">
+                    <div className="absolute -top-3 right-4 z-10 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[11px] text-white/70 backdrop-blur">
+                      Active: GPT 5.2 • 2k
+                    </div>
 
-                    <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="-rotate-[1.2deg] translate-x-1 translate-y-1">
+                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4 shadow-[0_18px_60px_rgba(0,0,0,0.55)]">
+                        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
+
+                        <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <div className="text-[11px] uppercase tracking-wide text-white/60 mb-2">GPT Model</div>
                         <div className="space-y-2">
@@ -319,6 +326,8 @@ export default function Home() {
                           ))}
                         </div>
                       </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -336,23 +345,42 @@ export default function Home() {
                     Recent questions & answers at a glance.
                   </p>
 
-                  <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
-                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
+                  {/* Preview: stacked cards with varied offsets */}
+                  <div className="relative mt-6">
+                    <div className="absolute -top-3 left-4 z-10 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[11px] text-white/70 backdrop-blur">
+                      Last 3
+                    </div>
 
-                    <div className="relative space-y-3">
+                    <div className="rotate-[0.9deg] -translate-x-1 translate-y-2">
+                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4 shadow-[0_18px_60px_rgba(0,0,0,0.55)]">
+                        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
+
+                        <div className="relative space-y-3">
                       {[
                         { p: "Differentiate: x² + 3x − 5", a: "2x + 3" },
                         { p: "Solve: 2x + 5 = 15", a: "x = 5" },
                         { p: "Factor: x² − 9", a: "(x − 3)(x + 3)" },
-                      ].map((row) => (
-                        <div key={row.p} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                      ].map((row, idx) => (
+                        <div
+                          key={row.p}
+                          className={
+                            "rounded-2xl border border-white/10 bg-white/[0.04] p-4 " +
+                            (idx === 0
+                              ? "-rotate-[0.6deg] translate-x-1"
+                              : idx === 1
+                                ? "rotate-[0.4deg]"
+                                : "translate-x-[-6px] rotate-[-0.2deg]")
+                          }
+                        >
                           <div className="text-[11px] text-white/50 mb-1">Prompt</div>
                           <div className="text-sm text-white/90 font-medium">{row.p}</div>
                           <div className="mt-2 text-[11px] text-white/50 mb-1">Answer</div>
                           <div className="text-sm text-white/70">{row.a}</div>
                         </div>
                       ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -370,25 +398,30 @@ export default function Home() {
                     Write and send notes to your calculator.
                   </p>
 
-                  <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
-                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
+                  {/* Preview: opposite tilt + floating send */}
+                  <div className="relative mt-6">
+                    <div className="absolute -top-3 left-4 z-10 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[11px] text-white/70 backdrop-blur">
+                      Draft
+                    </div>
 
-                    <textarea
-                      readOnly
-                      className="relative w-full min-h-[140px] rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
-                      defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x`}
-                    />
-                    <div className="relative mt-4 flex items-center justify-between">
-                      <div className="text-xs text-white/50">
-                        Target: <span className="text-white/75">CalcAI</span>
+                    <div className="rotate-[1.1deg] -translate-x-1 translate-y-1">
+                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4 shadow-[0_18px_60px_rgba(0,0,0,0.55)]">
+                        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
+
+                        <textarea
+                          readOnly
+                          className="relative w-full min-h-[120px] rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
+                          defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x`}
+                        />
+
+                        <button
+                          type="button"
+                          className="absolute bottom-4 right-4 rounded-full border border-white/10 bg-blue-500/15 hover:bg-blue-500/25 text-blue-100 px-4 py-1.5 text-xs font-medium transition-colors"
+                        >
+                          Send
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        className="rounded-full border border-white/10 bg-blue-500/15 hover:bg-blue-500/25 text-blue-100 px-4 py-1.5 text-xs font-medium transition-colors"
-                      >
-                        Send note
-                      </button>
                     </div>
                   </div>
                 </div>
