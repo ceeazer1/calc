@@ -394,23 +394,33 @@ export default function Home() {
 
                   <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
                     <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
+                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 via-black/45 to-transparent" />
 
-                    <textarea
-                      readOnly
-                      className="relative w-full min-h-[140px] rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
-                      defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x`}
-                    />
-                    <div className="relative mt-4 flex items-center justify-between">
-                      <div className="text-xs text-white/50">
-                        To: <span className="text-white/75">Calculator</span>
+                    <div className="relative mx-auto w-full max-w-[46ch]">
+                      <div className="relative">
+                        <textarea
+                          readOnly
+                          className="relative w-full min-h-[140px] rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
+                          defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x`}
+                        />
+                        {/* Bottom fade (preview/skeleton feel) */}
+                        <div
+                          aria-hidden
+                          className="pointer-events-none absolute inset-x-0 bottom-0 h-14 rounded-b-2xl bg-gradient-to-t from-black/75 via-black/35 to-transparent"
+                        />
                       </div>
-                      <button
-                        type="button"
-                        className="rounded-full border border-white/10 bg-blue-500/15 hover:bg-blue-500/25 text-blue-100 px-4 py-1.5 text-xs font-medium transition-colors"
-                      >
-                        Send note
-                      </button>
+
+                      <div className="relative mt-4 flex items-center justify-between">
+                        <div className="text-xs text-white/50">
+                          To: <span className="text-white/75">Calculator</span>
+                        </div>
+                        <button
+                          type="button"
+                          className="rounded-full border border-white/10 bg-blue-500/15 hover:bg-blue-500/25 text-blue-100 px-4 py-1.5 text-xs font-medium transition-colors"
+                        >
+                          Send note
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
