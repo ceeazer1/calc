@@ -392,21 +392,22 @@ export default function Home() {
                     Write and send notes to your calculator.
                   </p>
 
-                  <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
-                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 via-black/45 to-transparent" />
+                  {/* Narrow preview box (no nested "box inside a box") */}
+                  <div className="relative mt-5">
+                    <div className="relative mx-auto w-[38ch] max-w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
+                      <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 via-black/45 to-transparent" />
 
-                    <div className="relative mx-auto w-[38ch] max-w-full">
                       <div className="relative">
                         <textarea
                           readOnly
-                          className="relative w-full min-h-[140px] rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
+                          className="w-full min-h-[140px] bg-transparent px-0 py-0 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
                           defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x`}
                         />
                         {/* Bottom fade (preview/skeleton feel) */}
                         <div
                           aria-hidden
-                          className="pointer-events-none absolute inset-x-0 bottom-0 h-14 rounded-b-2xl bg-gradient-to-t from-black/75 via-black/35 to-transparent"
+                          className="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/75 via-black/35 to-transparent"
                         />
                       </div>
 
