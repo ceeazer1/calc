@@ -289,8 +289,8 @@ export default function Home() {
                           {[
                             { name: "GPT 5.2", desc: "Accuracy", selected: true },
                             { name: "GPT 5.1", desc: "Balanced", selected: false },
-                            { name: "GPT 5 mini", desc: "Fast", selected: false },
-                            { name: "GPT 5 nano", desc: "Ultra fast", selected: false },
+                            { name: "GPT 5 mini", desc: "Fast", selected: false, skeleton: true },
+                            { name: "GPT 5 nano", desc: "Ultra fast", selected: false, skeleton: true },
                           ].map((m) => (
                             <button
                               key={m.name}
@@ -299,11 +299,31 @@ export default function Home() {
                                 "w-full rounded-xl border px-3 py-1.5 text-left transition-colors " +
                                 (m.selected
                                   ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
+                                  : m.skeleton
+                                    ? "border-white/10 bg-white/[0.03] text-white/70"
                                   : "border-white/10 bg-white/[0.04] text-white/85 hover:bg-white/[0.06]")
                               }
                             >
-                              <div className="text-[11px] font-medium leading-none">{m.name}</div>
-                              <div className={"mt-1 text-[10px] leading-none " + (m.selected ? "text-blue-100/70" : "text-white/55")}>
+                              <div
+                                className={
+                                  "text-[11px] font-medium leading-none " +
+                                  (m.skeleton
+                                    ? "bg-gradient-to-r from-white/35 via-white/10 to-white/35 bg-clip-text text-transparent"
+                                    : "")
+                                }
+                              >
+                                {m.name}
+                              </div>
+                              <div
+                                className={
+                                  "mt-1 text-[10px] leading-none " +
+                                  (m.selected
+                                    ? "text-blue-100/70"
+                                    : m.skeleton
+                                      ? "bg-gradient-to-r from-white/25 via-white/8 to-white/25 bg-clip-text text-transparent"
+                                      : "text-white/55")
+                                }
+                              >
                                 {m.desc}
                               </div>
                             </button>
@@ -390,9 +410,17 @@ export default function Home() {
                     {/* Note box (left) */}
                     <div className="relative w-[38ch] max-w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
                       <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
+                      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/95 via-black/75 to-transparent" />
 
-                      <div className="relative">
+                      <div
+                        className="relative"
+                        style={{
+                          WebkitMaskImage:
+                            'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 55%, rgba(255,255,255,0.2) 80%, rgba(255,255,255,0) 100%)',
+                          maskImage:
+                            'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 55%, rgba(255,255,255,0.2) 80%, rgba(255,255,255,0) 100%)',
+                        }}
+                      >
                         <textarea
                           readOnly
                           className="w-full min-h-[140px] bg-transparent px-0 py-0 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
@@ -401,7 +429,7 @@ export default function Home() {
                         {/* Bottom fade (preview/skeleton feel) */}
                         <div
                           aria-hidden
-                          className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/90 via-black/55 to-transparent"
+                          className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/95 via-black/70 to-transparent"
                         />
                       </div>
 
