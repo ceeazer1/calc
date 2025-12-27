@@ -277,22 +277,23 @@ export default function Home() {
                     <div className="sm:justify-self-end w-full sm:w-[320px] h-full">
                       <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4 h-full">
                         <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                        <div className="relative grid grid-rows-2 gap-4 h-full">
+                        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 to-transparent" />
+
+                        <div className="relative flex flex-col gap-4">
                           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
                             <div className="text-[11px] uppercase tracking-wide text-white/60">GPT Model</div>
-                            <div className="mt-2 grid grid-cols-2 gap-2">
+                            <div className="mt-2 space-y-2">
                               {[
-                                { name: "GPT 5.2", desc: "Accuracy", selected: true, wide: false },
-                                { name: "GPT 5.1", desc: "Balanced", selected: false, wide: false },
-                                { name: "GPT 5 mini", desc: "Fast", selected: false, wide: false },
-                                { name: "GPT 5 nano", desc: "Ultra fast", selected: false, wide: false },
+                                { name: "GPT 5.2", desc: "Accuracy", selected: true },
+                                { name: "GPT 5.1", desc: "Balanced", selected: false },
+                                { name: "GPT 5 mini", desc: "Fast", selected: false },
+                                { name: "GPT 5 nano", desc: "Ultra fast", selected: false },
                               ].map((m) => (
                                 <button
                                   key={m.name}
                                   type="button"
                                   className={
                                     "w-full rounded-xl border px-3 py-2 text-left transition-colors " +
-                                    (m.wide ? "col-span-2 " : "") +
                                     (m.selected
                                       ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
                                       : "border-white/10 bg-white/[0.04] text-white/85 hover:bg-white/[0.06]")
@@ -309,7 +310,7 @@ export default function Home() {
 
                           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
                             <div className="text-[11px] uppercase tracking-wide text-white/60">Max Tokens</div>
-                            <div className="mt-2 grid grid-cols-2 gap-2">
+                            <div className="mt-2 space-y-2">
                               {[
                                 { name: "1k", desc: "Quick", selected: false },
                                 { name: "2k", desc: "Balanced", selected: true },
