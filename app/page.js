@@ -262,70 +262,68 @@ export default function Home() {
                     Pick your GPT model and max tokens.
                   </p>
 
-                  {/* Preview: angled & offset (less static) */}
-                  <div className="relative mt-6">
-                    <div className="absolute -top-3 right-4 z-10 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[11px] text-white/70 backdrop-blur">
-                      Active: GPT 5.2 • 2k
+                  <div className="mt-5 grid grid-cols-1 sm:grid-cols-[1fr_320px] gap-6 items-start">
+                    {/* Left: details inside tile */}
+                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                      <div className="text-sm font-medium text-white/90">Details</div>
+                      <div className="mt-2 space-y-3">
+                        <div>
+                          <div className="text-[11px] uppercase tracking-wide text-white/50">GPT Model</div>
+                          <div className="mt-1 text-sm text-white/70">
+                            GPT 5.2 (best accuracy), GPT 5.1 (balanced), GPT 5 mini (fastest)
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-[11px] uppercase tracking-wide text-white/50">Max Tokens</div>
+                          <div className="mt-1 text-sm text-white/70">
+                            1k quick • 2k balanced • 4k long answers • 8k full steps
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="-rotate-[1.2deg] translate-x-1 translate-y-1">
-                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4 shadow-[0_18px_60px_rgba(0,0,0,0.55)]">
+                    {/* Right: compact controls pushed to the side */}
+                    <div className="sm:justify-self-end w-full sm:w-[320px]">
+                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
                         <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
-
-                        <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <div className="text-[11px] uppercase tracking-wide text-white/60 mb-2">GPT Model</div>
-                        <div className="space-y-2">
-                          {[
-                            { name: "GPT 5.2", desc: "Best accuracy" },
-                            { name: "GPT 5.1", desc: "Balanced" },
-                            { name: "GPT 5 mini", desc: "Fastest" },
-                          ].map((m, i) => (
-                            <div
-                              key={m.name}
-                              className={
-                                "flex items-center justify-between gap-3 rounded-2xl border px-3 py-2 " +
-                                (i === 0
-                                  ? "border-blue-400/40 bg-blue-500/15 text-white"
-                                  : "border-white/10 bg-white/[0.04] text-white/90")
-                              }
-                            >
-                              <div className="text-sm font-medium">{m.name}</div>
-                              <div className={"text-xs text-right " + (i === 0 ? "text-white/75" : "text-white/60")}>
-                                {m.desc}
-                              </div>
+                        <div className="relative space-y-5">
+                          <div>
+                            <div className="text-[11px] uppercase tracking-wide text-white/60 mb-2">GPT Model</div>
+                            <div className="flex flex-wrap gap-2 sm:justify-end">
+                              {["GPT 5.2", "GPT 5.1", "GPT 5 mini"].map((m, i) => (
+                                <span
+                                  key={m}
+                                  className={
+                                    "inline-flex items-center rounded-full px-3 py-1 text-xs border " +
+                                    (i === 0
+                                      ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
+                                      : "border-white/10 bg-white/[0.04] text-white/80")
+                                  }
+                                >
+                                  {m}
+                                </span>
+                              ))}
                             </div>
-                          ))}
-                        </div>
-                      </div>
+                          </div>
 
-                      <div>
-                        <div className="text-[11px] uppercase tracking-wide text-white/60 mb-2">Max Tokens</div>
-                        <div className="space-y-2">
-                          {[
-                            { name: "1k", desc: "Quick" },
-                            { name: "2k", desc: "Balanced" },
-                            { name: "4k", desc: "Long answers" },
-                            { name: "8k", desc: "Full steps" },
-                          ].map((t, i) => (
-                            <div
-                              key={t.name}
-                              className={
-                                "flex items-center justify-between gap-3 rounded-2xl border px-3 py-2 " +
-                                (i === 1
-                                  ? "border-blue-400/40 bg-blue-500/15 text-white"
-                                  : "border-white/10 bg-white/[0.04] text-white/90")
-                              }
-                            >
-                              <div className="text-sm font-medium">{t.name}</div>
-                              <div className={"text-xs text-right " + (i === 1 ? "text-white/75" : "text-white/60")}>
-                                {t.desc}
-                              </div>
+                          <div>
+                            <div className="text-[11px] uppercase tracking-wide text-white/60 mb-2">Max Tokens</div>
+                            <div className="flex flex-wrap gap-2 sm:justify-end">
+                              {["1k", "2k", "4k", "8k"].map((t, i) => (
+                                <span
+                                  key={t}
+                                  className={
+                                    "inline-flex items-center rounded-full px-3 py-1 text-xs border " +
+                                    (i === 1
+                                      ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
+                                      : "border-white/10 bg-white/[0.04] text-white/80")
+                                  }
+                                >
+                                  {t}
+                                </span>
+                              ))}
                             </div>
-                          ))}
-                        </div>
-                      </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -345,42 +343,23 @@ export default function Home() {
                     Recent questions & answers at a glance.
                   </p>
 
-                  {/* Preview: stacked cards with varied offsets */}
-                  <div className="relative mt-6">
-                    <div className="absolute -top-3 left-4 z-10 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[11px] text-white/70 backdrop-blur">
-                      Last 3
-                    </div>
+                  <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
+                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
 
-                    <div className="rotate-[0.9deg] -translate-x-1 translate-y-2">
-                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4 shadow-[0_18px_60px_rgba(0,0,0,0.55)]">
-                        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
-
-                        <div className="relative space-y-3">
+                    <div className="relative space-y-3">
                       {[
                         { p: "Differentiate: x² + 3x − 5", a: "2x + 3" },
                         { p: "Solve: 2x + 5 = 15", a: "x = 5" },
                         { p: "Factor: x² − 9", a: "(x − 3)(x + 3)" },
-                      ].map((row, idx) => (
-                        <div
-                          key={row.p}
-                          className={
-                            "rounded-2xl border border-white/10 bg-white/[0.04] p-4 " +
-                            (idx === 0
-                              ? "-rotate-[0.6deg] translate-x-1"
-                              : idx === 1
-                                ? "rotate-[0.4deg]"
-                                : "translate-x-[-6px] rotate-[-0.2deg]")
-                          }
-                        >
+                      ].map((row) => (
+                        <div key={row.p} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
                           <div className="text-[11px] text-white/50 mb-1">Prompt</div>
                           <div className="text-sm text-white/90 font-medium">{row.p}</div>
                           <div className="mt-2 text-[11px] text-white/50 mb-1">Answer</div>
                           <div className="text-sm text-white/70">{row.a}</div>
                         </div>
                       ))}
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -398,30 +377,25 @@ export default function Home() {
                     Write and send notes to your calculator.
                   </p>
 
-                  {/* Preview: opposite tilt + floating send */}
-                  <div className="relative mt-6">
-                    <div className="absolute -top-3 left-4 z-10 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[11px] text-white/70 backdrop-blur">
-                      Draft
-                    </div>
+                  <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
+                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
 
-                    <div className="rotate-[1.1deg] -translate-x-1 translate-y-1">
-                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4 shadow-[0_18px_60px_rgba(0,0,0,0.55)]">
-                        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
-
-                        <textarea
-                          readOnly
-                          className="relative w-full min-h-[120px] rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
-                          defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x`}
-                        />
-
-                        <button
-                          type="button"
-                          className="absolute bottom-4 right-4 rounded-full border border-white/10 bg-blue-500/15 hover:bg-blue-500/25 text-blue-100 px-4 py-1.5 text-xs font-medium transition-colors"
-                        >
-                          Send
-                        </button>
+                    <textarea
+                      readOnly
+                      className="relative w-full min-h-[140px] rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
+                      defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x`}
+                    />
+                    <div className="relative mt-4 flex items-center justify-between">
+                      <div className="text-xs text-white/50">
+                        To: <span className="text-white/75">Calculator</span>
                       </div>
+                      <button
+                        type="button"
+                        className="rounded-full border border-white/10 bg-blue-500/15 hover:bg-blue-500/25 text-blue-100 px-4 py-1.5 text-xs font-medium transition-colors"
+                      >
+                        Send note
+                      </button>
                     </div>
                   </div>
                 </div>
