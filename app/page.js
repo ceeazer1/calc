@@ -283,7 +283,7 @@ export default function Home() {
                           'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 70%, rgba(255,255,255,0) 100%)',
                       }}
                     >
-                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                      <div className="px-1">
                         <div className="text-[11px] uppercase tracking-wide text-white/60">GPT Model</div>
                         <div className="mt-2 space-y-2">
                           {[
@@ -331,7 +331,7 @@ export default function Home() {
                         </div>
                       </div>
 
-                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                      <div className="px-1">
                         <div className="text-[11px] uppercase tracking-wide text-white/60">Max Tokens</div>
                         <div className="mt-2 space-y-2">
                           {[
@@ -424,7 +424,7 @@ export default function Home() {
                         <textarea
                           readOnly
                           className="w-full min-h-[140px] bg-transparent px-0 py-0 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
-                          defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x`}
+                          defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x\n- Integrals: ∫2x dx = x^2 + C\n- Trig identity: sin^2(x) + cos^2(x) = 1\n- Limits: lim x→0 (sin x)/x = 1\n- Exponents: a^m · a^n = a^(m+n)\n- Check units + show work on tests`}
                         />
                         {/* Bottom fade (preview/skeleton feel) */}
                         <div
