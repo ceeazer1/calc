@@ -410,33 +410,13 @@ export default function Home() {
                     {/* Note box (left) */}
                     <div className="relative w-[38ch] max-w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
                       <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/95 via-black/75 to-transparent" />
+                      <textarea
+                        readOnly
+                        className="relative z-10 w-full min-h-[160px] bg-transparent px-0 py-0 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none overflow-hidden"
+                        defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x\n- Integrals: ∫2x dx = x^2 + C\n- Trig identity: sin^2(x) + cos^2(x) = 1\n- Limits: lim x→0 (sin x)/x = 1\n- Exponents: a^m · a^n = a^(m+n)\n- Check units + show work on tests`}
+                      />
 
-                      <div
-                        className="relative"
-                        style={{
-                          WebkitMaskImage:
-                            'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 55%, rgba(255,255,255,0.2) 80%, rgba(255,255,255,0) 100%)',
-                          maskImage:
-                            'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 55%, rgba(255,255,255,0.2) 80%, rgba(255,255,255,0) 100%)',
-                        }}
-                      >
-                        <textarea
-                          readOnly
-                          className="w-full min-h-[140px] bg-transparent px-0 py-0 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none"
-                          defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x\n- Integrals: ∫2x dx = x^2 + C\n- Trig identity: sin^2(x) + cos^2(x) = 1\n- Limits: lim x→0 (sin x)/x = 1\n- Exponents: a^m · a^n = a^(m+n)\n- Check units + show work on tests`}
-                        />
-                        {/* Bottom fade (preview/skeleton feel) */}
-                        <div
-                          aria-hidden
-                          className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/95 via-black/70 to-transparent"
-                        />
-                      </div>
-
-                      <div className="relative mt-4 flex items-center justify-between">
-                        <div className="text-xs text-white/50">
-                          To: <span className="text-white/75">Calculator</span>
-                        </div>
+                      <div className="relative z-10 mt-4 flex items-center justify-end">
                         <button
                           type="button"
                           className="rounded-full border border-white/10 bg-blue-500/15 hover:bg-blue-500/25 text-blue-100 px-4 py-1.5 text-xs font-medium transition-colors"
@@ -444,6 +424,12 @@ export default function Home() {
                           Send note
                         </button>
                       </div>
+
+                      {/* Full-box fade overlay (covers textarea + button; preview/skeleton feel) */}
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-32 bg-gradient-to-t from-black/95 via-black/70 to-transparent"
+                      />
                     </div>
 
                     {/* Details (right) */}
