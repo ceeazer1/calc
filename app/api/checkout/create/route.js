@@ -54,7 +54,9 @@ export async function POST(req) {
     else if (typeof rawInStock === 'number') inStock = rawInStock === 1
 
     const rawStock = settings?.stockCount
-    const stockCount = Number.isFinite(Number(rawStock)) ? Number(rawStock) : null
+    // Optional informational/limit field: only treat as an enforceable limit if it's > 0.
+    const parsedStock = Number.isFinite(Number(rawStock)) ? Number(rawStock) : null
+    const stockCount = typeof parsedStock === 'number' && parsedStock > 0 ? parsedStock : null
 
     if (!Number.isFinite(price) || price <= 0) {
       const res = new Response(
@@ -77,15 +79,6 @@ export async function POST(req) {
     }
 
     const totalQty = Array.isArray(cart) ? cart.reduce((t, it) => t + (Number(it.quantity) || 1), 0) : 1
-    if (typeof stockCount === 'number' && stockCount <= 0) {
-      const res = new Response(
-        JSON.stringify({ error: 'Out of stock' }),
-        { status: 400, headers: { 'content-type': 'application/json' } }
-      )
-      res.headers.set('Cache-Control', 'no-store')
-      res.headers.set('x-settings-source', settingsSource)
-      return res
-    }
     if (typeof stockCount === 'number' && totalQty > stockCount) {
       const res = new Response(
         JSON.stringify({ error: 'Insufficient stock for requested quantity' }),

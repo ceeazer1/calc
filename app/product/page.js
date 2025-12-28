@@ -259,11 +259,17 @@ export default function ProductPage() {
     const doApply = (j) => {
       if (!j) return
       if (typeof j.price === 'number') setPrice(Number(j.price))
+      // allow clearing compareAt by sending null
       if (typeof j.compareAt === 'number') setCompareAt(Number(j.compareAt))
+      else if (j.compareAt === null) setCompareAt(null)
       if (typeof j.inStock === 'boolean') setInStock(j.inStock)
+      // allow clearing stockCount by sending null
       if (typeof j.stockCount === 'number') setStockCount(Number(j.stockCount))
+      else if (j.stockCount === null) setStockCount(null)
       if (typeof j.preorderEnabled === 'boolean') setPreorderEnabled(j.preorderEnabled)
+      // allow clearing preorderPrice by sending null
       if (typeof j.preorderPrice === 'number') setPreorderPrice(Number(j.preorderPrice))
+      else if (j.preorderPrice === null) setPreorderPrice(null)
       if (typeof j.preorderShipDate === 'string') setPreorderShipDate(j.preorderShipDate)
     }
 
@@ -293,7 +299,9 @@ export default function ProductPage() {
     alert('Checkout is temporarily unavailable while we switch payment providers.')
   }
 
-  const soldOut = loaded && (!inStock || (typeof stockCount === 'number' && stockCount <= 0))
+  // Availability is controlled by the dashboard's inStock flag.
+  // stockCount is optional (display-only / informational).
+  const soldOut = loaded && !inStock
   const canPurchase = loaded && !soldOut
 
   return (
@@ -386,9 +394,9 @@ export default function ProductPage() {
               </div>
               <div className="text-xs mt-2">
                 {loaded ? (
-                  <span className={inStock && (stockCount === null || stockCount > 0) ? 'text-green-300' : 'text-red-300'}>
-                    {inStock && (stockCount === null || stockCount > 0)
-                      ? `In stock${typeof stockCount === 'number' ? `: ${stockCount}` : ''}`
+                  <span className={inStock ? 'text-green-300' : 'text-red-300'}>
+                    {inStock
+                      ? `In stock${typeof stockCount === 'number' && stockCount > 0 ? `: ${stockCount}` : ''}`
                       : 'Out of stock'}
                   </span>
                 ) : (
@@ -482,7 +490,7 @@ export default function ProductPage() {
                       onClick={handlePreorderCheckout}
                       className="w-full rounded-2xl border border-white/10 bg-purple-600/10 text-purple-50 backdrop-blur-sm hover:bg-purple-600/20 px-6 py-3 font-light tracking-tight transition-all duration-300 text-sm focus:outline-none focus:ring-2 focus:ring-white/20"
                     >
-                      {`Preorder - $${preorderPrice.toFixed(2)}${preorderShipDate ? ` • Ships ${preorderShipDate}` : ''}`}
+                      {`Preorder${typeof preorderPrice === 'number' ? ` - $${preorderPrice.toFixed(2)}` : ''}${preorderShipDate ? ` • Ships ${preorderShipDate}` : ''}`}
                     </button>
                   ) : null}
               </div>
