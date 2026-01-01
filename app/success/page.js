@@ -1,56 +1,47 @@
-import Link from 'next/link'
 import Image from 'next/image'
-import { CheckCircle, Download, Mail, Truck, MessageCircle } from 'lucide-react'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
-export default function SuccessPage() {
+export const dynamic = 'force-dynamic'
+
+export default function SuccessPage({ searchParams }) {
+  const sessionId = searchParams?.session_id
+  if (typeof sessionId === 'string' && sessionId.length > 0) {
+    redirect(`/success/${sessionId}`)
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/logo.png"
-                alt="CalcAI Logo"
-                width={120}
-                height={120}
-                className="w-32 h-32 transform hover:scale-110 transition-transform duration-200 drop-shadow-xl"
-              />
-            </Link>
-
-
-          </div>
+    <div className="min-h-screen bg-black text-white">
+      <header className="border-b border-white/10 bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-center px-4 sm:px-6 lg:px-8">
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo.png"
+              alt="CalcAI Logo"
+              width={200}
+              height={60}
+              className="h-5 w-auto"
+              priority
+            />
+          </Link>
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center">
-          {/* Success Message */}
-          <h1 className="text-4xl font-bold text-gray-900 mb-2 text-center">Order Confirmed</h1>
-          <p className="text-base text-gray-600 mb-8 text-center">
-            For any questions, please open a ticket in our
-            <a href="https://discord.gg/83ZwJcPWJ6" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 underline ml-1">Discord</a>.
-          </p>
-
-
-
-
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              href="/"
-              className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105"
-            >
-              Return to Home
-            </Link>
-
-          </div>
-
-
+      <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-semibold tracking-tight">Order confirmation</h1>
+        <p className="mt-3 text-white/70">
+          Please use the confirmation link from your checkout completion. If you just checked out,
+          check your email (and spam) for the order confirmation.
+        </p>
+        <div className="mt-8">
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+          >
+            Return to Home
+          </Link>
         </div>
-      </div>
+      </main>
     </div>
   )
 }
