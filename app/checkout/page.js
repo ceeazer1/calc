@@ -220,22 +220,35 @@ export default function Checkout() {
             ) : (
               /* Pay Button Action */
               <div className="mt-8">
-                <button
-                  onClick={handlePaymentStart}
-                  disabled={loading}
-                  className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-4 rounded-xl transition shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2"
-                >
-                  {loading ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    `Pay $${totalPrice.toFixed(2)}`
-                  )}
-                </button>
-                <p className="text-center text-xs text-gray-500 mt-4">
-                  Secure payment processed by Zaprite. Bitcoin, Lightning, and Cards accepted.
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-sm text-gray-400">Accepted methods</span>
+                    <div className="flex gap-2">
+                      {/* Payment Icons */}
+                      <div className="h-6 w-10 bg-white/10 rounded flex items-center justify-center" title="Card">💳</div>
+                      <div className="h-6 w-10 bg-[#F7931A]/20 text-[#F7931A] rounded flex items-center justify-center font-bold text-xs" title="Bitcoin">₿</div>
+                      <div className="h-6 w-10 bg-[#7B1AF7]/20 text-[#7B1AF7] rounded flex items-center justify-center" title="Lightning">⚡</div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={handlePaymentStart}
+                    disabled={loading}
+                    className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-4 rounded-lg transition shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2"
+                  >
+                    {loading ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      `Proceed to Secure Checkout • $${totalPrice.toFixed(2)}`
+                    )}
+                  </button>
+                </div>
+
+                <p className="text-center text-xs text-gray-500">
+                  Encrypted and secured by Zaprite.
                 </p>
               </div>
             )}

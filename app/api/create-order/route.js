@@ -11,7 +11,7 @@ export async function POST(req) {
 
         // According to Zaprite API docs for create order
         // https://api.zaprite.com/
-        const response = await fetch('https://api.zaprite.com/api/v1/orders', {
+        const response = await fetch('https://api.zaprite.com/v1/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
