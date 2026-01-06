@@ -14,7 +14,7 @@ export default function Checkout() {
   const [selectedShipping, setSelectedShipping] = useState('priority')
 
   // TODO: Replace with your actual paylinkId from MoonPay Commerce dashboard
-  const PAYLINK_ID = 'YOUR_PAYLINK_ID_HERE'
+  const PAYLINK_ID = '695c788832b11192df738db4'
 
   const productPrice = 210
   const shippingPrice = SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.price || 13
@@ -95,11 +95,10 @@ export default function Checkout() {
             {SHIPPING_OPTIONS.map((option) => (
               <label
                 key={option.id}
-                className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${
-                  selectedShipping === option.id
+                className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${selectedShipping === option.id
                     ? 'border-blue-500 bg-blue-500/10'
                     : 'border-white/10 hover:border-white/20'
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <input
