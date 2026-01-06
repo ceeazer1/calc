@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import {
   Calculator,
   ArrowLeft,
@@ -16,6 +17,10 @@ import {
 } from 'lucide-react'
 
 export default function Checkout() {
+  const router = useRouter()
+
+  const [cart, setCart] = useState([])
+  const [cartLoaded, setCartLoaded] = useState(false)
   const [formData, setFormData] = useState({
     email: '',
     phone: '',
@@ -30,9 +35,10 @@ export default function Checkout() {
   })
 
   const [shippingType, setShippingType] = useState('standard')
-  const shippingPrices = { standard: 0, express: 24.99 }
-  const subtotal = 129.99
-  const shippingAmount = shippingPrices[shippingType] ?? 0
+  // Matches the defaults used server-side in /api/hoodpay/create
+  const shippingPrices = { standard: 15, express: 45 }
+  const subtotal = cart.reduce((t, it) => t + (Number(it?.price) || 0) * (Number(it?.quantity) || 1), 0)
+  const shippingAmount = shippingPrices[shippingType] ?? shippingPrices.standard
   const total = (subtotal + shippingAmount).toFixed(2)
 
   const [isProcessing, setIsProcessing] = useState(false)
@@ -49,12 +55,75 @@ export default function Checkout() {
 
 
   useEffect(() => {
-    setIsProcessing(false)
+    try {
+      const savedCart = JSON.parse(localStorage.getItem('cart') || '[]')
+      setCart(Array.isArray(savedCart) ? savedCart : [])
+    } catch {
+      setCart([])
+    } finally {
+      setCartLoaded(true)
+    }
   }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    alert('Checkout is temporarily unavailable while we switch payment providers.')
+    try {
+      setIsProcessing(true)
+
+      const currentCart = Array.isArray(cart) ? cart : []
+      if (currentCart.length === 0) {
+        alert('Your cart is empty.')
+        router.push('/cart')
+        return
+      }
+
+      const res = await fetch('/api/hoodpay/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cart: currentCart,
+          customerEmail: formData.email,
+          shippingType,
+          shipping: {
+            email: formData.email,
+            phone: formData.phone,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            address: formData.address,
+            address2: formData.address2,
+            city: formData.city,
+            state: formData.state,
+            zipCode: formData.zipCode,
+            country: formData.country,
+          },
+        }),
+      })
+
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        throw new Error(data?.error || 'Failed to initialize checkout')
+      }
+
+      if (data?.paymentId) {
+        try {
+          sessionStorage.setItem('hoodpay_last_payment_id', String(data.paymentId))
+        } catch {}
+      }
+
+      if (data?.url) {
+        window.location.href = data.url
+        return
+      }
+
+      throw new Error('No checkout URL returned')
+    } catch (err) {
+      console.error(err)
+      const msg =
+        (err && typeof err === 'object' && 'message' in err && typeof err.message === 'string' && err.message) ||
+        'Checkout is temporarily unavailable. Please try again.'
+      alert(msg)
+      setIsProcessing(false)
+    }
   }
 
   if (orderComplete) {
@@ -84,24 +153,27 @@ export default function Checkout() {
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center space-y-2">
           <div className="w-8 h-8 border-2 border-white/60 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-          <p className="text-lg">Checkout is currently unavailable</p>
-          <p className="text-sm text-gray-400">We’re switching payment providers. Please try again later.</p>
+          <p className="text-lg">Redirecting to secure payment…</p>
+          <p className="text-sm text-gray-400">Opening HoodPay checkout.</p>
         </div>
       </div>
     )
   }
-  // Fallback: if not processing and we haven't redirected, show dark handoff with retry
-  return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
-      <div className="text-center space-y-2">
-        <p className="text-lg">Checkout is currently unavailable</p>
-        <p className="text-sm text-gray-400">We’re switching payment providers. Please check back soon.</p>
-        <div className="mt-3 flex items-center justify-center gap-3">
-          <Link href="/cart" className="btn-secondary">Back to Cart</Link>
+
+  if (cartLoaded && (!Array.isArray(cart) || cart.length === 0)) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
+        <div className="text-center space-y-2">
+          <p className="text-lg">Your cart is empty</p>
+          <p className="text-sm text-gray-400">Add a CalcAI to your cart to checkout.</p>
+          <div className="mt-3 flex items-center justify-center gap-3">
+            <Link href="/product" className="btn-secondary">Go to Product</Link>
+            <Link href="/cart" className="btn-secondary">Back to Cart</Link>
+          </div>
         </div>
       </div>
-    </div>
-  )
+    )
+  }
 
 
 
@@ -253,7 +325,7 @@ export default function Checkout() {
 
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
                   <Truck className="w-4 h-4 text-green-500" />
-                  <span>Free worldwide shipping</span>
+                  <span>Shipping: US only</span>
                 </div>
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
                   <Lock className="w-4 h-4 text-green-500" />
@@ -469,7 +541,7 @@ export default function Checkout() {
               <div className="bg-white rounded-xl shadow-lg p-8">
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">Payment</h3>
                 <p className="text-gray-600">
-                  Checkout is currently unavailable while we switch payment providers.
+                  You’ll be redirected to HoodPay to complete payment.
                 </p>
                 <div className="mt-4 p-4 bg-blue-50 rounded-lg">
                   <div className="flex items-center space-x-2 text-blue-800">

@@ -51,37 +51,9 @@ export default function CartPage() {
   }
 
   const handleCheckout = async () => {
-    try {
-      setIsProcessing(true)
-      const res = await fetch('/api/hoodpay/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cart })
-      })
-      if (!res.ok) {
-        let msg = 'Failed to initialize checkout'
-        try { const j = await res.json(); if (j?.error) msg = j.error } catch {}
-        throw new Error(msg)
-      }
-      const data = await res.json()
-      if (data?.url) {
-        if (data?.paymentId) {
-          try {
-            sessionStorage.setItem('hoodpay_last_payment_id', String(data.paymentId))
-          } catch {}
-        }
-        window.location.href = data.url
-      } else {
-        throw new Error('No checkout URL returned')
-      }
-    } catch (err) {
-      console.error(err)
-      const msg =
-        (err && typeof err === 'object' && 'message' in err && typeof err.message === 'string' && err.message) ||
-        'Checkout is temporarily unavailable. Please try again.'
-      alert(msg)
-      setIsProcessing(false)
-    }
+    // Collect shipping + contact info on /checkout before redirecting to HoodPay.
+    setIsProcessing(true)
+    router.push('/checkout')
   }
 
   if (loading) {
