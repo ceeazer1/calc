@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import AddressAutocomplete from '@/components/AddressAutocomplete'
 
 const SHIPPING_OPTIONS = [
   { id: 'priority', name: 'USPS Priority Mail', price: 13, eta: '2-3 business days' },
@@ -18,8 +19,51 @@ export default function Checkout() {
 
   return (
     <div className="min-h-screen bg-black text-white lg:flex">
-      {/* Left Column - Form Fields */}
-      <div className="flex-1 px-4 py-8 sm:px-8 lg:px-12 lg:py-16 xl:px-24 order-2 lg:order-1">
+      {/* Left Column - Order Summary */}
+      <div className="w-full lg:w-[480px] xl:w-[560px] bg-zinc-900 border-r border-white/10 p-6 sm:p-8 lg:p-12 xl:p-16 order-1 lg:order-1 h-auto lg:min-h-screen lg:sticky lg:top-0">
+        <div className="max-w-xl mx-auto lg:mx-0">
+          {/* Desktop Logo */}
+          <div className="hidden lg:block mb-8">
+            <Link href="/" className="flex items-center gap-2">
+              <Image src="/logo.png" alt="CalcAI Logo" width={100} height={30} className="h-6 w-auto" />
+            </Link>
+          </div>
+
+          <div className="flex gap-4 mb-6 pb-6 border-b border-white/10">
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center overflow-hidden flex-shrink-0">
+              {/* Placeholder for product image if not available */}
+              <Image src="/Calc_Front_New.png" alt="CalcAI Calculator" fill className="object-cover" />
+              {/* <Image src="/product.png" fill className="object-cover" /> */}
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-lg">CalcAI Calculator</h3>
+              <p className="text-gray-400 text-sm">TI-84+ Edition</p>
+            </div>
+            <div className="font-semibold">${productPrice.toFixed(2)}</div>
+          </div>
+
+          <div className="space-y-4 text-sm sm:text-base">
+            <div className="flex justify-between text-gray-400">
+              <span>Subtotal</span>
+              <span>${productPrice.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-gray-400">
+              <span>Shipping</span>
+              <span>${shippingPrice.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between border-t border-white/10 pt-4 mt-4">
+              <span className="font-semibold text-lg text-white">Total</span>
+              <div className="text-right">
+                <div className="text-xs text-gray-500 font-normal mb-1">USD</div>
+                <span className="font-bold text-2xl text-white">${totalPrice.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Column - Form Fields */}
+      <div className="flex-1 px-4 py-8 sm:px-8 lg:px-12 lg:py-16 xl:px-24 order-2 lg:order-2">
         <div className="max-w-xl mx-auto lg:mx-0 lg:max-w-2xl">
           {/* Header for Mobile (Logo) */}
           <div className="lg:hidden mb-8">
@@ -64,11 +108,7 @@ export default function Checkout() {
                   />
                 </div>
                 <div /* Address Method */ className="md:col-span-2">
-                  <input
-                    type="text"
-                    placeholder="Address"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                  />
+                  <AddressAutocomplete placeholder="Address" />
                 </div>
                 <div /* Apartment */ className="md:col-span-2">
                   <input
@@ -102,8 +142,8 @@ export default function Checkout() {
                   <label
                     key={option.id}
                     className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${selectedShipping === option.id
-                        ? 'border-blue-500 bg-blue-500/10'
-                        : 'border-white/10 hover:border-white/20 bg-white/5'
+                      ? 'border-blue-500 bg-blue-500/10'
+                      : 'border-white/10 hover:border-white/20 bg-white/5'
                       }`}
                   >
                     <div className="flex items-center gap-3">
@@ -143,49 +183,6 @@ export default function Checkout() {
             <button disabled className="w-full mt-6 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-4 rounded-xl transition shadow-lg shadow-blue-900/20">
               Pay ${totalPrice.toFixed(2)}
             </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Right Column - Order Summary */}
-      <div className="w-full lg:w-[480px] xl:w-[560px] bg-zinc-900 border-l border-white/10 p-6 sm:p-8 lg:p-12 xl:p-16 order-1 lg:order-2 h-auto lg:min-h-screen lg:sticky lg:top-0">
-        <div className="max-w-xl mx-auto lg:mx-0">
-          {/* Desktop Logo */}
-          <div className="hidden lg:block mb-8">
-            <Link href="/" className="flex items-center gap-2">
-              <Image src="/logo.png" alt="CalcAI Logo" width={100} height={30} className="h-6 w-auto" />
-            </Link>
-          </div>
-
-          <div className="flex gap-4 mb-6 pb-6 border-b border-white/10">
-            <div className="relative w-16 h-16 sm:w-20 sm:h-20 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center overflow-hidden flex-shrink-0">
-              {/* Placeholder for product image if not available */}
-              <div className="text-2xl">🧮</div>
-              {/* <Image src="/product.png" fill className="object-cover" /> */}
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-lg">CalcAI Calculator</h3>
-              <p className="text-gray-400 text-sm">Hardware Edition</p>
-            </div>
-            <div className="font-semibold">${productPrice.toFixed(2)}</div>
-          </div>
-
-          <div className="space-y-4 text-sm sm:text-base">
-            <div className="flex justify-between text-gray-400">
-              <span>Subtotal</span>
-              <span>${productPrice.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between text-gray-400">
-              <span>Shipping</span>
-              <span>${shippingPrice.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between border-t border-white/10 pt-4 mt-4">
-              <span className="font-semibold text-lg text-white">Total</span>
-              <div className="text-right">
-                <div className="text-xs text-gray-500 font-normal mb-1">USD</div>
-                <span className="font-bold text-2xl text-white">${totalPrice.toFixed(2)}</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
