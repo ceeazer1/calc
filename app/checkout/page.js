@@ -12,10 +12,42 @@ const SHIPPING_OPTIONS = [
 
 export default function Checkout() {
   const [selectedShipping, setSelectedShipping] = useState('priority')
+  const [loading, setLoading] = useState(false)
+  const [checkoutUrl, setCheckoutUrl] = useState(null)
 
   const productPrice = 210
   const shippingPrice = SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.price || 13
   const totalPrice = productPrice + shippingPrice
+
+  const handlePaymentStart = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/create-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          amount: totalPrice, // e.g. 223.00
+          label: `CalcAI - ${selectedShipping === 'priority' ? 'Priority' : 'Express'} Shipping`
+        })
+      })
+
+      const data = await res.json()
+
+      if (data.checkoutUrl) {
+        setCheckoutUrl(data.checkoutUrl)
+      } else {
+        console.error("No checkout URL returned", data)
+        alert("Payment system is temporarily unavailable. Please try again.")
+      }
+    } catch (e) {
+      console.error("Payment init error", e)
+      alert("Something went wrong. Please try again.")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-black text-white lg:flex">
@@ -166,23 +198,47 @@ export default function Checkout() {
               </div>
             </section>
 
-            {/* Payment Section Placeholder */}
-            <section>
-              <h2 className="text-xl font-semibold mb-4">Payment</h2>
-              <div className="bg-zinc-900 border border-white/10 rounded-xl p-8 flex flex-col items-center justify-center text-center">
-                <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                  </svg>
+            {/* Payment Section - Embedded Zaprite Checkout */}
+            {checkoutUrl ? (
+              <section className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <h2 className="text-xl font-semibold mb-4">Complete Payment</h2>
+                <div className="w-full h-[650px] rounded-xl overflow-hidden bg-white/5 border border-white/10 relative">
+                  <iframe
+                    src={checkoutUrl}
+                    className="w-full h-full"
+                    title="Secure Payment"
+                    allow="payment"
+                  />
                 </div>
-                <h3 className="text-lg font-medium mb-1">Payment integration pending</h3>
-                <p className="text-sm text-gray-400">Add a new payment provider to complete setup.</p>
+                <button
+                  onClick={() => setCheckoutUrl(null)}
+                  className="mt-4 text-sm text-gray-500 hover:text-white transition"
+                >
+                  ← Cancel and change shipping
+                </button>
+              </section>
+            ) : (
+              /* Pay Button Action */
+              <div className="mt-8">
+                <button
+                  onClick={handlePaymentStart}
+                  disabled={loading}
+                  className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-4 rounded-xl transition shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    `Pay $${totalPrice.toFixed(2)}`
+                  )}
+                </button>
+                <p className="text-center text-xs text-gray-500 mt-4">
+                  Secure payment processed by Zaprite. Bitcoin, Lightning, and Cards accepted.
+                </p>
               </div>
-            </section>
-
-            <button disabled className="w-full mt-6 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-4 rounded-xl transition shadow-lg shadow-blue-900/20">
-              Pay ${totalPrice.toFixed(2)}
-            </button>
+            )}
           </div>
         </div>
       </div>
