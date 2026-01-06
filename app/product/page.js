@@ -296,7 +296,7 @@ export default function ProductPage() {
       })()
   }, [])
   const handlePreorderCheckout = async () => {
-    alert('Checkout is temporarily unavailable while we switch payment providers.')
+    router.push('/checkout')
   }
 
   // Availability is controlled by the dashboard's inStock flag.

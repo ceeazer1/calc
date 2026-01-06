@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Poppins } from 'next/font/google'
 
 import { Trash2, Plus, Minus, ShoppingCart, ArrowLeft, MessageCircle } from 'lucide-react'
@@ -10,6 +11,7 @@ import { Trash2, Plus, Minus, ShoppingCart, ArrowLeft, MessageCircle } from 'luc
 const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
 
 export default function CartPage() {
+  const router = useRouter()
   const [cart, setCart] = useState([])
   const [loading, setLoading] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -50,7 +52,8 @@ export default function CartPage() {
   }
 
   const handleCheckout = async () => {
-    alert('Checkout is temporarily unavailable right now. Please check back soon.')
+    setIsProcessing(true)
+    router.push('/checkout')
   }
 
   if (loading) {
