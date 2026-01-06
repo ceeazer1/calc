@@ -65,6 +65,11 @@ export default function CartPage() {
       }
       const data = await res.json()
       if (data?.url) {
+        if (data?.paymentId) {
+          try {
+            sessionStorage.setItem('hoodpay_last_payment_id', String(data.paymentId))
+          } catch {}
+        }
         window.location.href = data.url
       } else {
         throw new Error('No checkout URL returned')

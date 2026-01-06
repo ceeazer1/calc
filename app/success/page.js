@@ -1,19 +1,36 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
+import { useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
 
-export default function SuccessPage({ searchParams }) {
-  const paymentId =
-    searchParams?.payment_id ||
-    searchParams?.paymentId ||
-    searchParams?.payment ||
-    searchParams?.id
+export default function SuccessPage() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
 
-  if (typeof paymentId === 'string' && paymentId.length > 0) {
-    redirect(`/success/${paymentId}`)
-  }
+  useEffect(() => {
+    const fromQuery =
+      searchParams.get('payment_id') ||
+      searchParams.get('paymentId') ||
+      searchParams.get('payment') ||
+      searchParams.get('id')
+
+    let fromStorage = null
+    try {
+      fromStorage = sessionStorage.getItem('hoodpay_last_payment_id')
+    } catch {}
+
+    const paymentId = (fromQuery || fromStorage || '').trim()
+    if (paymentId) {
+      try {
+        sessionStorage.removeItem('hoodpay_last_payment_id')
+      } catch {}
+      router.replace(`/success/${paymentId}`)
+    }
+  }, [router, searchParams])
 
   return (
     <div className="min-h-screen bg-black text-white">
