@@ -1,15 +1,33 @@
-import Stripe from 'stripe'
+import { HoodPayClient } from '@internal-labs/hoodpay'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
 
-export default async function SuccessSessionPage({ params }) {
-  const sessionId = params?.session_id
-  if (!sessionId || typeof sessionId !== 'string') notFound()
+function isPaidStatus(status) {
+  const s = String(status || '').toLowerCase()
+  return (
+    s === 'paid' ||
+    s === 'completed' ||
+    s === 'complete' ||
+    s === 'confirmed' ||
+    s === 'success' ||
+    s === 'succeeded' ||
+    s.includes('paid') ||
+    s.includes('complete') ||
+    s.includes('confirm')
+  )
+}
 
-  if (!process.env.STRIPE_SECRET_KEY) {
+export default async function SuccessPaymentPage({ params }) {
+  const paymentId = params?.payment_id
+  if (!paymentId || typeof paymentId !== 'string') notFound()
+
+  const apiKey = process.env.HOODPAY_API_KEY
+  const businessId = process.env.HOODPAY_BUSINESS_ID
+
+  if (!apiKey || !businessId) {
     return (
       <div className="min-h-screen bg-black text-white">
         <header className="border-b border-white/10 bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40">
@@ -30,7 +48,7 @@ export default async function SuccessSessionPage({ params }) {
         <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-semibold tracking-tight">Unable to load order</h1>
           <p className="mt-3 text-white/70">
-            This site isn&apos;t configured for Stripe on the server yet.
+            This site isn&apos;t configured for HoodPay on the server yet.
           </p>
           <div className="mt-8">
             <Link
@@ -45,18 +63,17 @@ export default async function SuccessSessionPage({ params }) {
     )
   }
 
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+  const client = new HoodPayClient({ apiKey, businessId })
 
-  let session = null
+  let paymentRes = null
   try {
-    session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ['payment_intent'],
-    })
+    paymentRes = await client.payments.get(paymentId)
   } catch {
     notFound()
   }
 
-  const isPaid = session?.payment_status === 'paid' || session?.payment_status === 'no_payment_required'
+  const status = paymentRes?.data?.status
+  const isPaid = isPaidStatus(status)
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -80,9 +97,7 @@ export default async function SuccessSessionPage({ params }) {
           {isPaid ? 'Order confirmed' : 'Order received'}
         </h1>
 
-        <p className="mt-3 text-white/70">
-          Check your email (and spam) for the order confirmation.
-        </p>
+        <p className="mt-3 text-white/70">Check your email (and spam) for the order confirmation.</p>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link
@@ -101,12 +116,11 @@ export default async function SuccessSessionPage({ params }) {
         </div>
 
         <p className="mt-10 text-xs text-white/40">
-          Confirmation ID: {sessionId.slice(0, 10)}…{sessionId.slice(-6)}
+          Confirmation ID: {paymentId.slice(0, 10)}…{paymentId.slice(-6)}
         </p>
       </main>
     </div>
   )
 }
-
 
 

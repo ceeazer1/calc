@@ -517,7 +517,7 @@ export default function ProductPage() {
                       </div>
                     <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-3 py-2">
                       <Lock className="w-4 h-4 text-blue-200/60" />
-                      <span>Secure checkout by Stripe</span>
+                      <span>Secure checkout</span>
               </div>
             </div>
           </div>

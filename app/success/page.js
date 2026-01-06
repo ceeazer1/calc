@@ -5,9 +5,14 @@ import { redirect } from 'next/navigation'
 export const dynamic = 'force-dynamic'
 
 export default function SuccessPage({ searchParams }) {
-  const sessionId = searchParams?.session_id
-  if (typeof sessionId === 'string' && sessionId.length > 0) {
-    redirect(`/success/${sessionId}`)
+  const paymentId =
+    searchParams?.payment_id ||
+    searchParams?.paymentId ||
+    searchParams?.payment ||
+    searchParams?.id
+
+  if (typeof paymentId === 'string' && paymentId.length > 0) {
+    redirect(`/success/${paymentId}`)
   }
 
   return (

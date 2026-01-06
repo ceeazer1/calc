@@ -44,7 +44,7 @@ export default function CartPage() {
   const getTotalPrice = () => {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)
   }
-  // Shipping is calculated at Stripe Checkout (US only)
+  // Shipping is handled at checkout (US only)
 
   const getTotalItems = () => {
     return cart.reduce((total, item) => total + item.quantity, 0)
@@ -53,7 +53,7 @@ export default function CartPage() {
   const handleCheckout = async () => {
     try {
       setIsProcessing(true)
-      const res = await fetch('/api/checkout/create', {
+      const res = await fetch('/api/hoodpay/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cart })
