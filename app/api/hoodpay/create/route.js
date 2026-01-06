@@ -117,12 +117,6 @@ export async function POST(req) {
       redirectUrl: `${origin}/success`,
       notifyUrl: `${origin}/api/hoodpay/webhook`,
       customerEmail: typeof customerEmail === 'string' && customerEmail.trim() ? customerEmail.trim() : undefined,
-      metadata: {
-        source: 'website',
-        totalQty,
-        shippingUsd,
-        settingsSource,
-      },
     }
 
     // Call HoodPay API directly so we can surface useful error details to the client.
@@ -146,14 +140,23 @@ export async function POST(req) {
     } catch {}
 
     if (!hpRes.ok) {
-      const detail =
-        (hpJson && (hpJson.message || hpJson.error || hpJson.details)) ||
-        (typeof hpText === 'string' && hpText.trim() ? hpText.trim().slice(0, 300) : null) ||
-        `HTTP ${hpRes.status}`
-
       return new Response(
         JSON.stringify({
-          error: `HoodPay request failed (status ${hpRes.status}): ${detail}`,
+          error: `HoodPay request failed (status ${hpRes.status}): ${
+            (hpJson && (hpJson.message || hpJson.error)) ||
+            (typeof hpText === 'string' && hpText.trim() ? hpText.trim().slice(0, 120) : 'Unknown error')
+          }`,
+          upstreamStatus: hpRes.status,
+          upstream: hpJson || (typeof hpText === 'string' ? hpText.slice(0, 1200) : null),
+          sent: {
+            amount: hoodpayBody.amount,
+            currency: hoodpayBody.currency,
+            name: hoodpayBody.name,
+            description: hoodpayBody.description,
+            redirectUrl: hoodpayBody.redirectUrl,
+            notifyUrl: hoodpayBody.notifyUrl,
+            hasCustomerEmail: !!hoodpayBody.customerEmail,
+          },
         }),
         { status: 502, headers: { 'content-type': 'application/json' } }
       )
