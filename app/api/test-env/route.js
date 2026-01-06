@@ -7,6 +7,8 @@ export async function GET() {
     nodeEnv: process.env.NODE_ENV,
     vercelEnv: process.env.VERCEL_ENV,
     dashboardPublicUrl: process.env.NEXT_PUBLIC_DASHBOARD_URL || null,
-    hasDashboardServerUrl: !!process.env.DASHBOARD_URL
+    hasDashboardServerUrl: !!process.env.DASHBOARD_URL,
+    hasHoodpayApiKey: !!process.env.HOODPAY_API_KEY,
+    hasHoodpayBusinessId: !!process.env.HOODPAY_BUSINESS_ID,
   })
 }

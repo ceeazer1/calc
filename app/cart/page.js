@@ -76,7 +76,10 @@ export default function CartPage() {
       }
     } catch (err) {
       console.error(err)
-      alert('Checkout is temporarily unavailable. Please try again.')
+      const msg =
+        (err && typeof err === 'object' && 'message' in err && typeof err.message === 'string' && err.message) ||
+        'Checkout is temporarily unavailable. Please try again.'
+      alert(msg)
       setIsProcessing(false)
     }
   }
