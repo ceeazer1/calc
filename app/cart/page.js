@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Poppins } from 'next/font/google'
-import { useRouter } from 'next/navigation'
+
 import { Trash2, Plus, Minus, ShoppingCart, ArrowLeft, MessageCircle } from 'lucide-react'
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
@@ -13,7 +13,6 @@ export default function CartPage() {
   const [cart, setCart] = useState([])
   const [loading, setLoading] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
-  const router = useRouter()
 
   useEffect(() => {
     // Load cart from localStorage
@@ -51,9 +50,7 @@ export default function CartPage() {
   }
 
   const handleCheckout = async () => {
-    // Collect shipping + contact info on /checkout before redirecting to HoodPay.
-    setIsProcessing(true)
-    router.push('/checkout')
+    alert('Checkout is temporarily unavailable right now. Please check back soon.')
   }
 
   if (loading) {
