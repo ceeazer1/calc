@@ -1,13 +1,11 @@
-import { HoodPayClient } from '@internal-labs/hoodpay'
-
 // Ensure this route is never statically cached by Next/Vercel.
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export async function POST(req) {
   try {
-    const apiKey = process.env.HOODPAY_API_KEY
-    const businessId = process.env.HOODPAY_BUSINESS_ID
+    const apiKey = (process.env.HOODPAY_API_KEY || '').trim()
+    const businessId = (process.env.HOODPAY_BUSINESS_ID || '').trim()
 
     if (!apiKey || !businessId) {
       return new Response(
@@ -108,8 +106,7 @@ export async function POST(req) {
     const subtotal = Number(price) * totalQty
     const total = Math.round((subtotal + shippingUsd) * 100) / 100
 
-    const client = new HoodPayClient({ apiKey, businessId })
-    const payment = await client.payments.create({
+    const hoodpayBody = {
       amount: total,
       currency: 'USD',
       name: `CalcAI — ${totalQty}x`,
@@ -123,16 +120,46 @@ export async function POST(req) {
       metadata: {
         source: 'website',
         totalQty,
-        unitPriceUsd: price,
         shippingUsd,
         settingsSource,
-        items: cart.map((it) => ({
-          id: it?.id,
-          name: it?.name,
-          quantity: Number(it?.quantity) || 1,
-        })),
       },
+    }
+
+    // Call HoodPay API directly so we can surface useful error details to the client.
+    const hoodpayBase = (process.env.HOODPAY_BASE_URL || 'https://api.hoodpay.io').trim().replace(/\/+$/, '')
+    const hoodpayUrl = `${hoodpayBase}/v1/businesses/${encodeURIComponent(businessId)}/payments`
+
+    const hpRes = await fetch(hoodpayUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(hoodpayBody),
+      cache: 'no-store',
     })
+
+    const hpText = await hpRes.text()
+    let hpJson = null
+    try {
+      hpJson = JSON.parse(hpText)
+    } catch {}
+
+    if (!hpRes.ok) {
+      const detail =
+        (hpJson && (hpJson.message || hpJson.error || hpJson.details)) ||
+        (typeof hpText === 'string' && hpText.trim() ? hpText.trim().slice(0, 300) : null) ||
+        `HTTP ${hpRes.status}`
+
+      return new Response(
+        JSON.stringify({
+          error: `HoodPay request failed (status ${hpRes.status}): ${detail}`,
+        }),
+        { status: 502, headers: { 'content-type': 'application/json' } }
+      )
+    }
+
+    const payment = hpJson
 
     const checkoutUrl = payment?.data?.url
     const paymentId = payment?.data?.id

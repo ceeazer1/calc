@@ -24,8 +24,8 @@ export default async function SuccessPaymentPage({ params }) {
   const paymentId = params?.payment_id
   if (!paymentId || typeof paymentId !== 'string') notFound()
 
-  const apiKey = process.env.HOODPAY_API_KEY
-  const businessId = process.env.HOODPAY_BUSINESS_ID
+  const apiKey = (process.env.HOODPAY_API_KEY || '').trim()
+  const businessId = (process.env.HOODPAY_BUSINESS_ID || '').trim()
 
   if (!apiKey || !businessId) {
     return (
