@@ -27,7 +27,7 @@ export default function Checkout() {
     state: ''
   })
 
-  const [activePaymentMethod, setActivePaymentMethod] = useState('card')
+
 
   const productPrice = 210
   const shippingPrice = SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.price || 13
@@ -249,24 +249,6 @@ export default function Checkout() {
             <section className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
               <h2 className="text-xl font-semibold mb-4">Payment Details</h2>
 
-              {/* Payment Method Tabs */}
-              <div className="grid grid-cols-3 gap-2 mb-6 p-1 bg-white/5 rounded-lg border border-white/10">
-                {['card', 'cashapp', 'googlepay'].map((method) => (
-                  <button
-                    key={method}
-                    onClick={() => setActivePaymentMethod(method)}
-                    className={`py-2 px-4 rounded-md text-sm font-medium transition-all ${activePaymentMethod === method
-                        ? 'bg-blue-600 text-white shadow-lg'
-                        : 'text-gray-400 hover:text-white hover:bg-white/5'
-                      }`}
-                  >
-                    {method === 'card' && 'Card'}
-                    {method === 'cashapp' && 'Cash App'}
-                    {method === 'googlepay' && 'Google Pay'}
-                  </button>
-                ))}
-              </div>
-
               <div className={`transition-all duration-300 ${!isFormValid ? 'opacity-40 pointer-events-none grayscale' : ''}`}>
                 {/*
                             IMPORTANT: You must replace the Application ID and Location ID
@@ -274,7 +256,6 @@ export default function Checkout() {
                         */}
                 <SquarePaymentForm
                   amount={totalPrice}
-                  activeMethod={activePaymentMethod}
                   onPaymentSuccess={(token) => {
                     console.log("Success:", token)
                     // Here you would normally verify the payment on your backend
@@ -282,8 +263,13 @@ export default function Checkout() {
                   }}
                   onPaymentError={(err) => console.error("Payment Error:", err)}
                 />
+                {!isFormValid && (
+                  <p className="text-center text-xs text-red-400 mt-4 font-medium">
+                    Please complete contact and shipping details above to unlock payment.
+                  </p>
+                )}
                 <p className="text-center text-xs text-gray-500 mt-6">
-                  {!isFormValid ? "Please complete all fields above to enable payment." : "Payments secured by Square."}
+                  Payments secured by Square. We do not store your card details.
                 </p>
               </div>
             </section>
