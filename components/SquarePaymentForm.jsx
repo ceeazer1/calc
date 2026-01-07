@@ -95,6 +95,7 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
                 createPaymentRequest={() => ({
                     countryCode: "US",
                     currencyCode: "USD",
+                    locationId: process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID || "L11JSF1VPW4JW",
                     total: {
                         amount: amount.toString(),
                         label: "Total",
