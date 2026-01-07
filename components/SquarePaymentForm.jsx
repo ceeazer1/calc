@@ -68,7 +68,7 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
                                     }}
                                 />
                             )}
-                            <div className={`${(!isFormValid || isProcessing) ? 'opacity-40 grayscale blur-[2px] pointer-events-none' : ''}`}>
+                            <div className={`${(!isFormValid || isProcessing) ? 'form-invalid-blur opacity-90' : ''}`}>
                                 {children}
                             </div>
                         </div>
@@ -155,6 +155,16 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
                     {errorMessages.map((msg, i) => <div key={i}>{msg}</div>)}
                 </div>
             )}
+
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .form-invalid-blur button, 
+                .form-invalid-blur .sq-payment-button, 
+                .form-invalid-blur iframe {
+                    filter: blur(1.5px) opacity(0.8) !important;
+                    pointer-events: none !important;
+                }
+            `}} />
         </div>
     )
 }

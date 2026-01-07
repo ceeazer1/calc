@@ -31,7 +31,7 @@ const AddressAutocomplete = forwardRef(({ value, onChange, onSelect, placeholder
             if (query.length > 2 && showSuggestions) {
                 fetchAddress(query)
             }
-        }, 500)
+        }, 200)
 
         return () => clearTimeout(timer)
     }, [query, showSuggestions])
