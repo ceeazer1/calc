@@ -80,8 +80,8 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
     return (
         <div className="square-payment-form bg-zinc-900 rounded-xl border border-white/10 overflow-hidden">
             <PaymentForm
-                applicationId="sandbox-sq0idb-OUBQ3XCxLzgKiUidUUjVLA"
-                locationId="L11JSF1VPW4JW"
+                applicationId={process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID || "sandbox-sq0idb-OUBQ3XCxLzgKiUidUUjVLA"}
+                locationId={process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID || "L11JSF1VPW4JW"}
                 cardTokenizeResponseReceived={handleCardTokenization}
                 key={amount}
                 createPaymentRequest={() => ({
