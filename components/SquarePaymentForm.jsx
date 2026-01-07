@@ -8,7 +8,7 @@ import {
 } from 'react-square-web-payments-sdk'
 import { CreditCard as CardIcon, Smartphone, Wallet, CheckCircle2, Circle } from 'lucide-react'
 
-export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentError }) {
+export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentError, isFormValid, onDisabledClick }) {
     const [activeMethod, setActiveMethod] = useState('card')
     const [errorMessages, setErrorMessages] = useState([])
 
@@ -56,8 +56,20 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
                     className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isActive ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
                 >
                     <div className="overflow-hidden">
-                        <div className="p-4 pt-0 pl-12">
-                            {children}
+                        <div className="p-4 pt-0 pl-12 relative">
+                            {/* Locked overlay for payment buttons */}
+                            {!isFormValid && (
+                                <div
+                                    className="absolute inset-0 z-10 cursor-alias"
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        onDisabledClick && onDisabledClick()
+                                    }}
+                                />
+                            )}
+                            <div className={`${!isFormValid ? 'opacity-40 grayscale blur-[2px] pointer-events-none' : ''}`}>
+                                {children}
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { AsYouType, isValidPhoneNumber } from 'libphonenumber-js'
 import AddressAutocomplete from '@/components/AddressAutocomplete'
 import SquarePaymentForm from '@/components/SquarePaymentForm'
 
@@ -27,7 +28,17 @@ export default function Checkout() {
     state: ''
   })
 
+  const [touched, setTouched] = useState({})
 
+  const fieldRefs = {
+    email: useRef(null),
+    phone: useRef(null),
+    firstName: useRef(null),
+    lastName: useRef(null),
+    address: useRef(null),
+    city: useRef(null),
+    zip: useRef(null),
+  }
 
   const productPrice = 210
   const shippingPrice = SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.price || 13
@@ -38,6 +49,19 @@ export default function Checkout() {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
+  const handlePhoneChange = (e) => {
+    const val = e.target.value
+    // Auto-format for US
+    const formatter = new AsYouType('US')
+    const formatted = formatter.input(val)
+    setFormData(prev => ({ ...prev, phone: formatted }))
+  }
+
+  const handleBlur = (e) => {
+    const { name } = e.target
+    setTouched(prev => ({ ...prev, [name]: true }))
+  }
+
   const handleAddressSelect = (details) => {
     setFormData(prev => ({
       ...prev,
@@ -46,12 +70,58 @@ export default function Checkout() {
       zip: details.zip || prev.zip,
       state: details.state || prev.state
     }))
+    setTouched(prev => ({ ...prev, address: true, city: true, zip: true }))
   }
 
-  // Basic email regex validation
+  // Validation Rules
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  const isPhoneValid = (phone) => {
+    try {
+      return isValidPhoneNumber(phone, 'US')
+    } catch (e) {
+      return false
+    }
+  }
 
-  const isFormValid = isValidEmail(formData.email) && formData.phone.length > 9 && formData.firstName && formData.lastName && formData.address && formData.city && formData.zip
+  const errors = {
+    email: !isValidEmail(formData.email),
+    phone: !isPhoneValid(formData.phone),
+    firstName: !formData.firstName.trim(),
+    lastName: !formData.lastName.trim(),
+    address: !formData.address.trim(),
+    city: !formData.city.trim(),
+    zip: !formData.zip.trim() || formData.zip.length < 5,
+  }
+
+  const isFormValid = !Object.values(errors).some(v => v)
+
+  const onDisabledPaymentClick = () => {
+    // Find first error and scroll to it
+    const order = ['email', 'phone', 'firstName', 'lastName', 'address', 'city', 'zip']
+    const firstError = order.find(field => errors[field])
+
+    if (firstError) {
+      setTouched(prev => {
+        const allTouched = {}
+        order.forEach(f => { allTouched[f] = true })
+        return allTouched
+      })
+
+      const element = fieldRefs[firstError].current
+      if (element) {
+        element.focus()
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    }
+  }
+
+  const getInputClass = (name) => {
+    const base = "w-full bg-white/5 border rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition"
+    if (touched[name] && errors[name]) {
+      return `${base} border-red-500 focus:border-red-500 ring-1 ring-red-500/50`
+    }
+    return `${base} border-white/10 focus:border-blue-500 focus:ring-1 focus:ring-blue-500`
+  }
 
   return (
     <div className="min-h-screen bg-black text-white lg:flex">
@@ -114,29 +184,43 @@ export default function Checkout() {
             <span className="text-white">Checkout</span>
           </nav>
 
-          <div className="space-y-10">
+          <div className="space-y-10 focus-within:scroll-smooth">
             {/* Contact Section */}
             <section>
               <h2 className="text-xl font-semibold mb-4">Contact <span className="text-red-500">*</span></h2>
-              <div className="space-y-3">
-                <input
-                  required
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  type="email"
-                  placeholder="Email address"
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                />
-                <input
-                  required
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  type="tel"
-                  placeholder="Phone number"
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                />
+              <div className="space-y-4">
+                <div>
+                  <input
+                    ref={fieldRefs.email}
+                    required
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    type="email"
+                    placeholder="Email address"
+                    className={getInputClass('email')}
+                  />
+                  {touched.email && errors.email && (
+                    <p className="text-red-500 text-xs mt-1 animate-in fade-in slide-in-from-top-1">Please enter a valid email address.</p>
+                  )}
+                </div>
+                <div>
+                  <input
+                    ref={fieldRefs.phone}
+                    required
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handlePhoneChange}
+                    onBlur={handleBlur}
+                    type="tel"
+                    placeholder="Phone number"
+                    className={getInputClass('phone')}
+                  />
+                  {touched.phone && errors.phone && (
+                    <p className="text-red-500 text-xs mt-1 animate-in fade-in slide-in-from-top-1">Please enter a valid US phone number.</p>
+                  )}
+                </div>
               </div>
             </section>
 
@@ -150,33 +234,50 @@ export default function Checkout() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-1">
                   <input
+                    ref={fieldRefs.firstName}
                     required
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     type="text"
                     placeholder="First name"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                    className={getInputClass('firstName')}
                   />
+                  {touched.firstName && errors.firstName && (
+                    <p className="text-red-500 text-xs mt-1">First name is required.</p>
+                  )}
                 </div>
                 <div className="md:col-span-1">
                   <input
+                    ref={fieldRefs.lastName}
                     required
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     type="text"
                     placeholder="Last name"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                    className={getInputClass('lastName')}
                   />
+                  {touched.lastName && errors.lastName && (
+                    <p className="text-red-500 text-xs mt-1">Last name is required.</p>
+                  )}
                 </div>
                 <div className="md:col-span-2">
                   <AddressAutocomplete
+                    ref={fieldRefs.address}
                     value={formData.address}
                     onSelect={handleAddressSelect}
-                    onChange={(val) => setFormData(prev => ({ ...prev, address: val }))}
+                    onChange={(val) => {
+                      setFormData(prev => ({ ...prev, address: val }))
+                      if (val.length === 0) setTouched(prev => ({ ...prev, address: true }))
+                    }}
                     placeholder="Address"
                   />
+                  {touched.address && errors.address && (
+                    <p className="text-red-500 text-xs mt-1">Please select a valid address.</p>
+                  )}
                 </div>
                 <div className="md:col-span-2">
                   <input
@@ -190,25 +291,35 @@ export default function Checkout() {
                 </div>
                 <div className="md:col-span-1">
                   <input
+                    ref={fieldRefs.city}
                     required
                     name="city"
                     value={formData.city}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     type="text"
                     placeholder="City"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                    className={getInputClass('city')}
                   />
+                  {touched.city && errors.city && (
+                    <p className="text-red-500 text-xs mt-1">City is required.</p>
+                  )}
                 </div>
                 <div className="md:col-span-1">
                   <input
+                    ref={fieldRefs.zip}
                     required
                     name="zip"
                     value={formData.zip}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     type="text"
                     placeholder="ZIP code"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                    className={getInputClass('zip')}
                   />
+                  {touched.zip && errors.zip && (
+                    <p className="text-red-500 text-xs mt-1">Valid ZIP code is required.</p>
+                  )}
                 </div>
               </div>
             </section>
@@ -249,25 +360,24 @@ export default function Checkout() {
             <section className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
               <h2 className="text-xl font-semibold mb-4">Payment Details</h2>
 
-              <div className={`transition-all duration-300 ${!isFormValid ? 'opacity-40 pointer-events-none grayscale' : ''}`}>
-                {/*
-                            IMPORTANT: You must replace the Application ID and Location ID
-                            in `components/SquarePaymentForm.jsx` for this to work.
-                        */}
+              <div className="transition-all duration-300">
                 <SquarePaymentForm
                   amount={totalPrice}
+                  isFormValid={isFormValid}
+                  onDisabledClick={onDisabledPaymentClick}
                   onPaymentSuccess={(token) => {
                     console.log("Success:", token)
-                    // Here you would normally verify the payment on your backend
                     window.location.href = '/success'
                   }}
                   onPaymentError={(err) => console.error("Payment Error:", err)}
                 />
+
                 {!isFormValid && (
-                  <p className="text-center text-xs text-red-400 mt-4 font-medium">
-                    Please complete contact and shipping details above to unlock payment.
+                  <p className="text-center text-xs text-blue-400 mt-4 font-medium animate-pulse">
+                    Please fill out all shipping details to enable payment.
                   </p>
                 )}
+
                 <p className="text-center text-xs text-gray-500 mt-6">
                   Payments secured by Square. We do not store your card details.
                 </p>

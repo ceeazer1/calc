@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, forwardRef } from 'react'
 import { Search, MapPin } from 'lucide-react'
 
-export default function AddressAutocomplete({ value, onChange, onSelect, placeholder = "Address" }) {
+const AddressAutocomplete = forwardRef(({ value, onChange, onSelect, placeholder = "Address" }, ref) => {
     const [query, setQuery] = useState(value || '')
     const [suggestions, setSuggestions] = useState([])
     const [showSuggestions, setShowSuggestions] = useState(false)
@@ -108,6 +108,7 @@ export default function AddressAutocomplete({ value, onChange, onSelect, placeho
         <div className="relative w-full" ref={wrapperRef}>
             <div className="relative">
                 <input
+                    ref={ref}
                     type="text"
                     value={query}
                     onChange={handleInput}
@@ -158,4 +159,6 @@ export default function AddressAutocomplete({ value, onChange, onSelect, placeho
             )}
         </div>
     )
-}
+})
+
+export default AddressAutocomplete
