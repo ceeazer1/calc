@@ -8,14 +8,15 @@ import {
 } from 'react-square-web-payments-sdk'
 import { CreditCard as CardIcon, Smartphone, Wallet, CheckCircle2, Circle } from 'lucide-react'
 
-export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentError, isFormValid, onDisabledClick }) {
+export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentError, isFormValid, onDisabledClick, isProcessing }) {
     const [activeMethod, setActiveMethod] = useState('card')
     const [errorMessages, setErrorMessages] = useState([])
 
     // Helper to handle payment results
     const handleCardTokenization = async (token, buyer) => {
-        console.log('Payment Token:', token)
-        console.log('Buyer:', buyer)
+        if (isProcessing) return; // Prevent double trigger
+
+        console.log('Payment Tokenized:', token.token)
         if (token.status === 'OK') {
             onPaymentSuccess && onPaymentSuccess(token)
         } else {
@@ -32,7 +33,7 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
             >
                 <div
                     className="flex items-center gap-4 p-4 cursor-pointer"
-                    onClick={() => setActiveMethod(id)}
+                    onClick={() => !isProcessing && setActiveMethod(id)}
                 >
                     <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all ${isActive ? 'border-blue-500 text-blue-500' : 'border-gray-500 text-transparent'}`}>
                         <div className={`w-2.5 h-2.5 rounded-full bg-current ${isActive ? 'scale-100' : 'scale-0'} transition-transform`} />
@@ -58,16 +59,17 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
                     <div className="overflow-hidden">
                         <div className="p-4 pt-0 pl-12 relative">
                             {/* Locked overlay for payment buttons */}
-                            {!isFormValid && (
+                            {(!isFormValid || isProcessing) && (
                                 <div
                                     className="absolute inset-0 z-10 cursor-alias"
                                     onClick={(e) => {
                                         e.stopPropagation()
+                                        if (isProcessing) return;
                                         onDisabledClick && onDisabledClick()
                                     }}
                                 />
                             )}
-                            <div className={`${!isFormValid ? 'opacity-40 grayscale blur-[2px] pointer-events-none' : ''}`}>
+                            <div className={`${(!isFormValid || isProcessing) ? 'opacity-40 grayscale blur-[2px] pointer-events-none' : ''}`}>
                                 {children}
                             </div>
                         </div>
@@ -78,7 +80,13 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
     }
 
     return (
-        <div className="square-payment-form bg-zinc-900 rounded-xl border border-white/10 overflow-hidden">
+        <div className="square-payment-form bg-zinc-900 rounded-xl border border-white/10 overflow-hidden relative">
+            {isProcessing && (
+                <div className="absolute inset-0 z-50 bg-black/60 backdrop-blur-[2px] flex flex-col items-center justify-center gap-4 animate-in fade-in duration-300">
+                    <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                    <div className="text-blue-400 font-semibold tracking-wide">Processing Payment...</div>
+                </div>
+            )}
             <PaymentForm
                 applicationId={process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID || "sandbox-sq0idb-OUBQ3XCxLzgKiUidUUjVLA"}
                 locationId={process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID || "L11JSF1VPW4JW"}

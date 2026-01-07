@@ -66,10 +66,13 @@ export default function Checkout() {
   const shippingPrice = SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.price || 13
   const totalPrice = productPrice + shippingPrice
 
+  const [isProcessing, setIsProcessing] = useState(false)
+
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
+  // ... (omitting some lines for brevity in instruction, will provide full replacement below)
 
   const handleBlur = (e) => {
     const { name } = e.target
@@ -414,9 +417,10 @@ export default function Checkout() {
                 <SquarePaymentForm
                   amount={totalPrice}
                   isFormValid={isFormValid}
+                  isProcessing={isProcessing}
                   onDisabledClick={onDisabledPaymentClick}
                   onPaymentSuccess={async (token) => {
-                    console.log("Success:", token)
+                    setIsProcessing(true);
 
                     // Prepare order data for your admin dashboard
                     const orderData = {
@@ -446,25 +450,38 @@ export default function Checkout() {
                     };
 
                     try {
-                      // Push to admin dashboard
+                      // Push to admin dashboard (this now actually charges the card)
                       const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.calcai.cc';
-                      await fetch(`${dashboardUrl}/api/website/orders`, {
+                      const response = await fetch(`${dashboardUrl}/api/website/orders`, {
                         method: 'POST',
-                        mode: 'cors', // Enable cors for cross-domain push
+                        mode: 'cors',
                         headers: {
                           'Content-Type': 'application/json',
                           'x-api-key': process.env.NEXT_PUBLIC_WEBSITE_API_KEY || 'CALCAI_SECURE_PUSH_2026'
                         },
                         body: JSON.stringify(orderData)
                       });
+
+                      const result = await response.json();
+
+                      if (response.ok && result.ok) {
+                        // Payment actually succeeded on the backend
+                        window.location.href = `/success/${token.token}`;
+                      } else {
+                        // Backend payment failed (e.g. declined)
+                        alert(result.error || "Payment failed. Please check your card details and try again.");
+                        setIsProcessing(false);
+                      }
                     } catch (err) {
                       console.error("Dashboard push error:", err);
+                      alert("Unable to connect to payment server. Please try again later.");
+                      setIsProcessing(false);
                     }
-
-                    // Redirect to unique success page with payment token
-                    window.location.href = `/success/${token.token}`
                   }}
-                  onPaymentError={(err) => console.error("Payment Error:", err)}
+                  onPaymentError={(err) => {
+                    console.error("Payment Error:", err);
+                    setIsProcessing(false);
+                  }}
                 />
 
                 {!isFormValid && (
