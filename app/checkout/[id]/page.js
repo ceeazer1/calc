@@ -359,8 +359,52 @@ export default function Checkout() {
                   amount={totalPrice}
                   isFormValid={isFormValid}
                   onDisabledClick={onDisabledPaymentClick}
-                  onPaymentSuccess={(token) => {
+                  onPaymentSuccess={async (token) => {
                     console.log("Success:", token)
+
+                    // Prepare order data for your admin dashboard
+                    const orderData = {
+                      order: {
+                        id: token.token, // Square payment token as unique ID
+                        amount: Math.round(totalPrice * 100),
+                        currency: 'usd',
+                        customerEmail: formData.email,
+                        customerName: `${formData.firstName} ${formData.lastName}`.trim(),
+                        customerPhone: formData.phone,
+                        shippingAddress: {
+                          line1: formData.address,
+                          line2: formData.apartment || undefined,
+                          city: formData.city,
+                          state: formData.state,
+                          postal_code: formData.zip,
+                          country: 'US'
+                        },
+                        items: [{
+                          description: 'CalcAI Calculator - TI-84+ Edition',
+                          quantity: 1,
+                          amount: Math.round(productPrice * 100)
+                        }],
+                        paymentMethod: token.card_brand || 'Square',
+                        notes: `Shipping via ${SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.name}`
+                      }
+                    };
+
+                    try {
+                      // Push to admin dashboard
+                      const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.calcai.cc';
+                      await fetch(`${dashboardUrl}/api/website/orders`, {
+                        method: 'POST',
+                        mode: 'cors', // Enable cors for cross-domain push
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'x-api-key': process.env.NEXT_PUBLIC_WEBSITE_API_KEY || 'CALCAI_SECURE_PUSH_2026'
+                        },
+                        body: JSON.stringify(orderData)
+                      });
+                    } catch (err) {
+                      console.error("Dashboard push error:", err);
+                    }
+
                     // Redirect to unique success page with payment token
                     window.location.href = `/success/${token.token}`
                   }}
