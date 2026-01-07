@@ -37,6 +37,8 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
                 applicationId="sandbox-sq0idb-OUBQ3XCxLzgKiUidUUjVLA"
                 locationId="L11JSF1VPW4JW"
                 cardTokenizeResponseReceived={handleCardTokenization}
+                // Force re-render when amount changes so digital wallets update the total
+                key={amount}
 
                 // Configuration for Digital Wallets (Apple/Google Pay)
                 createPaymentRequest={() => ({
@@ -61,13 +63,13 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
             >
                 <div className="space-y-6">
                     {/* Cash App Pay */}
-                    <div className="p-4 bg-white/5 rounded-lg border border-white/10">
+                    <div className="mb-4">
                         <div className="mb-2 text-sm text-gray-400 font-medium">Pay with Cash App</div>
                         <CashAppPay />
                     </div>
 
                     {/* Google Pay */}
-                    <div className="p-4 bg-white/5 rounded-lg border border-white/10">
+                    <div className="mb-4">
                         <GooglePay />
                     </div>
 
@@ -75,7 +77,7 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
                     <ApplePay />
 
                     {/* Credit Card Form */}
-                    <div className="p-4 bg-white/5 rounded-lg border border-white/10">
+                    <div className="pt-4 border-t border-white/10">
                         <div className="mb-4 text-sm text-gray-400 font-medium">Pay with Card</div>
                         <CreditCard
                             buttonProps={{

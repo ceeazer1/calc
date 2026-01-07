@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Search, MapPin } from 'lucide-react'
 
-export default function AddressAutocomplete({ value, onChange, placeholder = "Address" }) {
+export default function AddressAutocomplete({ value, onChange, onSelect, placeholder = "Address" }) {
     const [query, setQuery] = useState(value || '')
     const [suggestions, setSuggestions] = useState([])
     const [showSuggestions, setShowSuggestions] = useState(false)
@@ -33,10 +33,16 @@ export default function AddressAutocomplete({ value, onChange, placeholder = "Ad
 
         if (val.length > 2) {
             try {
-                // Using Photon (OpenStreetMap) API for free address autocomplete
-                const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(val)}&limit=5`)
+                // Using Photon (OpenStreetMap) API
+                const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(val)}&limit=10`)
                 const data = await res.json()
-                setSuggestions(data.features || [])
+
+                // Filter for US addresses only
+                const usResults = (data.features || []).filter(item =>
+                    item.properties.countrycode === 'US' || item.properties.country === 'United States'
+                ).slice(0, 5)
+
+                setSuggestions(usResults)
                 setShowSuggestions(true)
             } catch (err) {
                 console.error("Address fetch error:", err)
@@ -49,18 +55,26 @@ export default function AddressAutocomplete({ value, onChange, placeholder = "Ad
 
     const handleSelect = (feature) => {
         const props = feature.properties
-        // Construct a nice string: Street, City, Country
-        let address = [props.name, props.street, props.city, props.state, props.country]
-            .filter(Boolean)
-            .join(', ')
 
-        // Some entries might be weird, so we fallback
-        if (!props.street && !props.city) {
-            address = props.name || props.formatted
+        // Construct nice string
+        let addressLabel = [props.housenumber, props.street, props.city, props.state].filter(Boolean).join(', ')
+        if (!addressLabel) addressLabel = props.name || props.formatted
+
+        setQuery(addressLabel)
+
+        // Pass detailed info back to parent for auto-fill
+        if (onSelect) {
+            onSelect({
+                address: addressLabel,
+                city: props.city,
+                state: props.state,
+                zip: props.postcode,
+                country: 'US'
+            })
+        } else {
+            onChange && onChange(addressLabel)
         }
 
-        setQuery(address)
-        onChange && onChange(address)
         setShowSuggestions(false)
     }
 

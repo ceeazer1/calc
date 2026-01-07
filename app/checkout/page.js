@@ -14,9 +14,38 @@ const SHIPPING_OPTIONS = [
 export default function Checkout() {
   const [selectedShipping, setSelectedShipping] = useState('priority')
 
+  // Form State
+  const [formData, setFormData] = useState({
+    email: '',
+    firstName: '',
+    lastName: '',
+    address: '',
+    apartment: '',
+    city: '',
+    zip: '',
+    state: '' // Assuming we might want to store state even if not explicitly shown/editable or just for validation
+  })
+
   const productPrice = 210
   const shippingPrice = SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.price || 13
   const totalPrice = productPrice + shippingPrice
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleAddressSelect = (details) => {
+    setFormData(prev => ({
+      ...prev,
+      address: details.address,
+      city: details.city || prev.city,
+      zip: details.zip || prev.zip,
+      state: details.state || prev.state
+    }))
+  }
+
+  const isFormValid = formData.email && formData.firstName && formData.lastName && formData.address && formData.city && formData.zip
 
   return (
     <div className="min-h-screen bg-black text-white lg:flex">
@@ -84,6 +113,10 @@ export default function Checkout() {
             <section>
               <h2 className="text-xl font-semibold mb-4">Contact</h2>
               <input
+                required
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
                 type="email"
                 placeholder="Email address"
                 className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
@@ -92,10 +125,18 @@ export default function Checkout() {
 
             {/* Shipping Address Section */}
             <section>
-              <h2 className="text-xl font-semibold mb-4">Shipping address</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">Shipping address</h2>
+                <span className="text-xs uppercase tracking-wider font-semibold text-blue-400 bg-blue-400/10 px-2 py-1 rounded">US Shipping Only</span>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div /* First Name */ className="md:col-span-1">
                   <input
+                    required
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
                     type="text"
                     placeholder="First name"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
@@ -103,16 +144,28 @@ export default function Checkout() {
                 </div>
                 <div /* Last Name */ className="md:col-span-1">
                   <input
+                    required
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
                     type="text"
                     placeholder="Last name"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                   />
                 </div>
                 <div /* Address Method */ className="md:col-span-2">
-                  <AddressAutocomplete placeholder="Address" />
+                  <AddressAutocomplete
+                    value={formData.address}
+                    onSelect={handleAddressSelect}
+                    onChange={(val) => setFormData(prev => ({ ...prev, address: val }))}
+                    placeholder="Address"
+                  />
                 </div>
                 <div /* Apartment */ className="md:col-span-2">
                   <input
+                    name="apartment"
+                    value={formData.apartment}
+                    onChange={handleInputChange}
                     type="text"
                     placeholder="Apartment, suite, etc. (optional)"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
@@ -120,6 +173,10 @@ export default function Checkout() {
                 </div>
                 <div /* City */ className="md:col-span-1">
                   <input
+                    required
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInputChange}
                     type="text"
                     placeholder="City"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
@@ -127,6 +184,10 @@ export default function Checkout() {
                 </div>
                 <div /* Post Code */ className="md:col-span-1">
                   <input
+                    required
+                    name="zip"
+                    value={formData.zip}
+                    onChange={handleInputChange}
                     type="text"
                     placeholder="ZIP code"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
@@ -171,23 +232,30 @@ export default function Checkout() {
             <section className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
               <h2 className="text-xl font-semibold mb-4">Payment Details</h2>
 
-              {/* 
-                   IMPORTANT: You must replace the Application ID and Location ID 
-                   in `components/SquarePaymentForm.jsx` for this to work.
-               */}
-              <SquarePaymentForm
-                amount={totalPrice}
-                onPaymentSuccess={(token) => {
-                  console.log("Success:", token)
-                  // Here you would normally verify the payment on your backend
-                  window.location.href = '/success'
-                }}
-                onPaymentError={(err) => console.error("Payment Error:", err)}
-              />
-
-              <p className="text-center text-xs text-gray-500 mt-6">
-                Payments secured by Square. We do not store your card details.
-              </p>
+              {isFormValid ? (
+                <>
+                  {/* 
+                            IMPORTANT: You must replace the Application ID and Location ID 
+                            in `components/SquarePaymentForm.jsx` for this to work.
+                        */}
+                  <SquarePaymentForm
+                    amount={totalPrice}
+                    onPaymentSuccess={(token) => {
+                      console.log("Success:", token)
+                      // Here you would normally verify the payment on your backend
+                      window.location.href = '/success'
+                    }}
+                    onPaymentError={(err) => console.error("Payment Error:", err)}
+                  />
+                  <p className="text-center text-xs text-gray-500 mt-6">
+                    Payments secured by Square. We do not store your card details.
+                  </p>
+                </>
+              ) : (
+                <div className="p-8 border border-white/10 border-dashed rounded-xl bg-white/5 text-center text-gray-400">
+                  Please fill in all contact and shipping details to proceed to payment.
+                </div>
+              )}
             </section>
           </div>
         </div>
