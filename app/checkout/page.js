@@ -361,7 +361,8 @@ export default function Checkout() {
                   onDisabledClick={onDisabledPaymentClick}
                   onPaymentSuccess={(token) => {
                     console.log("Success:", token)
-                    window.location.href = '/success'
+                    // Redirect to unique success page with payment token
+                    window.location.href = `/success/${token.token}`
                   }}
                   onPaymentError={(err) => console.error("Payment Error:", err)}
                 />
