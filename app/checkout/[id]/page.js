@@ -13,6 +13,26 @@ const SHIPPING_OPTIONS = [
   { id: 'express', name: 'USPS Priority Mail Express', price: 40, eta: '1-2 business days' },
 ]
 
+const US_STATES = [
+  { code: 'AL', name: 'Alabama' }, { code: 'AK', name: 'Alaska' }, { code: 'AZ', name: 'Arizona' },
+  { code: 'AR', name: 'Arkansas' }, { code: 'CA', name: 'California' }, { code: 'CO', name: 'Colorado' },
+  { code: 'CT', name: 'Connecticut' }, { code: 'DE', name: 'Delaware' }, { code: 'FL', name: 'Florida' },
+  { code: 'GA', name: 'Georgia' }, { code: 'HI', name: 'Hawaii' }, { code: 'ID', name: 'Idaho' },
+  { code: 'IL', name: 'Illinois' }, { code: 'IN', name: 'Indiana' }, { code: 'IA', name: 'Iowa' },
+  { code: 'KS', name: 'Kansas' }, { code: 'KY', name: 'Kentucky' }, { code: 'LA', name: 'Louisiana' },
+  { code: 'ME', name: 'Maine' }, { code: 'MD', name: 'Maryland' }, { code: 'MA', name: 'Massachusetts' },
+  { code: 'MI', name: 'Michigan' }, { code: 'MN', name: 'Minnesota' }, { code: 'MS', name: 'Mississippi' },
+  { code: 'MO', name: 'Missouri' }, { code: 'MT', name: 'Montana' }, { code: 'NE', name: 'Nebraska' },
+  { code: 'NV', name: 'Nevada' }, { code: 'NH', name: 'New Hampshire' }, { code: 'NJ', name: 'New Jersey' },
+  { code: 'NM', name: 'New Mexico' }, { code: 'NY', name: 'New York' }, { code: 'NC', name: 'North Carolina' },
+  { code: 'ND', name: 'North Dakota' }, { code: 'OH', name: 'Ohio' }, { code: 'OK', name: 'Oklahoma' },
+  { code: 'OR', name: 'Oregon' }, { code: 'PA', name: 'Pennsylvania' }, { code: 'RI', name: 'Rhode Island' },
+  { code: 'SC', name: 'South Carolina' }, { code: 'SD', name: 'South Dakota' }, { code: 'TN', name: 'Tennessee' },
+  { code: 'TX', name: 'Texas' }, { code: 'UT', name: 'Utah' }, { code: 'VT', name: 'Vermont' },
+  { code: 'VA', name: 'Virginia' }, { code: 'WA', name: 'Washington' }, { code: 'WV', name: 'West Virginia' },
+  { code: 'WI', name: 'Wisconsin' }, { code: 'WY', name: 'Wyoming' }
+]
+
 export default function Checkout() {
   const [selectedShipping, setSelectedShipping] = useState('priority')
 
@@ -38,6 +58,7 @@ export default function Checkout() {
     lastName: useRef(null),
     address: useRef(null),
     city: useRef(null),
+    state: useRef(null),
     zip: useRef(null),
   }
 
@@ -56,14 +77,23 @@ export default function Checkout() {
   }
 
   const handleAddressSelect = (details) => {
+    // Helper to convert full state names to codes if needed
+    let stateCode = details.state || ''
+    if (stateCode.length > 2) {
+      const stateMatch = US_STATES.find(s =>
+        s.name.toLowerCase() === stateCode.toLowerCase()
+      )
+      if (stateMatch) stateCode = stateMatch.code
+    }
+
     setFormData(prev => ({
       ...prev,
       address: details.address,
       city: details.city || prev.city,
       zip: details.zip || prev.zip,
-      state: details.state || prev.state
+      state: stateCode || prev.state
     }))
-    setTouched(prev => ({ ...prev, address: true, city: true, zip: true }))
+    setTouched(prev => ({ ...prev, address: true, city: true, zip: true, state: true }))
   }
 
   // Validation Rules
@@ -83,6 +113,7 @@ export default function Checkout() {
     lastName: !formData.lastName.trim(),
     address: !formData.address.trim(),
     city: !formData.city.trim(),
+    state: !formData.state.trim(),
     zip: !formData.zip.trim() || formData.zip.length < 5,
   }
 
@@ -90,7 +121,7 @@ export default function Checkout() {
 
   const onDisabledPaymentClick = () => {
     // Find first error and scroll to it
-    const order = ['email', 'phone', 'firstName', 'lastName', 'address', 'city', 'zip']
+    const order = ['email', 'phone', 'firstName', 'lastName', 'address', 'city', 'state', 'zip']
     const firstError = order.find(field => errors[field])
 
     if (firstError) {
@@ -300,6 +331,31 @@ export default function Checkout() {
                   )}
                 </div>
                 <div className="md:col-span-1">
+                  <div className="relative">
+                    <select
+                      ref={fieldRefs.state}
+                      name="state"
+                      value={formData.state}
+                      onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      className={`${getInputClass('state')} appearance-none cursor-pointer`}
+                    >
+                      <option value="" disabled className="bg-zinc-900">Select State</option>
+                      {US_STATES.map(s => (
+                        <option key={s.code} value={s.code} className="bg-zinc-900">{s.name}</option>
+                      ))}
+                    </select>
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M2.5 4.5L6 8L9.5 4.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                  </div>
+                  {touched.state && errors.state && (
+                    <p className="text-red-500 text-xs mt-1">State is required.</p>
+                  )}
+                </div>
+                <div className="md:col-span-2">
                   <input
                     ref={fieldRefs.zip}
                     required
