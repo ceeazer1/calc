@@ -151,35 +151,35 @@ export default function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white py-8 sm:py-12 px-4">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-black text-white py-8 sm:py-16 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto">
         {/* Header / Logo - Always Centered at top */}
-        <div className="flex justify-center mb-12">
+        <div className="flex justify-center mb-16">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.png" alt="CalcAI Logo" width={100} height={30} className="h-6 w-auto" />
+            <Image src="/logo.png" alt="CalcAI Logo" width={110} height={32} className="h-7 w-auto" />
           </Link>
         </div>
 
         {/* Layout Container: Split on Desktop, Single on Mobile */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-12">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-20 xl:gap-32">
 
-          {/* Order Summary Column */}
-          <div className="w-full lg:w-[380px] lg:sticky lg:top-12 order-1">
-            <div className="bg-zinc-900 border border-white/10 rounded-2xl p-6 sm:p-8">
-              <h2 className="text-xl font-semibold mb-6">Order Summary</h2>
+          {/* Order Summary Column - No Box, Larger Branding */}
+          <div className="w-full lg:w-[400px] xl:w-[450px] lg:sticky lg:top-12 order-1">
+            <div className="py-2">
+              <h2 className="text-2xl font-bold mb-10 tracking-tight">Order Summary</h2>
 
-              <div className="flex gap-4 mb-6 pb-6 border-b border-white/10">
-                <div className="relative w-16 h-16 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center overflow-hidden flex-shrink-0">
+              <div className="flex gap-6 mb-8 pb-8 border-b border-white/10">
+                <div className="relative w-24 h-24 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center overflow-hidden flex-shrink-0">
                   <Image src="/Calc_Front_New.png" alt="CalcAI Calculator" fill className="object-cover" />
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-base">CalcAI Calculator</h3>
-                  <p className="text-gray-400 text-xs">TI-84+ Edition</p>
+                <div className="flex-1 pt-2">
+                  <h3 className="font-bold text-xl mb-1">CalcAI Calculator</h3>
+                  <p className="text-gray-400 text-sm">TI-84+ Edition</p>
                 </div>
-                <div className="font-semibold text-sm">${productPrice.toFixed(2)}</div>
+                <div className="font-bold text-lg pt-2 text-white">${productPrice.toFixed(2)}</div>
               </div>
 
-              <div className="space-y-3 text-sm">
+              <div className="space-y-4 text-base">
                 <div className="flex justify-between text-gray-400">
                   <span>Subtotal</span>
                   <span>${productPrice.toFixed(2)}</span>
@@ -188,11 +188,11 @@ export default function Checkout() {
                   <span>Shipping</span>
                   <span>${shippingPrice.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between border-t border-white/10 pt-4 mt-2">
-                  <span className="font-semibold text-white text-base">Total</span>
+                <div className="flex justify-between border-t border-white/10 pt-8 mt-6">
+                  <span className="font-bold text-white text-xl">Total Due</span>
                   <div className="text-right">
-                    <div className="text-[10px] text-gray-500 font-normal">USD</div>
-                    <span className="font-bold text-xl text-white">${totalPrice.toFixed(2)}</span>
+                    <div className="text-xs text-gray-500 font-normal mb-1">USD</div>
+                    <span className="font-black text-4xl text-white tracking-tighter">${totalPrice.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -203,9 +203,9 @@ export default function Checkout() {
           <div className="hidden lg:block w-[1px] self-stretch bg-white/10" />
 
           {/* Form Fields Column */}
-          <div className="flex-1 order-2 mt-8 lg:mt-0">
-            <div className="bg-zinc-900/40 border border-white/10 rounded-2xl p-6 sm:p-8 md:p-10">
-              <div className="space-y-10 focus-within:scroll-smooth">
+          <div className="flex-1 order-2 mt-8 lg:mt-0 max-w-2xl">
+            <div className="bg-zinc-900/40 border border-white/10 rounded-3xl p-6 sm:p-10">
+              <div className="space-y-12 focus-within:scroll-smooth">
                 {/* Contact Section */}
                 <section>
                   <h2 className="text-xl font-semibold mb-4">Contact <span className="text-red-500">*</span></h2>
