@@ -78,7 +78,7 @@ export default function SuccessPage({ params }) {
             </div>
           </div>
 
-          <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
             <Link
               href="/"
               className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl bg-white text-black px-8 py-4 text-sm font-bold hover:bg-gray-200 transition-all active:scale-95"
@@ -86,10 +86,10 @@ export default function SuccessPage({ params }) {
               Back to Home
             </Link>
             <Link
-              href="/dashboard"
+              href="/help"
               className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl bg-zinc-900 text-white border border-white/10 px-8 py-4 text-sm font-bold hover:bg-zinc-800 transition-all active:scale-95 group"
             >
-              Order Status
+              Need Help?
               <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
