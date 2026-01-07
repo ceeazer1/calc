@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import AddressAutocomplete from '@/components/AddressAutocomplete'
+import SquarePaymentForm from '@/components/SquarePaymentForm'
 
 const SHIPPING_OPTIONS = [
   { id: 'priority', name: 'USPS Priority Mail', price: 13, eta: '2-3 business days' },
@@ -12,42 +13,10 @@ const SHIPPING_OPTIONS = [
 
 export default function Checkout() {
   const [selectedShipping, setSelectedShipping] = useState('priority')
-  const [loading, setLoading] = useState(false)
-  const [checkoutUrl, setCheckoutUrl] = useState(null)
 
   const productPrice = 210
   const shippingPrice = SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.price || 13
   const totalPrice = productPrice + shippingPrice
-
-  const handlePaymentStart = async () => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/create-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          amount: totalPrice, // e.g. 223.00
-          label: `CalcAI - ${selectedShipping === 'priority' ? 'Priority' : 'Express'} Shipping`
-        })
-      })
-
-      const data = await res.json()
-
-      if (data.checkoutUrl) {
-        setCheckoutUrl(data.checkoutUrl)
-      } else {
-        console.error("No checkout URL returned", data)
-        alert("Payment system is temporarily unavailable. Please try again.")
-      }
-    } catch (e) {
-      console.error("Payment init error", e)
-      alert("Something went wrong. Please try again.")
-    } finally {
-      setLoading(false)
-    }
-  }
 
   return (
     <div className="min-h-screen bg-black text-white lg:flex">
@@ -198,60 +167,28 @@ export default function Checkout() {
               </div>
             </section>
 
-            {/* Payment Section - Embedded Zaprite Checkout */}
-            {checkoutUrl ? (
-              <section className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                <h2 className="text-xl font-semibold mb-4">Complete Payment</h2>
-                <div className="w-full h-[650px] rounded-xl overflow-hidden bg-white/5 border border-white/10 relative">
-                  <iframe
-                    src={checkoutUrl}
-                    className="w-full h-full"
-                    title="Secure Payment"
-                    allow="payment"
-                  />
-                </div>
-                <button
-                  onClick={() => setCheckoutUrl(null)}
-                  className="mt-4 text-sm text-gray-500 hover:text-white transition"
-                >
-                  ← Cancel and change shipping
-                </button>
-              </section>
-            ) : (
-              /* Pay Button Action */
-              <div className="mt-8">
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm text-gray-400">Accepted methods</span>
-                    <div className="flex gap-2">
-                      {/* Payment Icons */}
-                      <div className="h-6 w-10 bg-white/10 rounded flex items-center justify-center" title="Card">💳</div>
-                      <div className="h-6 w-10 bg-[#F7931A]/20 text-[#F7931A] rounded flex items-center justify-center font-bold text-xs" title="Bitcoin">₿</div>
-                      <div className="h-6 w-10 bg-[#7B1AF7]/20 text-[#7B1AF7] rounded flex items-center justify-center" title="Lightning">⚡</div>
-                    </div>
-                  </div>
+            {/* Payment Section - Embedded Square Checkout */}
+            <section className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <h2 className="text-xl font-semibold mb-4">Payment Details</h2>
 
-                  <button
-                    onClick={handlePaymentStart}
-                    disabled={loading}
-                    className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-4 rounded-lg transition shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2"
-                  >
-                    {loading ? (
-                      <>
-                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        Processing...
-                      </>
-                    ) : (
-                      `Proceed to Secure Checkout • $${totalPrice.toFixed(2)}`
-                    )}
-                  </button>
-                </div>
+              {/* 
+                   IMPORTANT: You must replace the Application ID and Location ID 
+                   in `components/SquarePaymentForm.jsx` for this to work.
+               */}
+              <SquarePaymentForm
+                amount={totalPrice}
+                onPaymentSuccess={(token) => {
+                  console.log("Success:", token)
+                  // Here you would normally verify the payment on your backend
+                  window.location.href = '/success'
+                }}
+                onPaymentError={(err) => console.error("Payment Error:", err)}
+              />
 
-                <p className="text-center text-xs text-gray-500">
-                  Encrypted and secured by Zaprite.
-                </p>
-              </div>
-            )}
+              <p className="text-center text-xs text-gray-500 mt-6">
+                Payments secured by Square. We do not store your card details.
+              </p>
+            </section>
           </div>
         </div>
       </div>
