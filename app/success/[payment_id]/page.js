@@ -38,7 +38,7 @@ export default function SuccessPage({ params }) {
               Order Confirmed
             </h1>
             <p className="text-lg text-gray-400 max-w-md mx-auto">
-              Thank you for your purchase. We're getting your CalcAI ready for shipment.
+              Thank you for your purchase. We&apos;re getting your CalcAI ready for shipment.
             </p>
           </div>
 
@@ -63,7 +63,7 @@ export default function SuccessPage({ params }) {
                   <h4>Check your inbox</h4>
                 </div>
                 <p className="text-sm text-gray-400 leading-relaxed">
-                  We've sent a detailed confirmation email and receipt. If you don't see it, please check your spam folder.
+                  We&apos;ve sent a detailed confirmation email and receipt. If you don&apos;t see it, please check your spam folder.
                 </p>
               </div>
               <div className="space-y-3">
@@ -72,7 +72,7 @@ export default function SuccessPage({ params }) {
                   <h4>Tracking updates</h4>
                 </div>
                 <p className="text-sm text-gray-400 leading-relaxed">
-                  Once your order ships (usually within 1-2 business days), we'll send you another email with your tracking number.
+                  Once your order ships (usually within 1-2 business days), we&apos;ll send you another email with your tracking number.
                 </p>
               </div>
             </div>
