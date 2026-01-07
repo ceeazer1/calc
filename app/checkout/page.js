@@ -3,9 +3,10 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { AsYouType, isValidPhoneNumber } from 'libphonenumber-js'
+import { isValidPhoneNumber } from 'libphonenumber-js'
 import AddressAutocomplete from '@/components/AddressAutocomplete'
 import SquarePaymentForm from '@/components/SquarePaymentForm'
+import { PhoneInput } from '@/components/ui/phone-input'
 
 const SHIPPING_OPTIONS = [
   { id: 'priority', name: 'USPS Priority Mail', price: 13, eta: '2-3 business days' },
@@ -47,14 +48,6 @@ export default function Checkout() {
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
-  }
-
-  const handlePhoneChange = (e) => {
-    const val = e.target.value
-    // Auto-format for US
-    const formatter = new AsYouType('US')
-    const formatted = formatter.input(val)
-    setFormData(prev => ({ ...prev, phone: formatted }))
   }
 
   const handleBlur = (e) => {
@@ -206,19 +199,20 @@ export default function Checkout() {
                   )}
                 </div>
                 <div>
-                  <input
+                  <PhoneInput
                     ref={fieldRefs.phone}
-                    required
-                    name="phone"
                     value={formData.phone}
-                    onChange={handlePhoneChange}
-                    onBlur={handleBlur}
-                    type="tel"
+                    onChange={(national) => {
+                      setFormData(prev => ({ ...prev, phone: national }))
+                    }}
+                    onBlur={() => setTouched(prev => ({ ...prev, phone: true }))}
+                    defaultCountry="US"
                     placeholder="Phone number"
-                    className={getInputClass('phone')}
+                    className={errors.phone && touched.phone ? "border-red-500" : ""}
+                    size="lg"
                   />
                   {touched.phone && errors.phone && (
-                    <p className="text-red-500 text-xs mt-1 animate-in fade-in slide-in-from-top-1">Please enter a valid US phone number.</p>
+                    <p className="text-red-500 text-xs mt-1 animate-in fade-in slide-in-from-top-1">Please enter a valid phone number.</p>
                   )}
                 </div>
               </div>

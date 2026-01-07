@@ -574,12 +574,11 @@ export function PhoneInput({
             setPhoneNumber(parsed.formatNational());
             return;
         }
-
         // Fallback: format whatever digits we have for the currently selected country.
         const digits = cleaned.replace(/\D/g, "");
         const ayt = new AsYouType(selectedCountry.code as CountryCode);
         setPhoneNumber(ayt.input(digits));
-    }, [value]);
+    }, [value, availableCountries, selectedCountry.code]);
 
     // Validate phone number whenever it changes
     React.useEffect(() => {

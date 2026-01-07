@@ -256,7 +256,7 @@ function DialogContainer({
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [isOpen]);
+    }, [isOpen, setIsOpen]);
 
     useEffect(() => {
         setMounted(true);

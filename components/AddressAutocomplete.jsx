@@ -161,4 +161,6 @@ const AddressAutocomplete = forwardRef(({ value, onChange, onSelect, placeholder
     )
 })
 
+AddressAutocomplete.displayName = 'AddressAutocomplete'
+
 export default AddressAutocomplete
