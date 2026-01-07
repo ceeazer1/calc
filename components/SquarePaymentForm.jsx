@@ -4,7 +4,6 @@ import {
     CreditCard,
     CashAppPay,
     GooglePay,
-    ApplePay,
 } from 'react-square-web-payments-sdk'
 import { CreditCard as CardIcon, Smartphone, Wallet, CheckCircle2, Circle } from 'lucide-react'
 
@@ -147,9 +146,6 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
                 {/* Google Pay Section */}
                 <PaymentMethodItem id="googlepay" label="Google Pay" icon={Smartphone}>
                     <GooglePay />
-                    <div className="mt-2 h-0 opacity-0 overflow-hidden">
-                        <ApplePay />
-                    </div>
                 </PaymentMethodItem>
 
             </PaymentForm>
