@@ -38,22 +38,29 @@ export default function AddressAutocomplete({ value, onChange, onSelect, placeho
 
     const fetchAddress = async (searchQuery) => {
         try {
-            // Append context to steer results towards addresses in the US
-            const q = searchQuery.toLowerCase().includes('usa') ? searchQuery : `${searchQuery}, USA`
-
-            // Removed specific osm_tags to get broader results, we filter manually below
-            const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=15`)
+            // Using Nominatim for potentially better structured data
+            const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&addressdetails=1&limit=10&countrycodes=us`)
             const data = await res.json()
 
-            // Filter for strictly US results
-            const usResults = (data.features || [])
-                .filter(item => {
-                    const p = item.properties
-                    return p.countrycode === 'US' || p.country === 'United States'
-                })
+            // Filter for results that have a specific house number to ensure "real" addresses
+            const strictResults = data.filter(item => item.address && item.address.house_number)
                 .slice(0, 5)
 
-            setSuggestions(usResults)
+            // Map Nominatim structure to our feature-like structure for consistency
+            const mappedResults = strictResults.map(item => ({
+                properties: {
+                    name: item.display_name.split(',')[0], // First part usually housenum + street
+                    housenumber: item.address.house_number,
+                    street: item.address.road,
+                    city: item.address.city || item.address.town || item.address.village,
+                    state: item.address.state,
+                    postcode: item.address.postcode,
+                    country: item.address.country,
+                    formatted: item.display_name
+                }
+            }))
+
+            setSuggestions(mappedResults)
         } catch (err) {
             console.error("Address fetch error:", err)
         }
@@ -73,16 +80,18 @@ export default function AddressAutocomplete({ value, onChange, onSelect, placeho
     const handleSelect = (feature) => {
         const props = feature.properties
 
-        // Construct nice string
-        let addressLabel = [props.housenumber, props.street, props.city, props.state].filter(Boolean).join(', ')
-        if (!addressLabel) addressLabel = props.name || props.formatted
+        // Construct nice string: "123 Main St, City, State" directly from structured parts if available
+        let addressLabel = props.formatted
+        if (props.housenumber && props.street) {
+            addressLabel = `${props.housenumber} ${props.street}, ${props.city || ''}, ${props.state || ''}`.replace(/, ,/g, ',').replace(/, $/, '')
+        }
 
         setQuery(addressLabel)
 
         // Pass detailed info back to parent for auto-fill
         if (onSelect) {
             onSelect({
-                address: addressLabel,
+                address: `${props.housenumber || ''} ${props.street || ''}`.trim() || props.name,
                 city: props.city,
                 state: props.state,
                 zip: props.postcode,

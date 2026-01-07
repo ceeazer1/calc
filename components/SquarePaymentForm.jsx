@@ -9,7 +9,7 @@ import {
     ApplePay,
 } from 'react-square-web-payments-sdk'
 
-export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentError }) {
+export default function SquarePaymentForm({ amount, activeMethod, onPaymentSuccess, onPaymentError }) {
     const [errorMessages, setErrorMessages] = useState([])
 
     // Helper to handle payment results
@@ -63,48 +63,57 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
             >
                 <div className="space-y-6">
                     {/* Cash App Pay */}
-                    <div className="mb-4">
-                        <div className="mb-2 text-sm text-gray-400 font-medium">Pay with Cash App</div>
-                        <CashAppPay />
-                    </div>
+                    {activeMethod === 'cashapp' && (
+                        <div className="mb-4 animate-in fade-in zoom-in duration-300">
+                            <div className="mb-2 text-center text-sm text-gray-400 font-medium">Click below to pay with Cash App</div>
+                            <CashAppPay />
+                        </div>
+                    )}
 
-                    {/* Google Pay */}
-                    <div className="mb-4">
-                        <GooglePay />
-                    </div>
-
-                    {/* Apple Pay (only shows on supported devices) */}
-                    <ApplePay />
+                    {/* Google Pay / Apple Pay */}
+                    {activeMethod === 'googlepay' && (
+                        <div className="mb-4 animate-in fade-in zoom-in duration-300">
+                            <div className="mb-2 text-center text-sm text-gray-400 font-medium">Click below to pay with Google Pay</div>
+                            <GooglePay />
+                            {/* Apple Pay automatically hides if not supported, but we can group them here if desired. 
+                                Typically users on Apple devices might see proper Apple Pay buttons instead of Google Pay 
+                                depending on browser support, but Square's SDK handles display logic. 
+                            */}
+                            <div className="mt-4">
+                                <ApplePay />
+                            </div>
+                        </div>
+                    )}
 
                     {/* Credit Card Form */}
-                    <div className="pt-4 border-t border-white/10">
-                        <div className="mb-4 text-sm text-gray-400 font-medium">Pay with Card</div>
-                        <CreditCard
-                            buttonProps={{
-                                css: {
-                                    backgroundColor: "#2563eb",
-                                    fontSize: "16px",
-                                    fontWeight: "600",
-                                    color: "#fff",
-                                    "&:hover": {
-                                        backgroundColor: "#1d4ed8",
+                    {activeMethod === 'card' && (
+                        <div className="animate-in fade-in zoom-in duration-300">
+                            <div className="mb-4 text-sm text-gray-400 font-medium">Enter card details</div>
+                            <CreditCard
+                                buttonProps={{
+                                    css: {
+                                        backgroundColor: "#2563eb",
+                                        fontSize: "16px",
+                                        fontWeight: "600",
+                                        color: "#fff",
+                                        "&:hover": {
+                                            backgroundColor: "#1d4ed8",
+                                        },
+                                    }
+                                }}
+                                style={{
+                                    input: {
+                                        fontSize: '16px',
+                                        color: '#fff',
+                                        backgroundColor: 'transparent',
                                     },
-                                }
-                            }}
-                            style={{
-                                input: {
-                                    fontSize: '16px',
-                                    color: '#fff',
-                                    backgroundColor: 'transparent',
-                                },
-                                'input::placeholder': {
-                                    color: '#a1a1aa',
-                                },
-                                // Customizing the internal iframe styles is limited, 
-                                // but the SDK allows some 'style' prop configuration.
-                            }}
-                        />
-                    </div>
+                                    'input::placeholder': {
+                                        color: '#a1a1aa',
+                                    },
+                                }}
+                            />
+                        </div>
+                    )}
                 </div>
             </PaymentForm>
 

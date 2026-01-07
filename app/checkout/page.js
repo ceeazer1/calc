@@ -17,14 +17,17 @@ export default function Checkout() {
   // Form State
   const [formData, setFormData] = useState({
     email: '',
+    phone: '',
     firstName: '',
     lastName: '',
     address: '',
     apartment: '',
     city: '',
     zip: '',
-    state: '' // Assuming we might want to store state even if not explicitly shown/editable or just for validation
+    state: ''
   })
+
+  const [activePaymentMethod, setActivePaymentMethod] = useState('card')
 
   const productPrice = 210
   const shippingPrice = SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.price || 13
@@ -45,7 +48,10 @@ export default function Checkout() {
     }))
   }
 
-  const isFormValid = formData.email && formData.firstName && formData.lastName && formData.address && formData.city && formData.zip
+  // Basic email regex validation
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+
+  const isFormValid = isValidEmail(formData.email) && formData.phone.length > 9 && formData.firstName && formData.lastName && formData.address && formData.city && formData.zip
 
   return (
     <div className="min-h-screen bg-black text-white lg:flex">
@@ -111,8 +117,8 @@ export default function Checkout() {
           <div className="space-y-10">
             {/* Contact Section */}
             <section>
-              <h2 className="text-xl font-semibold mb-4">Contact</h2>
-              <div className="relative">
+              <h2 className="text-xl font-semibold mb-4">Contact <span className="text-red-500">*</span></h2>
+              <div className="space-y-3">
                 <input
                   required
                   name="email"
@@ -122,19 +128,27 @@ export default function Checkout() {
                   placeholder="Email address"
                   className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-lg leading-none">*</span>
+                <input
+                  required
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  type="tel"
+                  placeholder="Phone number"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                />
               </div>
             </section>
 
             {/* Shipping Address Section */}
             <section>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Shipping address</h2>
+                <h2 className="text-xl font-semibold">Shipping address <span className="text-red-500">*</span></h2>
                 <span className="text-xs uppercase tracking-wider font-semibold text-blue-400 bg-blue-400/10 px-2 py-1 rounded">US Shipping Only</span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div /* First Name */ className="md:col-span-1 relative">
+                <div className="md:col-span-1">
                   <input
                     required
                     name="firstName"
@@ -144,9 +158,8 @@ export default function Checkout() {
                     placeholder="First name"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-lg leading-none">*</span>
                 </div>
-                <div /* Last Name */ className="md:col-span-1 relative">
+                <div className="md:col-span-1">
                   <input
                     required
                     name="lastName"
@@ -156,21 +169,16 @@ export default function Checkout() {
                     placeholder="Last name"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-lg leading-none">*</span>
                 </div>
-                <div /* Address Method */ className="md:col-span-2 relative">
+                <div className="md:col-span-2">
                   <AddressAutocomplete
                     value={formData.address}
                     onSelect={handleAddressSelect}
                     onChange={(val) => setFormData(prev => ({ ...prev, address: val }))}
                     placeholder="Address"
                   />
-                  {/* AddressAutocomplete handles its own input, but we can try to overlay the star if needed, or assume the placeholder change is enough.
-                      However user asked for red star. We'll wrap the autocomplete in a relative div in the loop above?
-                      Actually AddressAutocomplete has its own styles. Let's add the star here absolutely. */}
-                  <span className="absolute right-10 top-1/2 -translate-y-1/2 text-red-500 text-lg leading-none pointer-events-none z-10">*</span>
                 </div>
-                <div /* Apartment */ className="md:col-span-2">
+                <div className="md:col-span-2">
                   <input
                     name="apartment"
                     value={formData.apartment}
@@ -180,7 +188,7 @@ export default function Checkout() {
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                   />
                 </div>
-                <div /* City */ className="md:col-span-1 relative">
+                <div className="md:col-span-1">
                   <input
                     required
                     name="city"
@@ -190,9 +198,8 @@ export default function Checkout() {
                     placeholder="City"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-lg leading-none">*</span>
                 </div>
-                <div /* Post Code */ className="md:col-span-1 relative">
+                <div className="md:col-span-1">
                   <input
                     required
                     name="zip"
@@ -202,7 +209,6 @@ export default function Checkout() {
                     placeholder="ZIP code"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-lg leading-none">*</span>
                 </div>
               </div>
             </section>
@@ -243,13 +249,32 @@ export default function Checkout() {
             <section className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
               <h2 className="text-xl font-semibold mb-4">Payment Details</h2>
 
-              <div className={`transition-all duration-500 ${!isFormValid ? 'opacity-50 grayscale blur-sm pointer-events-none select-none' : ''}`}>
-                {/* 
-                            IMPORTANT: You must replace the Application ID and Location ID 
+              {/* Payment Method Tabs */}
+              <div className="grid grid-cols-3 gap-2 mb-6 p-1 bg-white/5 rounded-lg border border-white/10">
+                {['card', 'cashapp', 'googlepay'].map((method) => (
+                  <button
+                    key={method}
+                    onClick={() => setActivePaymentMethod(method)}
+                    className={`py-2 px-4 rounded-md text-sm font-medium transition-all ${activePaymentMethod === method
+                        ? 'bg-blue-600 text-white shadow-lg'
+                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      }`}
+                  >
+                    {method === 'card' && 'Card'}
+                    {method === 'cashapp' && 'Cash App'}
+                    {method === 'googlepay' && 'Google Pay'}
+                  </button>
+                ))}
+              </div>
+
+              <div className={`transition-all duration-300 ${!isFormValid ? 'opacity-40 pointer-events-none grayscale' : ''}`}>
+                {/*
+                            IMPORTANT: You must replace the Application ID and Location ID
                             in `components/SquarePaymentForm.jsx` for this to work.
                         */}
                 <SquarePaymentForm
                   amount={totalPrice}
+                  activeMethod={activePaymentMethod}
                   onPaymentSuccess={(token) => {
                     console.log("Success:", token)
                     // Here you would normally verify the payment on your backend
@@ -258,7 +283,7 @@ export default function Checkout() {
                   onPaymentError={(err) => console.error("Payment Error:", err)}
                 />
                 <p className="text-center text-xs text-gray-500 mt-6">
-                  Payments secured by Square. We do not store your card details.
+                  {!isFormValid ? "Please complete all fields above to enable payment." : "Payments secured by Square."}
                 </p>
               </div>
             </section>
