@@ -112,15 +112,18 @@ export default function Checkout() {
             {/* Contact Section */}
             <section>
               <h2 className="text-xl font-semibold mb-4">Contact</h2>
-              <input
-                required
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                type="email"
-                placeholder="Email address"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-              />
+              <div className="relative">
+                <input
+                  required
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  type="email"
+                  placeholder="Email address"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-lg leading-none">*</span>
+              </div>
             </section>
 
             {/* Shipping Address Section */}
@@ -131,7 +134,7 @@ export default function Checkout() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div /* First Name */ className="md:col-span-1">
+                <div /* First Name */ className="md:col-span-1 relative">
                   <input
                     required
                     name="firstName"
@@ -141,8 +144,9 @@ export default function Checkout() {
                     placeholder="First name"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                   />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-lg leading-none">*</span>
                 </div>
-                <div /* Last Name */ className="md:col-span-1">
+                <div /* Last Name */ className="md:col-span-1 relative">
                   <input
                     required
                     name="lastName"
@@ -152,14 +156,19 @@ export default function Checkout() {
                     placeholder="Last name"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                   />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-lg leading-none">*</span>
                 </div>
-                <div /* Address Method */ className="md:col-span-2">
+                <div /* Address Method */ className="md:col-span-2 relative">
                   <AddressAutocomplete
                     value={formData.address}
                     onSelect={handleAddressSelect}
                     onChange={(val) => setFormData(prev => ({ ...prev, address: val }))}
                     placeholder="Address"
                   />
+                  {/* AddressAutocomplete handles its own input, but we can try to overlay the star if needed, or assume the placeholder change is enough.
+                      However user asked for red star. We'll wrap the autocomplete in a relative div in the loop above?
+                      Actually AddressAutocomplete has its own styles. Let's add the star here absolutely. */}
+                  <span className="absolute right-10 top-1/2 -translate-y-1/2 text-red-500 text-lg leading-none pointer-events-none z-10">*</span>
                 </div>
                 <div /* Apartment */ className="md:col-span-2">
                   <input
@@ -171,7 +180,7 @@ export default function Checkout() {
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                   />
                 </div>
-                <div /* City */ className="md:col-span-1">
+                <div /* City */ className="md:col-span-1 relative">
                   <input
                     required
                     name="city"
@@ -181,8 +190,9 @@ export default function Checkout() {
                     placeholder="City"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                   />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-lg leading-none">*</span>
                 </div>
-                <div /* Post Code */ className="md:col-span-1">
+                <div /* Post Code */ className="md:col-span-1 relative">
                   <input
                     required
                     name="zip"
@@ -192,6 +202,7 @@ export default function Checkout() {
                     placeholder="ZIP code"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                   />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 text-lg leading-none">*</span>
                 </div>
               </div>
             </section>
@@ -232,30 +243,24 @@ export default function Checkout() {
             <section className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
               <h2 className="text-xl font-semibold mb-4">Payment Details</h2>
 
-              {isFormValid ? (
-                <>
-                  {/* 
+              <div className={`transition-all duration-500 ${!isFormValid ? 'opacity-50 grayscale blur-sm pointer-events-none select-none' : ''}`}>
+                {/* 
                             IMPORTANT: You must replace the Application ID and Location ID 
                             in `components/SquarePaymentForm.jsx` for this to work.
                         */}
-                  <SquarePaymentForm
-                    amount={totalPrice}
-                    onPaymentSuccess={(token) => {
-                      console.log("Success:", token)
-                      // Here you would normally verify the payment on your backend
-                      window.location.href = '/success'
-                    }}
-                    onPaymentError={(err) => console.error("Payment Error:", err)}
-                  />
-                  <p className="text-center text-xs text-gray-500 mt-6">
-                    Payments secured by Square. We do not store your card details.
-                  </p>
-                </>
-              ) : (
-                <div className="p-8 border border-white/10 border-dashed rounded-xl bg-white/5 text-center text-gray-400">
-                  Please fill in all contact and shipping details to proceed to payment.
-                </div>
-              )}
+                <SquarePaymentForm
+                  amount={totalPrice}
+                  onPaymentSuccess={(token) => {
+                    console.log("Success:", token)
+                    // Here you would normally verify the payment on your backend
+                    window.location.href = '/success'
+                  }}
+                  onPaymentError={(err) => console.error("Payment Error:", err)}
+                />
+                <p className="text-center text-xs text-gray-500 mt-6">
+                  Payments secured by Square. We do not store your card details.
+                </p>
+              </div>
             </section>
           </div>
         </div>
