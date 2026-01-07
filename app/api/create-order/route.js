@@ -19,10 +19,7 @@ export async function POST(req) {
                 'Accept': 'application/json',
             },
             body: JSON.stringify({
-                amount: amount, // Amount in cents? Zaprite usually takes minor units or decimal depending on setup. Assuming minor units (cents) if integer, or strings. Let's try sending as number/string as received. 
-                // NOTE: If Zaprite expects cents, multiply by 100 on client or here.
-                // Assuming direct amount for now based on common practices, or we check docs.
-                // Let's assume we pass the amount exactly as Zaprite needs (e.g., 223.00)
+                amount: Math.round(amount * 100), // Zaprite expects amount in cents
                 currency: currency,
                 label: label || 'CalcAI Order',
                 // Optional: redirectUrl: 'https://your-site.com/success'
