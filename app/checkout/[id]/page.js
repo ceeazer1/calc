@@ -9,8 +9,9 @@ import SquarePaymentForm from '@/components/SquarePaymentForm'
 import { PhoneInput } from '@/components/ui/phone-input'
 
 const SHIPPING_OPTIONS = [
-  { id: 'priority', name: 'USPS Priority Mail', price: 13, eta: '2-3 business days' },
-  { id: 'express', name: 'USPS Priority Mail Express', price: 40, eta: '1-2 business days' },
+  { id: 'usps_ground_advantage', name: 'USPS Ground Advantage', price: 8, eta: '3-5 business days' },
+  { id: 'usps_priority', name: 'USPS Priority Mail', price: 13, eta: '2-3 business days' },
+  { id: 'usps_priority_express', name: 'USPS Priority Mail Express', price: 40, eta: '1-2 business days' },
 ]
 
 const US_STATES = [
@@ -34,7 +35,7 @@ const US_STATES = [
 ]
 
 export default function Checkout() {
-  const [selectedShipping, setSelectedShipping] = useState('priority')
+  const [selectedShipping, setSelectedShipping] = useState('usps_priority')
 
   // Form State
   const [formData, setFormData] = useState({
@@ -433,6 +434,8 @@ export default function Checkout() {
                               postal_code: formData.zip,
                               country: 'US'
                             },
+                            shippingMethod: selectedShipping,
+                            weight_oz: 32, // 2 pounds
                             items: [{
                               description: 'CalcAI Calculator - TI-84+ Edition',
                               quantity: 1,
