@@ -137,8 +137,11 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
 
                 {/* Bitcoin Section */}
                 <PaymentMethodItem id="bitcoin" label="Bitcoin" icon={BitcoinIcon}>
-                    <div className="text-sm text-gray-400 mb-4">
-                        Pay instantly via Lightning Network using Cash App or compatible wallets.
+                    <div className="text-sm text-gray-400 mb-3">
+                        Pay instantly via Lightning Network. Scan the QR code with any compatible wallet:
+                    </div>
+                    <div className="text-xs text-gray-500 mb-4 pl-4">
+                        • Cash App • Strike • Phoenix • Muun • Breez • BlueWallet • or any Lightning wallet
                     </div>
                     <CashAppPay />
                 </PaymentMethodItem>
