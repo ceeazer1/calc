@@ -1,7 +1,7 @@
-"use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Play } from "lucide-react";
+import Image from "next/image";
 
 export const MediaModal = ({ imgSrc, videoSrc, className }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -14,10 +14,12 @@ export const MediaModal = ({ imgSrc, videoSrc, className }) => {
                 onClick={() => setIsOpen(true)}
             >
                 {imgSrc && (
-                    <img
+                    <Image
                         src={imgSrc}
                         alt="Media"
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                     />
                 )}
                 {videoSrc && (

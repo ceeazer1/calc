@@ -377,7 +377,7 @@ export default function Home() {
                           <div className="flex gap-3 mb-3">
                             {row.type === 'image' && (
                               <div className="relative w-16 h-12 rounded-lg overflow-hidden border border-white/10 shrink-0">
-                                <img src={row.image} alt="Problem" className="object-cover w-full h-full opacity-80" />
+                                <Image src={row.image} alt="Problem" fill className="object-cover opacity-80" sizes="64px" />
                               </div>
                             )}
                             <div className="text-sm text-white/90 font-medium self-center">{row.p}</div>
@@ -467,7 +467,7 @@ export default function Home() {
 
                     <div className="mt-8 text-center max-w-xl">
                       <div className="text-xl sm:text-2xl font-semibold tracking-tight text-white/90 italic">
-                        "Your notes, synced instantly."
+                        &quot;Your notes, synced instantly.&quot;
                       </div>
                       <div className="mt-2 text-sm sm:text-base text-white/70">
                         Write formulas once on your dashboard and access them instantly on your CalcAI device.

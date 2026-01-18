@@ -129,7 +129,7 @@ export default function Community() {
               >
                 <div className="flex items-center gap-4">
                   <div className={`w-14 h-14 rounded-lg grid place-items-center ${social.iconBg}`}>
-                    <img
+                    <Image
                       src={social.icon}
                       alt={`${social.name} Logo`}
                       width={28}
