@@ -5,7 +5,7 @@ import {
     CashAppPay,
     GooglePay,
 } from 'react-square-web-payments-sdk'
-import { CreditCard as CardIcon, Smartphone, Wallet, CheckCircle2, Circle } from 'lucide-react'
+import { CreditCard as CardIcon, Smartphone, Wallet, CheckCircle2, Circle, Bitcoin as BitcoinIcon } from 'lucide-react'
 
 export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentError, isFormValid, onDisabledClick, isProcessing }) {
     const [activeMethod, setActiveMethod] = useState('card')
@@ -133,6 +133,14 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
                             'input::placeholder': { color: '#a1a1aa' },
                         }}
                     />
+                </PaymentMethodItem>
+
+                {/* Bitcoin Section */}
+                <PaymentMethodItem id="bitcoin" label="Bitcoin" icon={BitcoinIcon}>
+                    <div className="text-sm text-gray-400 mb-4">
+                        Pay instantly via Lightning Network using Cash App or compatible wallets.
+                    </div>
+                    <CashAppPay />
                 </PaymentMethodItem>
 
                 {/* Cash App Section */}

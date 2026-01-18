@@ -7,6 +7,7 @@ import DarkVeil from '../components/DarkVeil'
 import SpotlightSection from '../components/SpotlightSection'
 import CountdownBanner from '../components/CountdownBanner'
 import { ShoppingCart, ArrowRight, Instagram, Youtube, Maximize2 } from 'lucide-react'
+import { MediaModal } from '@/components/ui/media-modal';
 import {
   Dialog,
   DialogTrigger,
@@ -35,7 +36,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
+    <div className="min-h-screen bg-black relative overflow-hidden tracking-tight">
       {/* DarkVeil background (site-wide on the homepage) */}
       <div
         aria-hidden
@@ -180,58 +181,37 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* Feature Preview Tiles */}
-        <section className="-mt-32 py-4 bg-transparent">
+        {/* Media Feature Showcase */}
+        <section className="mt-12 md:mt-24 py-4 mb-24 md:mb-32 bg-transparent z-20 relative">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                {
-                  title: 'Camera Feature',
-                  id: 'camera',
-                  desc: 'Snap a photo of any math problem for instant solutions.',
-                  detail: 'Our advanced OCR technology recognizes handwriting and printed text instantly.'
-                },
-                {
-                  title: 'Text Feature',
-                  id: 'text',
-                  desc: 'Chat with AI to understand concepts deeply.',
-                  detail: 'Ask follow-up questions and get step-by-step explanations like a real tutor.'
-                },
-                {
-                  title: 'Note Feature',
-                  id: 'note',
-                  desc: 'Keep your study notes organized and accessible.',
-                  detail: 'Save your calculations and chats to review later. creating a personal knowledge base.'
-                }
-              ].map((feature) => (
-                <Dialog key={feature.id} transition={{ type: 'spring', bounce: 0.3 }}>
-                  <DialogTrigger>
-                    <div className="flex flex-col items-center justify-center p-8 bg-slate-900/20 rounded-2xl border border-white/5 hover:border-white/10 hover:bg-slate-900/40 transition-all duration-500 cursor-pointer h-full min-h-[200px]">
-                      <div className="w-full flex justify-between items-start mb-4">
-                        <Maximize2 className="w-5 h-5 text-blue-200/40" />
-                      </div>
-                      <div className="mt-auto w-full">
-                        <h3 className="text-xl font-light tracking-tight mb-2 text-slate-200">{feature.title}</h3>
-                      </div>
-                    </div>
-                  </DialogTrigger>
-                  <DialogContainer>
-                    <DialogContent className="relative flex flex-col items-center justify-center p-8 bg-zinc-900 border border-zinc-800 w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl">
-                      <DialogClose />
-                      <DialogTitle className="text-3xl font-light tracking-tight text-white mb-4">
-                        {feature.title}
-                      </DialogTitle>
-                      {/* Blank image as requested */}
-                      <div className="w-full h-[400px] bg-zinc-800 rounded-xl mb-8 flex items-center justify-center text-zinc-500">
-                        Image Placeholder
-                      </div>
-                      <DialogDescription className="text-zinc-400 text-center text-lg font-light tracking-tight max-w-2xl mb-6">
-                        {feature.detail}
-                      </DialogDescription>
-                    </DialogContent>
-                  </DialogContainer>
-                </Dialog>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              {/* Camera Feature - Image */}
+              <div className="flex flex-col items-center gap-6 group">
+                <h3 className="text-3xl font-semibold tracking-tight text-white">Camera</h3>
+                <div className="h-[260px] w-full rounded-2xl overflow-hidden shadow-lg">
+                  <MediaModal
+                    imgSrc="https://images.unsplash.com/photo-1726824766931-4bd8b59af37c?q=80&w=1000&auto=format&fit=crop"
+                    className="w-full h-full transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                </div>
+                <p className="text-sm text-gray-400 font-medium leading-relaxed max-w-sm text-center">
+                  Snap a photo of any math problem for instant solutions. Advanced OCR recognizes handwriting instantly.
+                </p>
+              </div>
+
+              {/* Text Feature - Video */}
+              <div className="flex flex-col items-center gap-6 group">
+                <h3 className="text-3xl font-semibold tracking-tight text-white">Text</h3>
+                <div className="h-[260px] w-full rounded-2xl overflow-hidden shadow-lg">
+                  <MediaModal
+                    videoSrc="https://videos.pexels.com/video-files/7710243/7710243-uhd_2560_1440_30fps.mp4"
+                    className="w-full h-full transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                </div>
+                <p className="text-sm text-gray-400 font-medium leading-relaxed max-w-sm text-center">
+                  Chat with AI to understand concepts deeply. Ask follow-up questions and get step-by-step explanations.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -251,111 +231,95 @@ export default function Home() {
             {/* Dashboard feature tiles (screenshot-inspired marketing cards) */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
               {/* Card 1: Model Controls */}
-              <div className="md:col-span-7 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+              <div className="md:col-span-7 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)] min-h-[400px]">
                 <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
                 <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-500/25 via-blue-500/5 to-transparent" />
                 <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-blue-500/18 blur-3xl" />
 
-                <div className="relative p-6">
+                <div className="absolute inset-0 z-10 p-8">
+                  {/* Title on top-left */}
                   <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Model controls</h3>
 
-                  {/* Details on top */}
-                  <div className="mt-5">
-                    <div className="text-xl sm:text-2xl font-semibold tracking-tight text-white/90">
-                      Pick your GPT model and max tokens.
-                    </div>
-                    <div className="mt-2 text-sm sm:text-base text-white/70">
-                      Adjust speed, accuracy, and answer length anytime.
+                  {/* Description on the side (right) */}
+                  <div className="absolute top-1/2 right-8 -translate-y-1/2 max-w-[180px] text-right z-10">
+                    <div className="flex flex-col gap-3">
+                      <div className="text-lg font-medium leading-tight text-white/90">
+                        Pick your GPT model and max tokens.
+                      </div>
+                      <div className="text-sm text-white/60 leading-snug">
+                        Adjust speed, accuracy, and answer length anytime.
+                      </div>
                     </div>
                   </div>
 
-                  {/* Controls side-by-side at the bottom, with a faded/skeleton preview feel */}
-                  <div className="relative mt-6 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
+                  {/* Controls faded at the bottom */}
+                  <div
+                    className="absolute bottom-6 left-6 w-fit rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4 z-20"
+                    style={{
+                      maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+                      WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)'
+                    }}
+                  >
                     <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 via-black/45 to-transparent" />
 
-                    <div
-                      className="relative grid grid-cols-1 sm:grid-cols-2 gap-4"
-                      style={{
-                        WebkitMaskImage:
-                          'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 70%, rgba(255,255,255,0) 100%)',
-                        maskImage:
-                          'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 70%, rgba(255,255,255,0) 100%)',
-                      }}
-                    >
-                      <div className="px-1">
-                        <div className="text-[11px] uppercase tracking-wide text-white/60">GPT Model</div>
-                        <div className="mt-2 space-y-2">
-                          {[
-                            { name: "GPT 5.2", desc: "Accuracy", selected: true },
-                            { name: "GPT 5.1", desc: "Balanced", selected: false },
-                            { name: "GPT 5 mini", desc: "Fast", selected: false, skeleton: true },
-                            { name: "GPT 5 nano", desc: "Ultra fast", selected: false, skeleton: true },
-                          ].map((m) => (
-                            <button
-                              key={m.name}
-                              type="button"
-                              className={
-                                "w-full rounded-xl border px-3 py-1.5 text-left transition-colors " +
-                                (m.selected
-                                  ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
-                                  : m.skeleton
-                                    ? "border-white/10 bg-white/[0.03] text-white/70"
-                                  : "border-white/10 bg-white/[0.04] text-white/85 hover:bg-white/[0.06]")
-                              }
-                            >
-                              <div
+                    <div className="relative flex flex-col items-center">
+                      <div className="grid grid-cols-2 gap-8">
+                        <div className="space-y-4 min-w-[130px]">
+                          <div className="text-[10px] uppercase font-bold tracking-widest text-white/40 ml-1">GPT Model</div>
+                          <div className="flex flex-col gap-2">
+                            {[
+                              { name: "GPT 5.2", desc: "Accuracy", selected: true },
+                              { name: "GPT 5.1", desc: "Balanced", selected: false },
+                              { name: "GPT 5 mini", desc: "Fast", selected: false, skeleton: true },
+                              { name: "GPT 5 nano", desc: "Ultra fast", selected: false, skeleton: true },
+                            ].map((m) => (
+                              <button
+                                key={m.name}
+                                type="button"
                                 className={
-                                  "text-[11px] font-medium leading-none " +
-                                  (m.skeleton
-                                    ? "bg-gradient-to-r from-white/35 via-white/10 to-white/35 bg-clip-text text-transparent"
-                                    : "")
-                                }
-                              >
-                                {m.name}
-                              </div>
-                              <div
-                                className={
-                                  "mt-1 text-[10px] leading-none " +
+                                  "w-full rounded-xl border px-3 py-2 text-left transition-all duration-300 " +
                                   (m.selected
-                                    ? "text-blue-100/70"
+                                    ? "border-blue-400/40 bg-blue-500/10 text-blue-100 ring-1 ring-blue-400/20"
                                     : m.skeleton
-                                      ? "bg-gradient-to-r from-white/25 via-white/8 to-white/25 bg-clip-text text-transparent"
-                                      : "text-white/55")
+                                      ? "border-white/5 bg-white/[0.02] text-white/40"
+                                      : "border-white/5 bg-white/[0.03] text-white/70 hover:bg-white/[0.06] hover:border-white/10")
                                 }
                               >
-                                {m.desc}
-                              </div>
-                            </button>
-                          ))}
+                                <div className="text-[11px] font-semibold leading-none">{m.name}</div>
+                                <div className={"mt-1 text-[10px] leading-none " + (m.selected ? "text-blue-100/70" : "text-white/40")}>
+                                  {m.desc}
+                                </div>
+                              </button>
+                            ))}
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="px-1">
-                        <div className="text-[11px] uppercase tracking-wide text-white/60">Max Tokens</div>
-                        <div className="mt-2 space-y-2">
-                          {[
-                            { name: "1k", desc: "Quick", selected: false },
-                            { name: "2k", desc: "Balanced", selected: true },
-                            { name: "4k", desc: "Long", selected: false },
-                            { name: "8k", desc: "Full steps", selected: false },
-                          ].map((t) => (
-                            <button
-                              key={t.name}
-                              type="button"
-                              className={
-                                "w-full rounded-xl border px-3 py-1.5 text-left transition-colors " +
-                                (t.selected
-                                  ? "border-blue-400/40 bg-blue-500/15 text-blue-100"
-                                  : "border-white/10 bg-white/[0.04] text-white/85 hover:bg-white/[0.06]")
-                              }
-                            >
-                              <div className="text-[11px] font-medium leading-none">{t.name}</div>
-                              <div className={"mt-1 text-[10px] leading-none " + (t.selected ? "text-blue-100/70" : "text-white/55")}>
-                                {t.desc}
-                              </div>
-                            </button>
-                          ))}
+                        <div className="space-y-4">
+                          <div className="text-[10px] uppercase font-bold tracking-widest text-white/40 ml-1">Max Tokens</div>
+                          <div className="flex flex-col gap-2">
+                            {[
+                              { name: "1k", desc: "Quick", selected: false },
+                              { name: "2k", desc: "Balanced", selected: true },
+                              { name: "4k", desc: "Long", selected: false },
+                              { name: "8k", desc: "Full steps", selected: false },
+                            ].map((t) => (
+                              <button
+                                key={t.name}
+                                type="button"
+                                className={
+                                  "w-full rounded-xl border px-3 py-2 text-left transition-all duration-300 " +
+                                  (t.selected
+                                    ? "border-blue-400/40 bg-blue-500/10 text-blue-100 ring-1 ring-blue-400/20"
+                                    : "border-white/5 bg-white/[0.03] text-white/70 hover:bg-white/[0.06] hover:border-white/10")
+                                }
+                              >
+                                <div className="text-[11px] font-semibold leading-none">{t.name}</div>
+                                <div className={"mt-1 text-[10px] leading-none " + (t.selected ? "text-blue-100/70" : "text-white/40")}>
+                                  {t.desc}
+                                </div>
+                              </button>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -375,24 +339,71 @@ export default function Home() {
                     Recent questions & answers at a glance.
                   </p>
 
-                  <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
-                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent" />
+                  <div className="relative mt-8 h-[550px] px-2">
+                    {[0, 1].map((idx) => {
+                      const items = [
+                        {
+                          type: 'image',
+                          p: "Find the value of x",
+                          image: "https://images.unsplash.com/photo-1635372722656-389f87a941b7?auto=format&fit=crop&q=80&w=200&h=100",
+                          a: "Using the Pythagorean theorem:\nx² + 12² = 13²\nx² + 144 = 169\nx² = 25\nx = 5",
+                          loading: true
+                        },
+                        {
+                          type: 'text',
+                          p: "Integrate: ∫(2x + 1) dx",
+                          a: "x² + x + C"
+                        },
+                      ];
+                      const row = items[idx];
 
-                    <div className="relative space-y-3">
-                      {[
-                        { p: "Differentiate: x² + 3x − 5", a: "2x + 3" },
-                        { p: "Solve: 2x + 5 = 15", a: "x = 5" },
-                        { p: "Factor: x² − 9", a: "(x − 3)(x + 3)" },
-                      ].map((row) => (
-                        <div key={row.p} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                          <div className="text-[11px] text-white/50 mb-1">Prompt</div>
-                          <div className="text-sm text-white/90 font-medium">{row.p}</div>
-                          <div className="mt-2 text-[11px] text-white/50 mb-1">Answer</div>
-                          <div className="text-sm text-white/70">{row.a}</div>
+                      return (
+                        <div
+                          key={idx}
+                          className="absolute inset-x-0 rounded-2xl border border-white/10 bg-[#0a0a0a] p-5 shadow-xl transition-all duration-500"
+                          style={{
+                            top: `${idx * 160}px`,
+                            zIndex: 20 + idx,
+                            transform: 'scale(1)',
+                            opacity: 1
+                          }}
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <div className="text-[9px] text-blue-400/60 font-bold uppercase tracking-widest">Entry #{2 - idx}</div>
+                            <div className="text-[9px] text-white/20 font-mono">14:2{idx} PM</div>
+                          </div>
+
+                          {/* Render Image or Text Prompt */}
+                          <div className="flex gap-3 mb-3">
+                            {row.type === 'image' && (
+                              <div className="relative w-16 h-12 rounded-lg overflow-hidden border border-white/10 shrink-0">
+                                <img src={row.image} alt="Problem" className="object-cover w-full h-full opacity-80" />
+                              </div>
+                            )}
+                            <div className="text-sm text-white/90 font-medium self-center">{row.p}</div>
+                          </div>
+
+                          <div className="h-px w-full bg-white/5 mb-3" />
+                          <div className="text-[9px] text-white/40 mb-1 font-bold uppercase tracking-widest">Answer</div>
+                          {row.loading ? (
+                            <div className="mt-0.5">
+                              {/* Show first line of text */}
+                              <div className="text-sm text-blue-300 font-mono tracking-tight mb-2">
+                                {row.a.split('\n')[0]}
+                              </div>
+                              {/* Skeleton for the rest */}
+                              <div className="space-y-2">
+                                <div className="h-3 w-3/4 rounded bg-white/10 animate-pulse" />
+                                <div className="h-3 w-2/3 rounded bg-white/10 animate-pulse" />
+                                <div className="h-3 w-1/2 rounded bg-white/10 animate-pulse" />
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-sm text-blue-300 font-mono tracking-tight whitespace-pre-wrap">{row.a}</div>
+                          )}
                         </div>
-                      ))}
-                    </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -406,39 +417,60 @@ export default function Home() {
                 <div className="relative p-6">
                   <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Notes</h3>
 
-                  <div className="mt-5 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-6 items-start">
-                    {/* Note box (left) */}
-                    <div className="relative w-[38ch] max-w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
-                      <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                      <textarea
-                        readOnly
-                        className="relative z-10 w-full min-h-[160px] bg-transparent px-0 py-0 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none overflow-hidden"
-                        defaultValue={`Quiz 3 review:\n- Chain rule practice (sec 2.4)\n- Solve: 2x + 5 = 15\n- Remember: derivative of x^2 is 2x\n- Integrals: ∫2x dx = x^2 + C\n- Trig identity: sin^2(x) + cos^2(x) = 1\n- Limits: lim x→0 (sin x)/x = 1\n- Exponents: a^m · a^n = a^(m+n)\n- Check units + show work on tests`}
-                      />
-
-                      <div className="relative z-10 mt-4 flex items-center justify-end">
-                        <button
-                          type="button"
-                          className="rounded-full border border-white/10 bg-blue-500/15 hover:bg-blue-500/25 text-blue-100 px-4 py-1.5 text-xs font-medium transition-colors"
-                        >
-                          Send note
-                        </button>
+                  <div className="mt-5 flex flex-col items-center">
+                    <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-center">
+                      {/* Note box (left) */}
+                      <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
+                        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                        <div className="text-[10px] uppercase font-bold tracking-widest text-white/40 mb-2">Note Content</div>
+                        <textarea
+                          readOnly
+                          className="relative z-10 w-full min-h-[140px] bg-transparent px-0 py-0 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none overflow-hidden font-mono"
+                          defaultValue={`Quiz 3 review:\n- Chain rule practice\n- Solve: 2x + 5 = 15\n- derivative of x^2 is 2x\n- ∫2x dx = x^2 + C`}
+                        />
+                        <div className="relative z-10 mt-4 flex items-center justify-end">
+                          <button
+                            type="button"
+                            className="rounded-full border border-white/10 bg-blue-500/20 hover:bg-blue-500/30 text-blue-100 px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors flex items-center gap-2"
+                          >
+                            Send to Device
+                            <ArrowRight className="w-3 h-3" />
+                          </button>
+                        </div>
                       </div>
 
-                      {/* Full-box fade overlay (covers textarea + button; preview/skeleton feel) */}
-                      <div
-                        aria-hidden
-                        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-32 bg-gradient-to-t from-black/95 via-black/70 to-transparent"
-                      />
+                      {/* Arrow Flow */}
+                      <div className="hidden lg:flex flex-col items-center justify-center text-blue-400 animate-pulse">
+                        <div className="h-px w-12 bg-gradient-to-r from-blue-400/0 via-blue-400 to-blue-400/0" />
+                        <ArrowRight className="w-6 h-6 -mt-3 bg-black rounded-full p-1" />
+                      </div>
+
+                      {/* Calculator Display Image Only (right) */}
+                      <div className="relative group">
+                        <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black/40 p-1 aspect-[3/4] w-[180px] mx-auto flex flex-col items-center justify-center">
+                          {/* Placeholder for Calculator Image */}
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/[0.02]" />
+                          <div className="relative z-10 w-[90%] h-[40%] bg-blue-500/10 border border-white/10 rounded mb-2 flex flex-col p-2 overflow-hidden">
+                            <div className="text-[6px] uppercase tracking-wider text-white/30 mb-1">Preview</div>
+                            <div className="text-[5px] text-white/70 font-mono leading-tight whitespace-pre-wrap">
+                              Quiz 3 review:
+                              - Chain rule practice
+                              - Solve: 2x + 5 = 15
+                            </div>
+                          </div>
+                          <div className="text-white/20 text-[10px] font-medium uppercase tracking-widest text-center">
+                            Calculator
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Details (right) */}
-                    <div className="pt-1">
-                      <div className="text-lg sm:text-xl font-semibold tracking-tight text-white/90">
-                        Write and send notes to your calculator.
+                    <div className="mt-8 text-center max-w-xl">
+                      <div className="text-xl sm:text-2xl font-semibold tracking-tight text-white/90 italic">
+                        "Your notes, synced instantly."
                       </div>
                       <div className="mt-2 text-sm sm:text-base text-white/70">
-                        Keep formulas, reminders, and steps ready on CalcAI.
+                        Write formulas once on your dashboard and access them instantly on your CalcAI device.
                       </div>
                     </div>
                   </div>

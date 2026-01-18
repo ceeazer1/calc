@@ -45,10 +45,10 @@ export default function SpotlightSection() {
 
                                     {feature.icon}
 
-                                    <h1 className="text-center text-2xl font-light tracking-tight text-white mb-2">
+                                    <h1 className="text-center text-2xl font-semibold tracking-tight text-white mb-2">
                                         {feature.title}
                                     </h1>
-                                    <p className="text-center text-slate-400 text-sm font-light tracking-tight">
+                                    <p className="text-center text-gray-400 text-sm font-medium leading-relaxed tracking-tight">
                                         {feature.description}
                                     </p>
                                 </div>
