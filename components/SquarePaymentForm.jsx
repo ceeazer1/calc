@@ -103,7 +103,24 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
                 })}
                 callbacks={{
                     cashAppPay: {
-                        onTokenization: (event) => handleCardTokenization(event.detail.tokenResult)
+                        onTokenization: (event) => {
+                            console.log('Cash App Pay tokenization event:', event);
+                            if (event.detail?.tokenResult) {
+                                console.log('Token received:', event.detail.tokenResult.token);
+                                handleCardTokenization(event.detail.tokenResult);
+                            } else {
+                                console.error('No token in Cash App Pay response');
+                                setErrorMessages(['Failed to complete Cash App payment. Please try again.']);
+                            }
+                        }
+                    }
+                }}
+                /**
+                 * Required for some digital wallet methods that redirect to a new page.
+                 */
+                overrides={{
+                    cashAppPay: {
+                        redirectURL: typeof window !== 'undefined' ? window.location.href : undefined
                     }
                 }}
             >
