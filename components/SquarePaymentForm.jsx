@@ -135,21 +135,14 @@ export default function SquarePaymentForm({ amount, onPaymentSuccess, onPaymentE
                     />
                 </PaymentMethodItem>
 
-                {/* Bitcoin Section */}
-                <PaymentMethodItem id="bitcoin" label="Bitcoin" icon={BitcoinIcon}>
+                {/* Cash App / Bitcoin Section */}
+                <PaymentMethodItem id="cashapp" label="Bitcoin / Cash App" icon={BitcoinIcon}>
                     <div className="text-sm text-gray-400 mb-3">
-                        Pay instantly via Lightning Network. A QR code will appear below.
+                        Pay with Bitcoin (Lightning Network) or Cash App. A QR code will appear below.
                     </div>
-                    <div className="text-xs text-gray-500 mb-4 pl-4">
-                        Scan with: Cash App • Strike • Phoenix • Muun • Breez • BlueWallet • or any Lightning wallet
-                    </div>
-                    <CashAppPay />
-                </PaymentMethodItem>
-
-                {/* Cash App Section */}
-                <PaymentMethodItem id="cashapp" label="Cash App Pay" icon={Wallet}>
-                    <div className="text-sm text-gray-400 mb-4">
-                        Scan the QR code or log in to pay with Cash App.
+                    <div className="text-xs text-gray-500 mb-4 pl-4 space-y-1">
+                        <div>• <strong className="text-gray-400">Bitcoin:</strong> Scan with any Lightning wallet (Strike, Phoenix, Muun, Breez, BlueWallet)</div>
+                        <div>• <strong className="text-gray-400">Cash App:</strong> Scan or log in with your Cash App account</div>
                     </div>
                     <CashAppPay />
                 </PaymentMethodItem>
