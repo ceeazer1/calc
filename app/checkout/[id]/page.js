@@ -9,7 +9,6 @@ import SquarePaymentForm from '@/components/SquarePaymentForm'
 import { PhoneInput } from '@/components/ui/phone-input'
 
 const SHIPPING_OPTIONS = [
-  { id: 'usps_ground_advantage', name: 'USPS Ground Advantage', price: 8, eta: '3-5 business days' },
   { id: 'usps_priority', name: 'USPS Priority Mail', price: 13, eta: '2-3 business days' },
   { id: 'usps_priority_express', name: 'USPS Priority Mail Express', price: 40, eta: '1-2 business days' },
 ]
