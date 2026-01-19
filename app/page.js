@@ -218,8 +218,7 @@ export default function Home() {
                 <h3 className="text-3xl font-semibold tracking-tight text-white">Camera</h3>
                 <div className="h-[260px] w-full rounded-2xl overflow-hidden shadow-lg">
                   <MediaModal
-                    videoSrc="/camera.mp4"
-                    videoClassName="-rotate-90 scale-[1.6]"
+                    videoSrc="https://youtu.be/AERiTUVcT9A"
                     className="w-full h-full"
                   />
                 </div>
@@ -239,8 +238,7 @@ export default function Home() {
                 <h3 className="text-3xl font-semibold tracking-tight text-white">Text</h3>
                 <div className="h-[260px] w-full rounded-2xl overflow-hidden shadow-lg">
                   <MediaModal
-                    videoSrc="/typing.mp4"
-                    videoClassName="-rotate-90 scale-[1.6]"
+                    videoSrc="https://www.youtube.com/watch?v=If3FTHgoBYM"
                     className="w-full h-full"
                   />
                 </div>
