@@ -3,6 +3,54 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Play, Pause, RotateCcw } from "lucide-react";
 import Image from "next/image";
 
+const VideoPreview = ({ videoSrc, videoClassName }) => {
+    const videoRef = useRef(null);
+    const loopStartTime = 0;
+    const loopEndTime = 4;
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        // Force fragment buffering optimization
+        video.src = `${videoSrc}#t=${loopStartTime},${loopEndTime}`;
+        video.load();
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    video.play().catch(() => { });
+                } else {
+                    video.pause();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(video);
+        return () => observer.disconnect();
+    }, [videoSrc]);
+
+    const handleTimeUpdate = () => {
+        const video = videoRef.current;
+        if (video && video.currentTime >= loopEndTime) {
+            video.currentTime = loopStartTime;
+            video.play().catch(() => { });
+        }
+    };
+
+    return (
+        <video
+            ref={videoRef}
+            className={`h-full w-full object-cover transform-gpu ${videoClassName || ""}`}
+            onTimeUpdate={handleTimeUpdate}
+            muted
+            playsInline
+            preload="metadata"
+        />
+    );
+};
+
 const MediaModalContent = ({ isOpen, setIsOpen, imgSrc, videoSrc, videoClassName }) => {
     const videoRef = useRef(null);
     const progressBarRef = useRef(null);
@@ -200,13 +248,9 @@ export const MediaModal = ({ imgSrc, videoSrc, className, videoClassName, badgeT
                 )}
                 {videoSrc && (
                     <div className="relative h-full w-full">
-                        <video
-                            src={videoSrc}
-                            className={`h-full w-full object-cover ${videoClassName || ""}`}
-                            muted
-                            loop
-                            playsInline
-                            autoPlay
+                        <VideoPreview
+                            videoSrc={videoSrc}
+                            videoClassName={videoClassName}
                         />
                         <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors">
                             <div className="rounded-full bg-white/10 p-3 backdrop-blur-md border border-white/20">
