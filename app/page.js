@@ -223,7 +223,7 @@ export default function Home() {
                   />
                 </div>
                 <p className="text-sm text-gray-400 font-medium leading-relaxed max-w-sm text-center">
-                  Snap a photo of any math problem for instant solutions. Advanced OCR recognizes handwriting instantly.
+                  Snap a photo of any problem for instant solutions. Advanced OCR recognizes handwriting instantly.
                 </p>
               </motion.div>
 
@@ -242,8 +242,8 @@ export default function Home() {
                     className="w-full h-full"
                   />
                 </div>
-                <p className="text-sm text-gray-400 font-medium leading-relaxed max-w-sm text-center">
-                  Chat with AI to understand concepts deeply. Ask follow-up questions and get step-by-step explanations.
+                <p className="text-sm text-gray-400 font-medium leading-relaxed max-sm text-center">
+                  Chat with AI to understand concepts deeply. Get instant, step-by-step explanations.
                 </p>
               </motion.div>
             </div>
