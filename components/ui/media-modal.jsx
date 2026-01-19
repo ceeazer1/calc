@@ -18,7 +18,8 @@ const VideoPreview = ({ videoSrc, videoClassName }) => {
 
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting) {
+                const isModalOpen = document.documentElement.getAttribute('data-media-modal-open') === 'true';
+                if (entry.isIntersecting && !isModalOpen) {
                     video.play().catch(() => { });
                 } else {
                     video.pause();
@@ -27,8 +28,26 @@ const VideoPreview = ({ videoSrc, videoClassName }) => {
             { threshold: 0.1 }
         );
 
+        // Also watch for modal open/close to pause/resume
+        const modalObserver = new MutationObserver(() => {
+            const isModalOpen = document.documentElement.getAttribute('data-media-modal-open') === 'true';
+            if (isModalOpen) {
+                video.pause();
+            } else {
+                // Trigger intersection check again
+                if (videoRef.current && videoRef.current.getBoundingClientRect().top < window.innerHeight) {
+                    video.play().catch(() => { });
+                }
+            }
+        });
+
+        modalObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-media-modal-open'] });
+
         observer.observe(video);
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+            modalObserver.disconnect();
+        };
     }, [videoSrc]);
 
     const handleTimeUpdate = () => {
@@ -56,6 +75,7 @@ const MediaModalContent = ({ isOpen, setIsOpen, imgSrc, videoSrc, videoClassName
     const progressBarRef = useRef(null);
     const timeDisplayRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [duration, setDuration] = useState(0);
 
     useEffect(() => {
@@ -155,12 +175,22 @@ const MediaModalContent = ({ isOpen, setIsOpen, imgSrc, videoSrc, videoClassName
                         className={`w-full max-h-[85vh] transform-gpu will-change-transform ${videoClassName || ""}`}
                         onTimeUpdate={handleTimeUpdate}
                         onLoadedMetadata={handleLoadedMetadata}
+                        onWaiting={() => setIsLoading(true)}
+                        onPlaying={() => setIsLoading(false)}
+                        onCanPlay={() => setIsLoading(false)}
                         onClick={togglePlay}
                         playsInline
                         loop
                         muted
                         preload="auto"
                     />
+
+                    {/* Loading Spinner */}
+                    {isLoading && (
+                        <div className="absolute inset-0 flex items-center justify-center z-30 bg-black/40 backdrop-blur-sm">
+                            <div className="w-12 h-12 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+                        </div>
+                    )}
 
                     {/* Custom Controls Overlay */}
                     <div className="absolute inset-x-0 bottom-0 z-20 p-6 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-300">
@@ -225,12 +255,24 @@ const MediaModalContent = ({ isOpen, setIsOpen, imgSrc, videoSrc, videoClassName
 
 export const MediaModal = ({ imgSrc, videoSrc, className, videoClassName, badgeText }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const preloadedRef = useRef(false);
+
+    const handleMouseEnter = () => {
+        if (videoSrc && !preloadedRef.current) {
+            const v = document.createElement('video');
+            v.preload = 'auto';
+            v.src = videoSrc;
+            v.load();
+            preloadedRef.current = true;
+        }
+    };
 
     return (
         <>
             <motion.div
                 className={`relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] flex items-center justify-center group w-full h-full min-h-[200px] ${imgSrc || videoSrc ? "cursor-pointer" : "cursor-default"} ${className || ""}`}
                 onClick={() => (imgSrc || videoSrc) && setIsOpen(true)}
+                onMouseEnter={handleMouseEnter}
             >
                 {badgeText && (
                     <div className={`${imgSrc || videoSrc ? "absolute top-4 left-4" : "relative"} z-20 px-4 py-1.5 bg-blue-600/80 backdrop-blur-md rounded-full border border-blue-400/30 text-[11px] uppercase tracking-[0.2em] font-bold text-white shadow-lg`}>
