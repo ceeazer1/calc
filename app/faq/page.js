@@ -11,7 +11,6 @@ export default function FAQ() {
             {/* Left: Community, Specifications */}
             <div className="hidden md:flex items-center gap-8 justify-start">
               <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
-              <Link href="/#whats-inside" className="text-gray-300 hover:text-white text-sm font-medium">Specifications</Link>
             </div>
             {/* Center: Logo */}
             <div className="flex items-center justify-center">

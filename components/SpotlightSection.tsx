@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Zap, ShieldCheck, Headphones } from 'lucide-react';
 
 export default function SpotlightSection() {
@@ -35,7 +36,14 @@ export default function SpotlightSection() {
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {features.map((feature, index) => (
-                        <div key={index} className="h-full col-span-1">
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, delay: index * 0.1 }}
+                            className="h-full col-span-1"
+                        >
                             <div
                                 className="card-spotlight w-full h-full"
                                 onMouseMove={handleMouseMove}
@@ -53,7 +61,7 @@ export default function SpotlightSection() {
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>

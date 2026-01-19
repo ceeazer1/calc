@@ -136,9 +136,9 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1)
   const [addedToCart, setAddedToCart] = useState(false)
   const [cartItemCount, setCartItemCount] = useState(0)
-  const [price, setPrice] = useState(174.99)
-  const [compareAt, setCompareAt] = useState(199.99)
-  const [inStock, setInStock] = useState(true)
+  const [price, setPrice] = useState(null)
+  const [compareAt, setCompareAt] = useState(null)
+  const [inStock, setInStock] = useState(null)
   const [stockCount, setStockCount] = useState(null)
   const router = useRouter()
   // Preorder controls (from dashboard)
@@ -291,7 +291,15 @@ export default function ProductPage() {
         let j = null
         if (DASHBOARD_URL) j = await fetchDirect()
         if (!j) j = await fetchViaProxy()
-        doApply(j)
+
+        if (j) {
+          doApply(j)
+        } else {
+          // Fallback defaults if fetch fails
+          setPrice(174.99)
+          setCompareAt(199.99)
+          setInStock(true)
+        }
         setLoaded(true)
       })()
   }, [])
@@ -315,7 +323,6 @@ export default function ProductPage() {
             {/* Left: Community, Specifications */}
             <div className="hidden md:flex items-center gap-8 justify-start">
               <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
-              <Link href="/#whats-inside" className="text-gray-300 hover:text-white text-sm font-medium">Specifications</Link>
             </div>
             {/* Center: Logo */}
             <div className="col-start-2 flex items-center justify-center md:col-start-auto">
@@ -380,14 +387,20 @@ export default function ProductPage() {
             <div>
               <div className="flex items-center justify-between gap-3 flex-wrap">
                 <div className="text-2xl font-bold text-white flex items-center gap-3">
-                  {compareAt && compareAt > price ? (
+                  {loaded && price !== null ? (
                     <>
-                      <span className="text-gray-400 line-through">${compareAt.toFixed(2)}</span>
-                      <span>${price.toFixed(2)}</span>
-                      <span className="text-xs font-semibold text-green-300 bg-green-500/10 border border-green-400/20 rounded-full px-2 py-0.5">On Sale</span>
+                      {compareAt && compareAt > price ? (
+                        <>
+                          <span className="text-gray-400 line-through">${compareAt.toFixed(2)}</span>
+                          <span>${price.toFixed(2)}</span>
+                          <span className="text-xs font-semibold text-green-300 bg-green-500/10 border border-green-400/20 rounded-full px-2 py-0.5">On Sale</span>
+                        </>
+                      ) : (
+                        <span>${price.toFixed(2)}</span>
+                      )}
                     </>
                   ) : (
-                    <span>${price.toFixed(2)}</span>
+                    <div className="h-8 w-32 rounded bg-white/10 animate-pulse" />
                   )}
                 </div>
 
@@ -466,45 +479,45 @@ export default function ProductPage() {
                   </div>
 
                   <div className="mt-4 grid grid-cols-1 gap-3">
-                  <button
-                    onClick={handleAddToCart}
+                    <button
+                      onClick={handleAddToCart}
                       disabled={!canPurchase}
                       className={`w-full rounded-2xl border px-6 py-3 text-sm font-light tracking-tight transition-all duration-300 focus:outline-none focus:ring-2 ${canPurchase ? 'border-white/10 bg-blue-600/15 text-blue-50 backdrop-blur-sm hover:bg-blue-600/25 focus:ring-white/20' : 'border-gray-700 bg-gray-700/50 text-gray-400 cursor-not-allowed backdrop-blur-sm'}`}
-                  >
-                    <div className="flex items-center justify-center space-x-2">
-                      <ShoppingCart className="w-4 h-4" />
+                    >
+                      <div className="flex items-center justify-center space-x-2">
+                        <ShoppingCart className="w-4 h-4" />
                         <span>{!loaded ? 'Loading…' : addedToCart ? 'Added to cart!' : 'Add to cart'}</span>
-                    </div>
-                  </button>
+                      </div>
+                    </button>
 
-                  <button
-                    onClick={handleBuyNow}
+                    <button
+                      onClick={handleBuyNow}
                       disabled={!canPurchase}
                       className={`w-full rounded-2xl border px-6 py-3 text-sm font-light tracking-tight transition-all duration-300 focus:outline-none focus:ring-2 ${canPurchase ? 'border-white/10 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 focus:ring-white/20' : 'border-gray-700 bg-gray-700/50 text-gray-400 cursor-not-allowed backdrop-blur-sm'}`}
-                  >
-                      Buy now
-                  </button>
-
-                  {preorderEnabled ? (
-                    <button
-                      onClick={handlePreorderCheckout}
-                      className="w-full rounded-2xl border border-white/10 bg-purple-600/10 text-purple-50 backdrop-blur-sm hover:bg-purple-600/20 px-6 py-3 font-light tracking-tight transition-all duration-300 text-sm focus:outline-none focus:ring-2 focus:ring-white/20"
                     >
-                      {`Preorder${typeof preorderPrice === 'number' ? ` - $${preorderPrice.toFixed(2)}` : ''}${preorderShipDate ? ` • Ships ${preorderShipDate}` : ''}`}
+                      Buy now
                     </button>
-                  ) : null}
-              </div>
 
-              {addedToCart && (
+                    {preorderEnabled ? (
+                      <button
+                        onClick={handlePreorderCheckout}
+                        className="w-full rounded-2xl border border-white/10 bg-purple-600/10 text-purple-50 backdrop-blur-sm hover:bg-purple-600/20 px-6 py-3 font-light tracking-tight transition-all duration-300 text-sm focus:outline-none focus:ring-2 focus:ring-white/20"
+                      >
+                        {`Preorder${typeof preorderPrice === 'number' ? ` - $${preorderPrice.toFixed(2)}` : ''}${preorderShipDate ? ` • Ships ${preorderShipDate}` : ''}`}
+                      </button>
+                    ) : null}
+                  </div>
+
+                  {addedToCart && (
                     <div className="mt-4 text-center">
-                  <Link
-                    href="/cart"
-                    className="text-blue-400 hover:text-blue-300 underline text-sm"
-                  >
+                      <Link
+                        href="/cart"
+                        className="text-blue-400 hover:text-blue-300 underline text-sm"
+                      >
                         View cart & checkout
-                  </Link>
-                </div>
-              )}
+                      </Link>
+                    </div>
+                  )}
 
                   <div className="mt-5 grid grid-cols-1 gap-2 text-xs text-gray-300">
                     <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-3 py-2">
@@ -514,13 +527,13 @@ export default function ProductPage() {
                     <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-3 py-2">
                       <Shield className="w-4 h-4 text-blue-200/60" />
                       <span>2‑week warranty</span>
-                      </div>
+                    </div>
                     <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-3 py-2">
                       <Lock className="w-4 h-4 text-blue-200/60" />
                       <span>Secure checkout</span>
-              </div>
-            </div>
-          </div>
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
           </div>

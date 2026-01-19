@@ -70,7 +70,6 @@ export default function Community() {
             {/* Left: Community, Specifications */}
             <div className="hidden md:flex items-center gap-8 justify-start">
               <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
-              <Link href="/#whats-inside" className="text-gray-300 hover:text-white text-sm font-medium">Specifications</Link>
             </div>
             {/* Center: Logo */}
             <div className="flex items-center justify-center">
@@ -175,11 +174,6 @@ export default function Community() {
               <h3 className="font-medium mb-3 text-sm">Product</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link href="/#whats-inside" className="text-gray-400 hover:text-white transition-colors duration-200">
-                    Specifications
-                  </Link>
-                </li>
-                <li>
                   <Link href="/#support" className="text-gray-400 hover:text-white transition-colors duration-200">
                     Support
                   </Link>
@@ -216,7 +210,7 @@ export default function Community() {
           </div>
 
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-            © 2024 CalcAI. All rights reserved.
+            © 2026 CalcAI. All rights reserved.
           </div>
         </div>
       </footer>

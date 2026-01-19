@@ -22,9 +22,24 @@ import {
 import { motion } from 'framer-motion'
 
 export default function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [cartItemCount, setCartItemCount] = useState(0)
 
   useEffect(() => {
+    // Watch for modal open state on html element
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'data-media-modal-open') {
+          setIsModalOpen(document.documentElement.getAttribute('data-media-modal-open') === 'true')
+        }
+      })
+    })
+
+    observer.observe(document.documentElement, { attributes: true })
+
+    // Initial check
+    setIsModalOpen(document.documentElement.getAttribute('data-media-modal-open') === 'true')
+
     const updateCartCount = () => {
       const cart = JSON.parse(localStorage.getItem('cart') || '[]')
       const totalItems = cart.reduce((total, item) => total + item.quantity, 0)
@@ -32,7 +47,10 @@ export default function Home() {
     }
     updateCartCount()
     window.addEventListener('storage', updateCartCount)
-    return () => window.removeEventListener('storage', updateCartCount)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('storage', updateCartCount)
+    }
   }, [])
 
   return (
@@ -69,16 +87,14 @@ export default function Home() {
       {/* Content */}
       <div className="relative z-10">
         {/* Navigation */}
-        <nav className="sticky top-0 w-full bg-[#0f172a]/0 backdrop-blur supports-[backdrop-filter]:bg-[#0f172a]/20 z-50 border-b border-white/5">
+        <nav className="sticky top-0 w-full bg-[#0f172a]/0 backdrop-blur supports-[backdrop-filter]:bg-[#0f172a]/20 z-50 border-b border-white/5 transition-opacity duration-300 data-[modal-open=true]:opacity-0 data-[modal-open=true]:pointer-events-none"
+          data-modal-open={isModalOpen}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-3 items-center h-14">
               {/* Left: Community, Specifications */}
               <div className="hidden md:flex items-center gap-8 justify-start">
-                <Link href="https://discord.gg" target="_blank" className="text-sm font-medium text-gray-300 hover:text-white transition cursor-pointer">
+                <Link href="https://discord.gg/83ZwJcPWJ6" target="_blank" className="text-sm font-medium text-gray-300 hover:text-white transition cursor-pointer">
                   Community
-                </Link>
-                <Link href="/specs" className="text-sm font-medium text-gray-300 hover:text-white transition cursor-pointer">
-                  Specifications
                 </Link>
               </div>
 
@@ -94,8 +110,14 @@ export default function Home() {
 
               {/* Center: Logo */}
               <div className="flex justify-center">
-                <Link href="/" className="text-xl font-bold tracking-tight text-white">
-                  CalcAI
+                <Link href="/">
+                  <Image
+                    src="/logo.png"
+                    alt="CalcAI Logo"
+                    width={200}
+                    height={60}
+                    className="h-5 sm:h-6 w-auto transform hover:scale-105 transition-transform duration-200"
+                  />
                 </Link>
               </div>
 
@@ -110,7 +132,7 @@ export default function Home() {
                   )}
                 </Link>
                 <Link
-                  href="/products/calcai"
+                  href="/product"
                   className="bg-white text-black px-4 py-1.5 rounded-full text-sm font-medium hover:bg-gray-100 transition hidden sm:block"
                 >
                   Buy Now
@@ -186,32 +208,46 @@ export default function Home() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               {/* Camera Feature - Image */}
-              <div className="flex flex-col items-center gap-6 group">
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="flex flex-col items-center gap-6 group"
+              >
                 <h3 className="text-3xl font-semibold tracking-tight text-white">Camera</h3>
                 <div className="h-[260px] w-full rounded-2xl overflow-hidden shadow-lg">
                   <MediaModal
-                    imgSrc="https://images.unsplash.com/photo-1726824766931-4bd8b59af37c?q=80&w=1000&auto=format&fit=crop"
-                    className="w-full h-full transition-transform duration-500 group-hover:scale-[1.02]"
+                    videoSrc="/camera.mp4"
+                    videoClassName="-rotate-90 scale-[1.6]"
+                    className="w-full h-full"
                   />
                 </div>
                 <p className="text-sm text-gray-400 font-medium leading-relaxed max-w-sm text-center">
                   Snap a photo of any math problem for instant solutions. Advanced OCR recognizes handwriting instantly.
                 </p>
-              </div>
+              </motion.div>
 
               {/* Text Feature - Video */}
-              <div className="flex flex-col items-center gap-6 group">
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="flex flex-col items-center gap-6 group"
+              >
                 <h3 className="text-3xl font-semibold tracking-tight text-white">Text</h3>
                 <div className="h-[260px] w-full rounded-2xl overflow-hidden shadow-lg">
                   <MediaModal
-                    videoSrc="https://videos.pexels.com/video-files/7710243/7710243-uhd_2560_1440_30fps.mp4"
-                    className="w-full h-full transition-transform duration-500 group-hover:scale-[1.02]"
+                    videoSrc="/typing.mp4"
+                    videoClassName="-rotate-90 scale-[1.6]"
+                    className="w-full h-full"
                   />
                 </div>
                 <p className="text-sm text-gray-400 font-medium leading-relaxed max-w-sm text-center">
                   Chat with AI to understand concepts deeply. Ask follow-up questions and get step-by-step explanations.
                 </p>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
@@ -219,42 +255,38 @@ export default function Home() {
         {/* Dashboard Feature Snapshots */}
         <section id="showcase" className="py-20 relative">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-10 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="mb-10 text-center"
+            >
               <h2 className="text-3xl sm:text-4xl font-light tracking-tight text-white">
                 Dashboard features
               </h2>
-              <p className="mt-3 text-slate-400 font-light tracking-tight max-w-2xl mx-auto">
-                Manage your calculator how you want to
-              </p>
-            </div>
+            </motion.div>
 
             {/* Dashboard feature tiles (screenshot-inspired marketing cards) */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
               {/* Card 1: Model Controls */}
-              <div className="md:col-span-7 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)] min-h-[400px]">
-                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
-                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-500/25 via-blue-500/5 to-transparent" />
-                <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-blue-500/18 blur-3xl" />
-
-                <div className="absolute inset-0 z-10 p-8">
-                  {/* Title on top-left */}
-                  <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Model controls</h3>
-
-                  {/* Description on the side (right) */}
-                  <div className="absolute top-1/2 right-8 -translate-y-1/2 max-w-[180px] text-right z-10">
-                    <div className="flex flex-col gap-3">
-                      <div className="text-lg font-medium leading-tight text-white/90">
-                        Pick your GPT model and max tokens.
-                      </div>
-                      <div className="text-sm text-white/60 leading-snug">
-                        Adjust speed, accuracy, and answer length anytime.
-                      </div>
-                    </div>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="md:col-span-6 relative"
+              >
+                <div className="p-6">
+                  <div className="text-center mb-10">
+                    <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Model controls</h3>
+                    <p className="mt-2 text-sm text-white/50 max-w-sm mx-auto">
+                      Pick your GPT model and max tokens. Adjust speed, accuracy, and answer length anytime.
+                    </p>
                   </div>
 
-                  {/* Controls faded at the bottom */}
                   <div
-                    className="absolute bottom-6 left-6 w-fit rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4 z-20"
+                    className="relative w-fit mx-auto rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4 z-20"
                     style={{
                       maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
                       WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)'
@@ -322,28 +354,39 @@ export default function Home() {
                           </div>
                         </div>
                       </div>
+
+                      {/* Small skeleton text bit at the bottom */}
+                      <div className="mt-6 w-full space-y-2 px-1">
+                        <div className="h-2 w-1/2 rounded bg-white/10" />
+                        <div className="h-2 w-1/3 rounded bg-white/5" />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Card 2: Prompt History */}
-              <div className="md:col-span-5 md:row-span-2 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
-                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
-                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-500/18 via-transparent to-transparent" />
-                <div aria-hidden className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-blue-500/18 blur-3xl" />
-
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="md:col-span-6 relative"
+              >
                 <div className="relative p-6">
-                  <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Prompt history</h3>
-                  <p className="mt-1.5 text-sm text-white/70 font-light tracking-tight">
-                    Recent questions & answers at a glance.
-                  </p>
+                  <div className="text-center mb-10">
+                    <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Prompt history</h3>
+                    <p className="mt-1.5 text-sm text-white/70 font-light tracking-tight">
+                      Recent questions & answers at a glance.
+                    </p>
+                  </div>
 
-                  <div className="relative mt-8 h-[550px] px-2">
+                  <div className="relative mt-8 h-[550px] px-2" style={{ perspective: '1500px' }}>
                     {[0, 1].map((idx) => {
                       const items = [
                         {
                           type: 'image',
+                          label: 'Image',
                           p: "Find the value of x",
                           image: "https://images.unsplash.com/photo-1635372722656-389f87a941b7?auto=format&fit=crop&q=80&w=200&h=100",
                           a: "Using the Pythagorean theorem:\nx² + 12² = 13²\nx² + 144 = 169\nx² = 25\nx = 5",
@@ -351,8 +394,10 @@ export default function Home() {
                         },
                         {
                           type: 'text',
+                          label: 'Text',
                           p: "Integrate: ∫(2x + 1) dx",
-                          a: "x² + x + C"
+                          a: "x² + x + C",
+                          loading: true
                         },
                       ];
                       const row = items[idx];
@@ -364,12 +409,13 @@ export default function Home() {
                           style={{
                             top: `${idx * 160}px`,
                             zIndex: 20 + idx,
-                            transform: 'scale(1)',
+                            transform: `rotateX(5deg) rotateY(-25deg) scale(0.95)`,
+                            transformStyle: 'preserve-3d',
                             opacity: 1
                           }}
                         >
                           <div className="flex justify-between items-start mb-2">
-                            <div className="text-[9px] text-blue-400/60 font-bold uppercase tracking-widest">Entry #{2 - idx}</div>
+                            <div className="text-[9px] text-blue-400/60 font-bold uppercase tracking-widest">{row.label}</div>
                             <div className="text-[9px] text-white/20 font-mono">14:2{idx} PM</div>
                           </div>
 
@@ -393,9 +439,15 @@ export default function Home() {
                               </div>
                               {/* Skeleton for the rest */}
                               <div className="space-y-2">
-                                <div className="h-3 w-3/4 rounded bg-white/10 animate-pulse" />
-                                <div className="h-3 w-2/3 rounded bg-white/10 animate-pulse" />
-                                <div className="h-3 w-1/2 rounded bg-white/10 animate-pulse" />
+                                <div className="h-3 w-3/4 rounded bg-white/10" />
+                                <div className="h-3 w-2/3 rounded bg-white/10" />
+                                <div className="h-3 w-1/2 rounded bg-white/10" />
+                                {idx === 1 && (
+                                  <>
+                                    <div className="h-3 w-4/5 rounded bg-white/10" />
+                                    <div className="h-3 w-1/3 rounded bg-white/10" />
+                                  </>
+                                )}
                               </div>
                             </div>
                           ) : (
@@ -406,32 +458,36 @@ export default function Home() {
                     })}
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
-              {/* Card 3: Notes → Calculator */}
-              <div className="md:col-span-7 group relative overflow-hidden rounded-[28px] border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
-                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
-                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-500/14 via-transparent to-transparent" />
-                <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-blue-500/14 blur-3xl" />
+              {/* Card 3: Notes (Centered below) */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="md:col-span-12 relative py-12"
+              >
+                <div className="relative">
+                  <div className="text-center mb-12">
+                    <h3 className="text-2xl sm:text-4xl font-light tracking-tight text-white inline-block">Notes</h3>
+                  </div>
 
-                <div className="relative p-6">
-                  <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Notes</h3>
-
-                  <div className="mt-5 flex flex-col items-center">
-                    <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-center">
+                  <div className="flex flex-col items-center">
+                    <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-12 items-center max-w-6xl mx-auto px-4">
                       {/* Note box (left) */}
-                      <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4">
+                      <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur p-5 sm:p-8 shadow-2xl">
                         <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                        <div className="text-[10px] uppercase font-bold tracking-widest text-white/40 mb-2">Note Content</div>
+                        <div className="text-[10px] uppercase font-bold tracking-widest text-white/40 mb-4">Note Content</div>
                         <textarea
                           readOnly
-                          className="relative z-10 w-full min-h-[140px] bg-transparent px-0 py-0 text-sm text-white/90 placeholder:text-white/30 focus:outline-none resize-none overflow-hidden font-mono"
+                          className="relative z-10 w-full min-h-[180px] bg-transparent px-0 py-0 text-sm sm:text-lg text-white/90 placeholder:text-white/30 focus:outline-none resize-none overflow-hidden font-mono leading-relaxed"
                           defaultValue={`Quiz 3 review:\n- Chain rule practice\n- Solve: 2x + 5 = 15\n- derivative of x^2 is 2x\n- ∫2x dx = x^2 + C`}
                         />
-                        <div className="relative z-10 mt-4 flex items-center justify-end">
+                        <div className="relative z-10 mt-6 flex items-center justify-end">
                           <button
                             type="button"
-                            className="rounded-full border border-white/10 bg-blue-500/20 hover:bg-blue-500/30 text-blue-100 px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors flex items-center gap-2"
+                            className="rounded-full border border-white/10 bg-blue-500/20 hover:bg-blue-500/30 text-blue-100 px-7 py-2.5 text-[11px] font-bold uppercase tracking-wider transition-colors flex items-center gap-2"
                           >
                             Send to Device
                             <ArrowRight className="w-3 h-3" />
@@ -440,42 +496,38 @@ export default function Home() {
                       </div>
 
                       {/* Arrow Flow */}
-                      <div className="hidden lg:flex flex-col items-center justify-center text-blue-400 animate-pulse">
-                        <div className="h-px w-12 bg-gradient-to-r from-blue-400/0 via-blue-400 to-blue-400/0" />
-                        <ArrowRight className="w-6 h-6 -mt-3 bg-black rounded-full p-1" />
+                      <div className="hidden lg:flex flex-col items-center justify-center text-blue-400/60 animate-pulse">
+                        <div className="h-px w-20 bg-gradient-to-r from-blue-400/0 via-blue-400 to-blue-400/0" />
+                        <ArrowRight className="w-10 h-10 -mt-5 bg-black rounded-full p-2 border border-blue-400/20" />
                       </div>
 
                       {/* Calculator Display Image Only (right) */}
-                      <div className="relative group">
-                        <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black/40 p-1 aspect-[3/4] w-[180px] mx-auto flex flex-col items-center justify-center">
-                          {/* Placeholder for Calculator Image */}
+                      <div className="relative group flex items-center justify-center">
+                        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/60 p-2 aspect-[3/4] w-[260px] mx-auto flex flex-col items-center justify-center shadow-[0_0_50px_rgba(59,130,246,0.15)]">
                           <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/[0.02]" />
-                          <div className="relative z-10 w-[90%] h-[40%] bg-blue-500/10 border border-white/10 rounded mb-2 flex flex-col p-2 overflow-hidden">
-                            <div className="text-[6px] uppercase tracking-wider text-white/30 mb-1">Preview</div>
-                            <div className="text-[5px] text-white/70 font-mono leading-tight whitespace-pre-wrap">
+                          <div className="relative z-10 w-[90%] h-[45%] bg-blue-500/10 border border-white/10 rounded-lg mb-4 flex flex-col p-4 overflow-hidden">
+                            <div className="text-[8px] uppercase tracking-wider text-white/30 mb-2">Preview</div>
+                            <div className="text-[7px] text-white/70 font-mono leading-tight whitespace-pre-wrap">
                               Quiz 3 review:
                               - Chain rule practice
                               - Solve: 2x + 5 = 15
                             </div>
                           </div>
-                          <div className="text-white/20 text-[10px] font-medium uppercase tracking-widest text-center">
+                          <div className="text-white/20 text-sm font-medium uppercase tracking-[0.3em] text-center">
                             Calculator
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="mt-8 text-center max-w-xl">
-                      <div className="text-xl sm:text-2xl font-semibold tracking-tight text-white/90 italic">
-                        &quot;Your notes, synced instantly.&quot;
-                      </div>
-                      <div className="mt-2 text-sm sm:text-base text-white/70">
+                    <div className="mt-16 text-center max-w-2xl mx-auto px-4">
+                      <div className="text-base sm:text-lg text-white/50 font-light leading-relaxed">
                         Write formulas once on your dashboard and access them instantly on your CalcAI device.
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
@@ -487,8 +539,14 @@ export default function Home() {
 
 
         {/* CTA Section */}
-        <section className="py-20">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        < section className="py-20" >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+          >
             <h2 className="text-3xl font-light tracking-tight mb-4 text-white">Ready to upgrade your calculator?</h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/product" className="btn-primary inline-flex items-center justify-center rounded-2xl bg-blue-600/90 hover:bg-blue-600 text-white px-8 py-3 transition-all tracking-tight shadow-none hover:shadow-none">
@@ -497,11 +555,11 @@ export default function Home() {
               </Link>
               <Link href="/community" className="btn-secondary rounded-2xl border border-white/5 hover:bg-white/5 text-slate-300 px-8 py-3 transition-all tracking-tight">Join Community</Link>
             </div>
-          </div>
-        </section>
+          </motion.div>
+        </section >
 
         {/* Footer */}
-        <footer className="text-white py-12">
+        < footer className="text-white py-12" >
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-4 gap-8">
               <div>
@@ -513,7 +571,6 @@ export default function Home() {
               <div>
                 <h3 className="font-medium mb-3 text-sm">Product</h3>
                 <ul className="space-y-2 text-sm">
-                  <li><a href="#whats-inside" className="text-gray-300 hover:text-white">Specifications</a></li>
                   <li><Link href="/community" className="text-gray-300 hover:text-white">Community</Link></li>
                 </ul>
               </div>
@@ -547,11 +604,11 @@ export default function Home() {
                   <Youtube className="w-6 h-6" />
                 </a>
               </div>
-              <div className="text-center text-sm text-gray-400">© 2024 CalcAI. All rights reserved.</div>
+              <div className="text-center text-sm text-gray-400">© 2026 CalcAI. All rights reserved.</div>
             </div>
           </div>
-        </footer>
-      </div>
-    </div>
+        </footer >
+      </div >
+    </div >
   )
 }

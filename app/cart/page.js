@@ -8,7 +8,7 @@ import { Poppins } from 'next/font/google'
 
 import { Trash2, Plus, Minus, ShoppingCart, ArrowLeft, MessageCircle } from 'lucide-react'
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['400','500','600','700'] })
+const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] })
 
 export default function CartPage() {
   const router = useRouter()
@@ -76,7 +76,6 @@ export default function CartPage() {
             {/* Left: Community, Specifications */}
             <div className="hidden md:flex items-center gap-8 justify-start">
               <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
-              <Link href="/#whats-inside" className="text-gray-300 hover:text-white text-sm font-medium">Specifications</Link>
             </div>
             {/* Center: Logo */}
             <div className="flex items-center justify-center">
@@ -184,7 +183,7 @@ export default function CartPage() {
             <div className="lg:col-span-1">
               <div className="rounded-2xl border border-white/10 bg-gray-900/50 backdrop-blur p-6 sticky top-8">
                 <h2 className="text-xl font-semibold text-white mb-4">Order Summary</h2>
-<p className="text-xs text-gray-400 mb-3">Shipping calculated at checkout (US only)</p>
+                <p className="text-xs text-gray-400 mb-3">Shipping calculated at checkout (US only)</p>
 
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between">
@@ -204,11 +203,10 @@ export default function CartPage() {
                 <button
                   onClick={handleCheckout}
                   disabled={isProcessing || cart.length === 0}
-                  className={`w-full py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 transform text-sm sm:text-base text-white text-center block ${
-                    isProcessing || cart.length === 0
+                  className={`w-full py-2 px-4 sm:py-3 sm:px-6 rounded-lg font-semibold transition-all duration-200 transform text-sm sm:text-base text-white text-center block ${isProcessing || cart.length === 0
                       ? 'bg-gray-700 cursor-not-allowed'
                       : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
-                  }`}
+                    }`}
                 >
                   {isProcessing ? 'Redirecting…' : 'Proceed to Checkout'}
                 </button>

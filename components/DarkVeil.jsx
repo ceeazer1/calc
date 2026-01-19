@@ -160,6 +160,10 @@ export default function DarkVeil({
         let frame = 0;
 
         const loop = () => {
+            if (document.documentElement.getAttribute('data-media-modal-open') === 'true') {
+                frame = requestAnimationFrame(loop);
+                return;
+            }
             program.uniforms.uTime.value = ((performance.now() - start) / 1000) * speed;
             program.uniforms.uHueShift.value = hueShift;
             program.uniforms.uNoise.value = noiseIntensity;
@@ -181,5 +185,13 @@ export default function DarkVeil({
             window.removeEventListener('resize', resize);
         };
     }, [hueShift, noiseIntensity, scanlineIntensity, speed, scanlineFrequency, warpAmount, resolutionScale, tint, tintStrength, tintBoost, tintGamma]);
-    return <canvas ref={ref} className="darkveil-canvas" />;
+    return (
+        <canvas
+            ref={ref}
+            className="darkveil-canvas"
+            style={{
+                visibility: typeof document !== 'undefined' && document.documentElement.getAttribute('data-media-modal-open') === 'true' ? 'hidden' : 'visible'
+            }}
+        />
+    );
 }
