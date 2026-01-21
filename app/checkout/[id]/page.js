@@ -433,7 +433,7 @@ export default function Checkout() {
                               postal_code: formData.zip,
                               country: 'US'
                             },
-                            shippingMethod: selectedShipping,
+                            shippingMethod: SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.name,
                             weight_oz: 32, // 2 pounds
                             items: [{
                               description: 'CalcAI Calculator - TI-84+ Edition',
