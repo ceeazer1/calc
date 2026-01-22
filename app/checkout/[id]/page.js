@@ -447,7 +447,8 @@ export default function Checkout() {
 
                         try {
                           // Push to admin dashboard (this now actually charges the card)
-                          const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.calcai.cc';
+                          const rawDashboardUrl = (process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.calcai.cc').trim();
+                          const dashboardUrl = rawDashboardUrl.endsWith('/') ? rawDashboardUrl.slice(0, -1) : rawDashboardUrl;
                           const response = await fetch(`${dashboardUrl}/api/website/orders`, {
                             method: 'POST',
                             mode: 'cors',
