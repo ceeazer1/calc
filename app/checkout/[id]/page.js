@@ -470,7 +470,7 @@ export default function Checkout() {
                           }
                         } catch (err) {
                           console.error("Dashboard push error:", err);
-                          alert("Unable to connect to payment server. Please try again later.");
+                          alert(`Connection Error: ${err.message || 'Unable to connect to payment server'}. Please check your internet or try again later.`);
                           setIsProcessing(false);
                         }
                       }}
