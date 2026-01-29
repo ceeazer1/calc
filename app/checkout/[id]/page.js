@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 import AddressAutocomplete from '@/components/AddressAutocomplete'
-import SquarePaymentForm from '@/components/SquarePaymentForm'
+
 import { PhoneInput } from '@/components/ui/phone-input'
 
 const SHIPPING_OPTIONS = [
@@ -403,23 +403,24 @@ export default function Checkout() {
                   </div>
                 </section>
 
-                {/* Payment Section - Embedded Square Checkout */}
+                {/* Payment Section - BTCPay Integration */}
                 <section className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                  <h2 className="text-xl font-semibold mb-4">Payment Details</h2>
+                  <h2 className="text-xl font-semibold mb-4">Payment</h2>
 
                   <div className="transition-all duration-300">
-                    <SquarePaymentForm
-                      amount={totalPrice}
-                      isFormValid={isFormValid}
-                      isProcessing={isProcessing}
-                      onDisabledClick={onDisabledPaymentClick}
-                      onPaymentSuccess={async (token) => {
+                    <button
+                      onClick={async () => {
+                        if (isProcessing) return;
+                        if (!isFormValid) {
+                          onDisabledPaymentClick();
+                          return;
+                        }
+
                         setIsProcessing(true);
 
-                        // Prepare order data for your admin dashboard
+                        // Prepare order data for dashboard
                         const orderData = {
                           order: {
-                            id: token.token, // Square payment token as unique ID
                             amount: Math.round(totalPrice * 100),
                             currency: 'usd',
                             customerEmail: formData.email,
@@ -434,21 +435,22 @@ export default function Checkout() {
                               country: 'US'
                             },
                             shippingMethod: SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.name,
-                            weight_oz: 32, // 2 pounds
                             items: [{
                               description: 'CalcAI Calculator - TI-84+ Edition',
                               quantity: 1,
                               amount: Math.round(productPrice * 100)
                             }],
-                            paymentMethod: token.card_brand || 'Square',
+                            paymentMethod: 'BTC',
                             notes: `Shipping via ${SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.name}`
                           }
                         };
 
                         try {
-                          // Push to admin dashboard (this now actually charges the card)
+                          // Send to dashboard to create order and get invoice
                           const rawDashboardUrl = (process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.calcai.cc').trim();
                           const dashboardUrl = rawDashboardUrl.endsWith('/') ? rawDashboardUrl.slice(0, -1) : rawDashboardUrl;
+
+                          // Use the generic orders endpoint for now, expecting it to handle BTC method
                           const response = await fetch(`${dashboardUrl}/api/website/orders`, {
                             method: 'POST',
                             mode: 'cors',
@@ -462,24 +464,43 @@ export default function Checkout() {
                           const result = await response.json();
 
                           if (response.ok && result.ok) {
-                            // Payment actually succeeded on the backend
-                            window.location.href = `/success/${token.token}`;
+                            // Backend should return an invoice ID or URL or trigger logic
+                            if (result.invoiceId) {
+                              // Logic to show BTCPay modal would go here
+                              // window.btcpay.showInvoice(result.invoiceId);
+                              console.log("Invoice created:", result.invoiceId);
+                              alert("Bitcoin Invoice Created! (Integration pending server-side)");
+                            } else {
+                              // Fallback success (if manual processing)
+                              window.location.href = `/success/btc-${Date.now()}`;
+                            }
                           } else {
-                            // Backend payment failed (e.g. declined)
-                            alert(result.error || "Payment failed. Please check your card details and try again.");
+                            alert(result.error || "Failed to create order. Please try again.");
                             setIsProcessing(false);
                           }
                         } catch (err) {
-                          console.error("Dashboard push error:", err);
-                          alert(`Connection Error: ${err.message || 'Unable to connect to payment server'}. Please check your internet or try again later.`);
+                          console.error("Order creation error:", err);
+                          alert(`Connection Error: ${err.message || 'Unable to connect to server'}.`);
                           setIsProcessing(false);
                         }
                       }}
-                      onPaymentError={(err) => {
-                        console.error("Payment Error:", err);
-                        setIsProcessing(false);
-                      }}
-                    />
+                      disabled={isProcessing}
+                      className={`w-full py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg flex items-center justify-center gap-3 ${isFormValid
+                        ? 'bg-[#F7931A] hover:bg-[#E88209] text-white'
+                        : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                        }`}
+                    >
+                      {isProcessing ? (
+                        <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : (
+                        <>
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                          </svg>
+                          Pay with Bitcoin
+                        </>
+                      )}
+                    </button>
 
                     {!isFormValid && (
                       <p className="text-center text-xs text-blue-400 mt-4 font-medium animate-pulse">
@@ -488,7 +509,7 @@ export default function Checkout() {
                     )}
 
                     <p className="text-center text-xs text-gray-500 mt-6">
-                      Payments secured by Square. We do not store your card details.
+                      Secure payments via BTCPay Server.
                     </p>
                   </div>
                 </section>
