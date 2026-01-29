@@ -477,10 +477,13 @@ export default function Checkout() {
                               // Show the BTCPay Modal
                               window.btcpay.showInvoice(result.invoiceId);
                             } else {
-                              window.location.href = `/success/btc-${Date.now()}`;
+                              // Instead of silent redirect, show error
+                              alert("Error: Order was created but Bitcoin invoice failed (BTCPay Error). Please contact support.");
+                              console.error("Missing invoiceId in result:", result);
+                              setIsProcessing(false);
                             }
                           } else {
-                            alert(result.error || "Failed to create order. Please try again.");
+                            alert(result.error || "Failed to create order. Server responded with an error.");
                             setIsProcessing(false);
                           }
                         } catch (err) {
