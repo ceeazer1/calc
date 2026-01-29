@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import Script from 'next/script'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 import AddressAutocomplete from '@/components/AddressAutocomplete'
 
@@ -464,14 +465,18 @@ export default function Checkout() {
                           const result = await response.json();
 
                           if (response.ok && result.ok) {
-                            // Backend should return an invoice ID or URL or trigger logic
                             if (result.invoiceId) {
-                              // Logic to show BTCPay modal would go here
-                              // window.btcpay.showInvoice(result.invoiceId);
-                              console.log("Invoice created:", result.invoiceId);
-                              alert("Bitcoin Invoice Created! (Integration pending server-side)");
+                              // Add listener for the payment event
+                              const handleBtcPayMessage = (event) => {
+                                if (event.data.status === 'confirmed' || event.data.status === 'complete' || event.data === 'btcpay.status.settled') {
+                                  window.location.href = `/success/${result.orderId}`;
+                                }
+                              };
+                              window.addEventListener('message', handleBtcPayMessage);
+
+                              // Show the BTCPay Modal
+                              window.btcpay.showInvoice(result.invoiceId);
                             } else {
-                              // Fallback success (if manual processing)
                               window.location.href = `/success/btc-${Date.now()}`;
                             }
                           } else {
@@ -518,6 +523,7 @@ export default function Checkout() {
           </div>
         </div>
       </div>
+      <Script src="https://btc.calcai.cc/modal/btcpay.js" />
     </div>
   )
 }
