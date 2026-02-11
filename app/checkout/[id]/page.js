@@ -126,9 +126,30 @@ export default function Checkout() {
             // If TX is very recent (within last 15 mins), we treat it as the order payment
             if (latestTx.status.confirmed === false || (now - latestTx.status.block_time < 900)) {
               setPaymentDetected(true);
+
+              // Tell the dashboard the payment was confirmed so it can send the email
+              try {
+                const rawDashboardUrl = (process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.calcai.cc').trim();
+                const dashboardUrl = rawDashboardUrl.endsWith('/') ? rawDashboardUrl.slice(0, -1) : rawDashboardUrl;
+
+                await fetch(`${dashboardUrl}/api/website/confirm-payment`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': process.env.NEXT_PUBLIC_WEBSITE_API_KEY || 'CALCAI_SECURE_PUSH_2026'
+                  },
+                  body: JSON.stringify({
+                    orderId: currentOrderId,
+                    txId: latestTx.txid
+                  })
+                });
+              } catch (confirmErr) {
+                console.error("Dashboard confirm error:", confirmErr);
+              }
+
               setTimeout(() => {
                 window.location.href = `/success/${currentOrderId}`;
-              }, 4000); // Leave 4s for user to see the success message
+              }, 4000);
             }
           }
         } catch (e) {
