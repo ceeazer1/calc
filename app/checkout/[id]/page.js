@@ -74,6 +74,8 @@ export default function Checkout() {
   const [btcAmount, setBtcAmount] = useState(0)
   const [paymentDetected, setPaymentDetected] = useState(false)
   const [currentOrderId, setCurrentOrderId] = useState(null)
+  const [timerSeconds, setTimerSeconds] = useState(3600) // 60 mins
+  const [isExpired, setIsExpired] = useState(false)
 
   const BTC_ADDRESS = "bc1qy9npd3kmezwm5vhjuxvaauxlns9tcpag44847n"
 
@@ -108,27 +110,49 @@ export default function Checkout() {
     setTouched(prev => ({ ...prev, address: true, city: true, zip: true, state: true }))
   }
 
-  // Blockchain Payment Watcher (Emergency Flow)
+  // Blockchain Payment Watcher & Timer
   useEffect(() => {
     let interval;
-    if (isManualPayment && !paymentDetected) {
+    let timer;
+
+    if (isManualPayment && !paymentDetected && !isExpired) {
+      // Start the 60-minute countdown
+      timer = setInterval(() => {
+        setTimerSeconds(prev => {
+          if (prev <= 1) {
+            setIsExpired(true);
+            clearInterval(timer);
+            // Optional: Tell dashboard it expired
+            const rawDashboardUrl = (process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://admin-calcai.vercel.app').trim();
+            const dashboardUrl = rawDashboardUrl.endsWith('/') ? rawDashboardUrl.slice(0, -1) : rawDashboardUrl;
+            fetch(`${dashboardUrl}/api/website/confirm-payment`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': process.env.NEXT_PUBLIC_WEBSITE_API_KEY || 'CALCAI_SECURE_PUSH_2026'
+              },
+              body: JSON.stringify({ orderId: currentOrderId, status: 'expired' })
+            }).catch(e => console.error("Expiration sync failed", e));
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      // Blockchain poller
       interval = setInterval(async () => {
         try {
-          // Check for transactions at the specific address
           const res = await fetch(`https://mempool.space/api/address/${BTC_ADDRESS}/txs`);
           const txs = await res.json();
 
           if (txs && txs.length > 0) {
-            // Check if there's any transaction (confirmed or unconfirmed) 
-            // Better: Check if the newest TX is within the last 5 minutes
             const latestTx = txs[0];
             const now = Math.floor(Date.now() / 1000);
 
-            // If TX is very recent (within last 15 mins), we treat it as the order payment
             if (latestTx.status.confirmed === false || (now - latestTx.status.block_time < 900)) {
               setPaymentDetected(true);
+              clearInterval(timer); // Stop timer on success
 
-              // Tell the dashboard the payment was confirmed so it can send the email
               try {
                 const rawDashboardUrl = (process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://admin-calcai.vercel.app').trim();
                 const dashboardUrl = rawDashboardUrl.endsWith('/') ? rawDashboardUrl.slice(0, -1) : rawDashboardUrl;
@@ -156,10 +180,21 @@ export default function Checkout() {
         } catch (e) {
           console.error("Blockchain Watcher Error:", e);
         }
-      }, 8000); // Check every 8 seconds
+      }, 8000);
     }
-    return () => clearInterval(interval);
-  }, [isManualPayment, paymentDetected, currentOrderId]);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(timer);
+    };
+  }, [isManualPayment, paymentDetected, isExpired, currentOrderId]);
+
+  // Format time for display
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   // Validation Rules
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -622,9 +657,33 @@ export default function Checkout() {
                   <p className="text-zinc-400 mb-8">Redirecting you to the success page...</p>
                   <div className="w-12 h-12 border-4 border-[#F7931A] border-t-transparent rounded-full animate-spin mx-auto" />
                 </div>
+              ) : isExpired ? (
+                <div className="animate-in fade-in duration-500 flex flex-col items-center">
+                  <div className="w-12 h-12 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center mb-4">
+                    <X className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-2">Invoice Expired</h3>
+                  <p className="text-zinc-400 mb-8 max-w-[280px]">The 60-minute payment window has closed. Please try again to get a fresh address.</p>
+                  <button
+                    onClick={() => {
+                      setIsManualPayment(false);
+                      setIsExpired(false);
+                      setTimerSeconds(3600);
+                    }}
+                    className="w-full py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold transition-colors border border-white/10"
+                  >
+                    Close and Retry
+                  </button>
+                </div>
               ) : (
                 <>
                   <h3 className="text-2xl font-bold text-white mb-6">Complete Payment</h3>
+
+                  {/* Timer Display */}
+                  <div className={`mb-6 px-4 py-1.5 rounded-full text-xs font-bold border flex items-center gap-2 ${timerSeconds < 300 ? 'bg-red-500/10 border-red-500/30 text-red-500' : 'bg-[#F7931A]/10 border-[#F7931A]/30 text-[#F7931A]'}`}>
+                    <div className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+                    Expires in: {formatTime(timerSeconds)}
+                  </div>
 
                   {/* Multi-step Status Tracker */}
                   <div className="w-full flex items-center justify-between mb-8 px-2 relative">
