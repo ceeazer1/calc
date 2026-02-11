@@ -8,6 +8,7 @@ import { isValidPhoneNumber } from 'libphonenumber-js'
 import AddressAutocomplete from '@/components/AddressAutocomplete'
 
 import { PhoneInput } from '@/components/ui/phone-input'
+import { X, CheckCircle2, Search, Loader2 } from 'lucide-react'
 
 const SHIPPING_OPTIONS = [
   { id: 'usps_priority', name: 'USPS Priority Mail', price: 13, eta: '2-3 business days' },
@@ -606,6 +607,16 @@ export default function Checkout() {
           <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => !paymentDetected && setIsManualPayment(false)} />
 
           <div className="relative w-full max-w-md bg-zinc-900 border border-white/10 rounded-3xl p-8 shadow-2xl overflow-hidden glassmorphism">
+            {/* Close Button */}
+            {!paymentDetected && (
+              <button
+                onClick={() => setIsManualPayment(false)}
+                className="absolute top-6 right-6 p-2 rounded-full hover:bg-white/5 text-zinc-500 hover:text-white transition-colors z-[110]"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
+
             {/* Background Glow */}
             <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#F7931A]/20 blur-3xl rounded-full" />
             <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-[#F7931A]/10 blur-3xl rounded-full" />
@@ -627,6 +638,35 @@ export default function Checkout() {
                 <>
                   <h3 className="text-2xl font-bold text-white mb-2">Complete Payment</h3>
                   <p className="text-zinc-400 text-sm mb-6">Store Server is syncing - manual payment enabled.</p>
+
+                  {/* Multi-step Status Tracker */}
+                  <div className="w-full flex items-center justify-between mb-8 px-2 relative">
+                    <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-white/5 -translate-y-1/2 z-0" />
+
+                    {/* Step 1: Scan */}
+                    <div className="relative z-10 flex flex-col items-center">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center border ${!paymentDetected ? 'bg-[#F7931A] border-[#F7931A] text-white' : 'bg-green-500 border-green-500 text-white'}`}>
+                        <Search className="w-4 h-4" />
+                      </div>
+                      <span className="text-[10px] mt-2 text-zinc-500 font-bold uppercase tracking-tighter">Scanning</span>
+                    </div>
+
+                    {/* Step 2: Confirmation */}
+                    <div className="relative z-10 flex flex-col items-center">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center border ${paymentDetected ? 'bg-blue-500 border-blue-500 text-white' : 'bg-zinc-800 border-white/10 text-zinc-600'}`}>
+                        {paymentDetected ? <Loader2 className="w-4 h-4 animate-spin" /> : <div className="w-1.5 h-1.5 rounded-full bg-zinc-600" />}
+                      </div>
+                      <span className="text-[10px] mt-2 text-zinc-500 font-bold uppercase tracking-tighter">Confirming</span>
+                    </div>
+
+                    {/* Step 3: Success */}
+                    <div className="relative z-10 flex flex-col items-center">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center border bg-zinc-800 border-white/10 text-zinc-600`}>
+                        <CheckCircle2 className="w-4 h-4" />
+                      </div>
+                      <span className="text-[10px] mt-2 text-zinc-500 font-bold uppercase tracking-tighter">Success</span>
+                    </div>
+                  </div>
 
                   {/* QR Code */}
                   <div className="bg-white p-4 rounded-2xl mb-6 shadow-xl border-4 border-zinc-800">
@@ -659,18 +699,7 @@ export default function Checkout() {
                     </div>
                   </div>
 
-                  {/* Status Indicator */}
-                  <div className="flex items-center gap-3 text-zinc-400 text-xs px-4 py-2 bg-white/5 rounded-full border border-white/10">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-                    Watching Blockchain for Payment...
-                  </div>
-
-                  <button
-                    onClick={() => setIsManualPayment(false)}
-                    className="mt-8 text-zinc-500 text-xs hover:text-white transition-colors"
-                  >
-                    Cancel and go back
-                  </button>
+                  {/* Status Indicator Removal and Progress logic has been integrated into the tracker above */}
                 </>
               )}
             </div>
