@@ -69,10 +69,10 @@ export default function SuccessPage({ params }) {
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-white font-medium">
                   <Package className="w-4 h-4 text-gray-400" />
-                  <h4>Tracking updates</h4>
+                  <h4>Fast Shipping</h4>
                 </div>
                 <p className="text-sm text-gray-400 leading-relaxed">
-                  Once your order ships (usually within 1-2 business days), we&apos;ll send you another email with your tracking number.
+                  Your CalcAI will arrive at your house within 4-8 business days. We&apos;ll send you a tracking number as soon as it leaves our warehouse.
                 </p>
               </div>
             </div>
