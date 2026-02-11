@@ -66,8 +66,15 @@ export default function Checkout() {
   const productPrice = 210
   const shippingPrice = SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.price || 13
   const totalPrice = productPrice + shippingPrice
-
   const [isProcessing, setIsProcessing] = useState(false)
+
+  // Emergency Manual Payment States
+  const [isManualPayment, setIsManualPayment] = useState(false)
+  const [btcAmount, setBtcAmount] = useState(0)
+  const [paymentDetected, setPaymentDetected] = useState(false)
+  const [currentOrderId, setCurrentOrderId] = useState(null)
+
+  const BTC_ADDRESS = "bc1qy9npd3kmezwm5vhjuxvaauxlns9tcpag44847n"
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -99,6 +106,38 @@ export default function Checkout() {
     }))
     setTouched(prev => ({ ...prev, address: true, city: true, zip: true, state: true }))
   }
+
+  // Blockchain Payment Watcher (Emergency Flow)
+  useEffect(() => {
+    let interval;
+    if (isManualPayment && !paymentDetected) {
+      interval = setInterval(async () => {
+        try {
+          // Check for transactions at the specific address
+          const res = await fetch(`https://mempool.space/api/address/${BTC_ADDRESS}/txs`);
+          const txs = await res.json();
+
+          if (txs && txs.length > 0) {
+            // Check if there's any transaction (confirmed or unconfirmed) 
+            // Better: Check if the newest TX is within the last 5 minutes
+            const latestTx = txs[0];
+            const now = Math.floor(Date.now() / 1000);
+
+            // If TX is very recent (within last 15 mins), we treat it as the order payment
+            if (latestTx.status.confirmed === false || (now - latestTx.status.block_time < 900)) {
+              setPaymentDetected(true);
+              setTimeout(() => {
+                window.location.href = `/success/${currentOrderId}`;
+              }, 4000); // Leave 4s for user to see the success message
+            }
+          }
+        } catch (e) {
+          console.error("Blockchain Watcher Error:", e);
+        }
+      }, 8000); // Check every 8 seconds
+    }
+    return () => clearInterval(interval);
+  }, [isManualPayment, paymentDetected, currentOrderId]);
 
   // Validation Rules
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -465,21 +504,33 @@ export default function Checkout() {
                           const result = await response.json();
 
                           if (response.ok && result.ok) {
+                            setCurrentOrderId(result.orderId);
+
                             if (result.invoiceId) {
-                              // Add listener for the payment event
+                              // Standard BTCPay Flow
                               const handleBtcPayMessage = (event) => {
                                 if (event.data.status === 'confirmed' || event.data.status === 'complete' || event.data === 'btcpay.status.settled') {
                                   window.location.href = `/success/${result.orderId}`;
                                 }
                               };
                               window.addEventListener('message', handleBtcPayMessage);
-
-                              // Show the BTCPay Modal
                               window.btcpay.showInvoice(result.invoiceId);
                             } else {
-                              // Instead of silent redirect, show error
-                              alert("Error: Order was created but Bitcoin invoice failed (BTCPay Error). Please contact support.");
-                              console.error("Missing invoiceId in result:", result);
+                              // ENTER EMERGENCY MANUAL FLOW
+                              console.log("BTCPay Server offline - switching to manual flow");
+
+                              // Fetch BTC price to show correct amount
+                              try {
+                                const priceRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+                                const priceData = await priceRes.json();
+                                const price = priceData.bitcoin.usd;
+                                setBtcAmount((totalPrice / price).toFixed(8));
+                              } catch (e) {
+                                // Fallback price if API fails
+                                setBtcAmount((totalPrice / 95000).toFixed(8));
+                              }
+
+                              setIsManualPayment(true);
                               setIsProcessing(false);
                             }
                           } else {
@@ -527,6 +578,84 @@ export default function Checkout() {
         </div>
       </div>
       <Script src="https://btc.calcai.cc/modal/btcpay.js" />
+
+      {/* Manual Payment Overlay (Emergency Flow) */}
+      {isManualPayment && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => !paymentDetected && setIsManualPayment(false)} />
+
+          <div className="relative w-full max-w-md bg-zinc-900 border border-white/10 rounded-3xl p-8 shadow-2xl overflow-hidden glassmorphism">
+            {/* Background Glow */}
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#F7931A]/20 blur-3xl rounded-full" />
+            <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-[#F7931A]/10 blur-3xl rounded-full" />
+
+            <div className="relative flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-[#F7931A] rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(247,147,26,0.3)]">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                </svg>
+              </div>
+
+              {paymentDetected ? (
+                <div className="animate-in zoom-in duration-500">
+                  <h3 className="text-2xl font-bold text-white mb-2">Payment Detected!</h3>
+                  <p className="text-zinc-400 mb-8">Redirecting you to the success page...</p>
+                  <div className="w-12 h-12 border-4 border-[#F7931A] border-t-transparent rounded-full animate-spin mx-auto" />
+                </div>
+              ) : (
+                <>
+                  <h3 className="text-2xl font-bold text-white mb-2">Complete Payment</h3>
+                  <p className="text-zinc-400 text-sm mb-6">Store Server is syncing - manual payment enabled.</p>
+
+                  {/* QR Code */}
+                  <div className="bg-white p-4 rounded-2xl mb-6 shadow-xl border-4 border-zinc-800">
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bitcoin:${BTC_ADDRESS}?amount=${btcAmount}`}
+                      alt="Payment QR Code"
+                      className="w-[180px] h-[180px]"
+                    />
+                  </div>
+
+                  {/* Payment Details */}
+                  <div className="w-full space-y-3 mb-8">
+                    <div className="bg-white/5 border border-white/10 rounded-xl p-3 flex flex-col items-center">
+                      <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Amount to send</span>
+                      <span className="text-xl font-mono font-bold text-[#F7931A]">{btcAmount} BTC</span>
+                      <span className="text-[10px] text-zinc-400 mt-1">(${(productPrice + shippingPrice).toFixed(2)} USD)</span>
+                    </div>
+
+                    <div className="bg-white/5 border border-white/10 rounded-xl p-3 flex flex-col items-center">
+                      <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1 text-center">Your Bitcoin Address</span>
+                      <span className="text-[10px] font-mono break-all text-white bg-black/30 p-2 rounded border border-white/5 select-all">
+                        {BTC_ADDRESS}
+                      </span>
+                      <button
+                        onClick={() => navigator.clipboard.writeText(BTC_ADDRESS)}
+                        className="text-[10px] text-[#F7931A] font-bold mt-2 hover:underline uppercase tracking-wider"
+                      >
+                        Copy Address
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Status Indicator */}
+                  <div className="flex items-center gap-3 text-zinc-400 text-xs px-4 py-2 bg-white/5 rounded-full border border-white/10">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
+                    Watching Blockchain for Payment...
+                  </div>
+
+                  <button
+                    onClick={() => setIsManualPayment(false)}
+                    className="mt-8 text-zinc-500 text-xs hover:text-white transition-colors"
+                  >
+                    Cancel and go back
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
