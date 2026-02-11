@@ -130,7 +130,7 @@ export default function Checkout() {
 
               // Tell the dashboard the payment was confirmed so it can send the email
               try {
-                const rawDashboardUrl = (process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.calcai.cc').trim();
+                const rawDashboardUrl = (process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://admin-calcai.vercel.app').trim();
                 const dashboardUrl = rawDashboardUrl.endsWith('/') ? rawDashboardUrl.slice(0, -1) : rawDashboardUrl;
 
                 await fetch(`${dashboardUrl}/api/website/confirm-payment`, {
@@ -504,7 +504,7 @@ export default function Checkout() {
 
                         try {
                           // Send to dashboard to create order and get invoice
-                          const rawDashboardUrl = (process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.calcai.cc').trim();
+                          const rawDashboardUrl = (process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://admin-calcai.vercel.app').trim();
                           const dashboardUrl = rawDashboardUrl.endsWith('/') ? rawDashboardUrl.slice(0, -1) : rawDashboardUrl;
 
                           // Use the generic orders endpoint for now, expecting it to handle BTC method
