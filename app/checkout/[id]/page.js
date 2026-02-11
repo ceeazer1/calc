@@ -173,7 +173,6 @@ export default function Checkout() {
 
   const errors = {
     email: !isValidEmail(formData.email),
-    phone: !isPhoneValid(formData.phone),
     firstName: !formData.firstName.trim(),
     lastName: !formData.lastName.trim(),
     address: !formData.address.trim(),
@@ -186,7 +185,7 @@ export default function Checkout() {
 
   const onDisabledPaymentClick = () => {
     // Find first error and scroll to it
-    const order = ['email', 'phone', 'firstName', 'lastName', 'address', 'city', 'state', 'zip']
+    const order = ['email', 'firstName', 'lastName', 'address', 'city', 'state', 'zip']
     const firstError = order.find(field => errors[field])
 
     if (firstError) {
@@ -297,13 +296,9 @@ export default function Checkout() {
                         }}
                         onBlur={() => setTouched(prev => ({ ...prev, phone: true }))}
                         defaultCountry="US"
-                        placeholder="Phone number"
-                        className={errors.phone && touched.phone ? "border-red-500" : ""}
+                        placeholder="Phone number (optional)"
                         size="lg"
                       />
-                      {touched.phone && errors.phone && (
-                        <p className="text-red-500 text-xs mt-1 animate-in fade-in slide-in-from-top-1">Please enter a valid phone number.</p>
-                      )}
                     </div>
                   </div>
                 </section>
@@ -566,10 +561,7 @@ export default function Checkout() {
                         }
                       }}
                       disabled={isProcessing}
-                      className={`w-full py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg flex items-center justify-center gap-3 ${isFormValid
-                        ? 'bg-[#F7931A] hover:bg-[#E88209] text-white'
-                        : 'bg-gray-800 text-gray-500 cursor-not-allowed'
-                        }`}
+                      className={`w-full py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg flex items-center justify-center gap-3 bg-[#F7931A] hover:bg-[#E88209] text-white`}
                     >
                       {isProcessing ? (
                         <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -583,11 +575,7 @@ export default function Checkout() {
                       )}
                     </button>
 
-                    {!isFormValid && (
-                      <p className="text-center text-xs text-blue-400 mt-4 font-medium animate-pulse">
-                        Please fill out all shipping details to enable payment.
-                      </p>
-                    )}
+                    {/* Validation message removed */}
 
                     <p className="text-center text-xs text-gray-500 mt-6">
                       Secure payments via BTCPay Server.
