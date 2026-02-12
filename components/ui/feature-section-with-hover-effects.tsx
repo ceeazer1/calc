@@ -13,31 +13,26 @@ import {
 export function FeaturesSectionWithHoverEffects() {
     const features = [
         {
-            title: "Built for students",
+            title: "OTA Updates",
             description:
-                "Designed specifically for high school and college math, science, and engineering students.",
-            icon: <IconTerminal2 />,
-        },
-        {
-            title: "Instant Answers",
-            description:
-                "Get step-by-step solutions to complex problems in seconds, directly on your device.",
-            icon: <IconEaseInOut />,
-        },
-        {
-            title: "Affordable AI",
-            description:
-                "Access powerful AI models like GPT-4 and Gemini for a fraction of the cost of a private tutor.",
-            icon: <IconCurrencyDollar />,
-        },
-        {
-            title: "Always Available",
-            description: "Your AI tutor is ready 24/7, whether you're studying late at night or right before a test.",
+                "Wireless firmware improvements and new feature additions delivered directly to your device.",
             icon: <IconCloud />,
+        },
+        {
+            title: "2 Week Warranty",
+            description:
+                "Comprehensive protection against hardware defects with a direct replacement guarantee.",
+            icon: <IconAdjustmentsBolt />,
+        },
+        {
+            title: "Support Access",
+            description:
+                "Priority technical support and community discord access for any questions or setup help.",
+            icon: <IconHelp />,
         },
     ];
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  relative z-10 py-10 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 relative z-10 py-10 max-w-7xl mx-auto">
             {features.map((feature, index) => (
                 <Feature key={feature.title} {...feature} index={index} />
             ))}
@@ -73,13 +68,13 @@ const Feature = ({
             <div className="mb-4 relative z-10 px-10 text-white/60">
                 {icon}
             </div>
-            <div className="text-lg font-bold mb-2 relative z-10 px-10">
+            <div className="text-lg font-light tracking-tight mb-2 relative z-10 px-10">
                 <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-white/20 group-hover/feature:bg-blue-500 transition-all duration-200 origin-center" />
                 <span className="group-hover/feature:translate-x-2 transition duration-200 inline-block text-white">
                     {title}
                 </span>
             </div>
-            <p className="text-sm text-white/60 max-w-xs relative z-10 px-10">
+            <p className="text-sm text-white/60 max-w-xs relative z-10 px-10 font-light leading-relaxed">
                 {description}
             </p>
         </div>

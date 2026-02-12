@@ -240,10 +240,8 @@ export default function ProductPage() {
         if (j) {
           doApply(j)
         } else {
-          // Fallback defaults if fetch fails
-          setPrice(174.99)
-          setCompareAt(199.99)
-          setInStock(true)
+          // No fallback prices, let dashboard decide
+          setInStock(false)
         }
         setLoaded(true)
       })()
@@ -323,18 +321,22 @@ export default function ProductPage() {
             <div>
               <div className="flex items-center justify-between gap-3 flex-wrap">
                 <div className="text-2xl font-bold text-white flex items-center gap-3">
-                  {loaded && price !== null ? (
-                    <>
-                      {compareAt && compareAt > price ? (
-                        <>
-                          <span className="text-gray-400 line-through">${compareAt.toFixed(2)}</span>
+                  {loaded ? (
+                    price !== null ? (
+                      <>
+                        {compareAt && compareAt > price ? (
+                          <>
+                            <span className="text-gray-400 line-through">${compareAt.toFixed(2)}</span>
+                            <span>${price.toFixed(2)}</span>
+                            <span className="text-xs font-semibold text-green-300 bg-green-500/10 border border-green-400/20 rounded-full px-2 py-0.5">On Sale</span>
+                          </>
+                        ) : (
                           <span>${price.toFixed(2)}</span>
-                          <span className="text-xs font-semibold text-green-300 bg-green-500/10 border border-green-400/20 rounded-full px-2 py-0.5">On Sale</span>
-                        </>
-                      ) : (
-                        <span>${price.toFixed(2)}</span>
-                      )}
-                    </>
+                        )}
+                      </>
+                    ) : (
+                      <span className="text-gray-500 text-lg uppercase tracking-wider">Unavailable</span>
+                    )
                   ) : (
                     <div className="h-8 w-32 rounded bg-white/10 animate-pulse" />
                   )}
@@ -343,11 +345,15 @@ export default function ProductPage() {
               </div>
               <div className="text-xs mt-2">
                 {loaded ? (
-                  <span className={inStock ? 'text-green-300' : 'text-red-300'}>
-                    {inStock
-                      ? `In stock${typeof stockCount === 'number' && stockCount > 0 ? `: ${stockCount}` : ''}`
-                      : 'Out of stock'}
-                  </span>
+                  price !== null ? (
+                    <span className={inStock ? 'text-green-300' : 'text-red-300'}>
+                      {inStock
+                        ? `In stock${typeof stockCount === 'number' && stockCount > 0 ? `: ${stockCount}` : ''}`
+                        : 'Out of stock'}
+                    </span>
+                  ) : (
+                    <span className="text-gray-500 italic">Please check back soon</span>
+                  )
                 ) : (
                   <span className="text-gray-400">Checking availability…</span>
                 )}
