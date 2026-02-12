@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import FAQs from '../../components/FAQs'
 import { Input as NumberInput } from '../../components/ui/number-input'
 import { PhoneInput } from '../../components/ui/phone-input'
-import { ShoppingCart, Shield, Truck, Lock } from 'lucide-react'
+import { Shield, Truck, Lock } from 'lucide-react'
 
 // Country list (dial codes); patterns kept light — we can switch to libphonenumber-js formatting next
 const COUNTRIES = [
@@ -134,8 +134,7 @@ const ProductImages = memo(function ProductImages() {
 export default function ProductPage() {
 
   const [quantity, setQuantity] = useState(1)
-  const [addedToCart, setAddedToCart] = useState(false)
-  const [cartItemCount, setCartItemCount] = useState(0)
+
   const [price, setPrice] = useState(null)
   const [compareAt, setCompareAt] = useState(null)
   const [inStock, setInStock] = useState(null)
@@ -185,23 +184,7 @@ export default function ProductPage() {
     }
   }
 
-  // Update cart count on component mount and when cart changes
-  useEffect(() => {
-    const updateCartCount = () => {
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]')
-      const totalItems = cart.reduce((total, item) => total + item.quantity, 0)
-      setCartItemCount(totalItems)
-    }
 
-    updateCartCount()
-
-    // Listen for storage changes (when cart is updated from other tabs/components)
-    window.addEventListener('storage', updateCartCount)
-
-    return () => {
-      window.removeEventListener('storage', updateCartCount)
-    }
-  }, [])
 
   const getPrice = () => {
     return price
@@ -211,46 +194,8 @@ export default function ProductPage() {
     return 'CalcAI - TI-84 Plus with ChatGPT'
   }
 
-  const handleAddToCart = () => {
-    // Get existing cart from localStorage
-    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]')
-
-    // Add product to cart
-    const product = {
-      id: 'calcai-ti84',
-      name: getProductName(),
-      price: getPrice(),
-      quantity: quantity,
-      image: '/ti84.png'
-    }
-
-    // Check if product already exists in cart
-    const existingProductIndex = existingCart.findIndex(item => item.id === product.id)
-
-    if (existingProductIndex >= 0) {
-      // Update quantity if product exists
-      existingCart[existingProductIndex].quantity += quantity
-    } else {
-      // Add new product to cart
-      existingCart.push(product)
-    }
-
-    // Save to localStorage
-    localStorage.setItem('cart', JSON.stringify(existingCart))
-
-    // Update cart count
-    const totalItems = existingCart.reduce((total, item) => total + item.quantity, 0)
-    setCartItemCount(totalItems)
-
-    // Show success message
-    // Show success message
-    setAddedToCart(true)
-    setTimeout(() => setAddedToCart(false), 3000)
-  }
-
   const handleBuyNow = () => {
-    handleAddToCart()
-    router.push('/cart')
+    router.push('/checkout')
   }
 
   // Load price/stock from dashboard (via public env or local proxy) then mark loaded
@@ -339,15 +284,6 @@ export default function ProductPage() {
             {/* Right: FAQ, Cart */}
             <div className="col-start-3 flex items-center gap-8 justify-end md:col-start-auto">
               <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
-              <Link href="/cart" className="relative flex items-center space-x-2 text-gray-300 hover:text-white">
-                <ShoppingCart className="w-4 h-4" />
-                <span className="hidden sm:inline text-sm">Cart</span>
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold">
-                    {cartItemCount}
-                  </span>
-                )}
-              </Link>
             </div>
           </div>
         </div>
@@ -480,22 +416,11 @@ export default function ProductPage() {
 
                   <div className="mt-4 grid grid-cols-1 gap-3">
                     <button
-                      onClick={handleAddToCart}
-                      disabled={!canPurchase}
-                      className={`w-full rounded-2xl border px-6 py-3 text-sm font-light tracking-tight transition-all duration-300 focus:outline-none focus:ring-2 ${canPurchase ? 'border-white/10 bg-blue-600/15 text-blue-50 backdrop-blur-sm hover:bg-blue-600/25 focus:ring-white/20' : 'border-gray-700 bg-gray-700/50 text-gray-400 cursor-not-allowed backdrop-blur-sm'}`}
-                    >
-                      <div className="flex items-center justify-center space-x-2">
-                        <ShoppingCart className="w-4 h-4" />
-                        <span>{!loaded ? 'Loading…' : addedToCart ? 'Added to cart!' : 'Add to cart'}</span>
-                      </div>
-                    </button>
-
-                    <button
                       onClick={handleBuyNow}
                       disabled={!canPurchase}
                       className={`w-full rounded-2xl border px-6 py-3 text-sm font-light tracking-tight transition-all duration-300 focus:outline-none focus:ring-2 ${canPurchase ? 'border-white/10 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 focus:ring-white/20' : 'border-gray-700 bg-gray-700/50 text-gray-400 cursor-not-allowed backdrop-blur-sm'}`}
                     >
-                      Buy now
+                      Continue to checkout
                     </button>
 
                     {preorderEnabled ? (
@@ -507,17 +432,6 @@ export default function ProductPage() {
                       </button>
                     ) : null}
                   </div>
-
-                  {addedToCart && (
-                    <div className="mt-4 text-center">
-                      <Link
-                        href="/cart"
-                        className="text-blue-400 hover:text-blue-300 underline text-sm"
-                      >
-                        View cart & checkout
-                      </Link>
-                    </div>
-                  )}
 
                   <div className="mt-5 grid grid-cols-1 gap-2 text-xs text-gray-300">
                     <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-3 py-2">

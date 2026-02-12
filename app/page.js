@@ -6,8 +6,10 @@ import Image from 'next/image'
 import DarkVeil from '../components/DarkVeil'
 import SpotlightSection from '../components/SpotlightSection'
 import CountdownBanner from '../components/CountdownBanner'
-import { ShoppingCart, ArrowRight, Instagram, Youtube, Maximize2 } from 'lucide-react'
+import { ArrowRight, Instagram, Youtube, Maximize2, ChevronDown, Sparkles, Calculator, History, BookOpen, Zap } from 'lucide-react'
 import { MediaModal } from '@/components/ui/media-modal';
+import DisplayCards from '@/components/ui/display-cards';
+import { FeaturesSectionWithHoverEffects } from '@/components/ui/feature-section-with-hover-effects';
 import {
   Dialog,
   DialogTrigger,
@@ -23,7 +25,7 @@ import { motion } from 'framer-motion'
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [cartItemCount, setCartItemCount] = useState(0)
+
 
   useEffect(() => {
     // Watch for modal open state on html element
@@ -40,16 +42,8 @@ export default function Home() {
     // Initial check
     setIsModalOpen(document.documentElement.getAttribute('data-media-modal-open') === 'true')
 
-    const updateCartCount = () => {
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]')
-      const totalItems = cart.reduce((total, item) => total + item.quantity, 0)
-      setCartItemCount(totalItems)
-    }
-    updateCartCount()
-    window.addEventListener('storage', updateCartCount)
     return () => {
       observer.disconnect()
-      window.removeEventListener('storage', updateCartCount)
     }
   }, [])
 
@@ -123,14 +117,7 @@ export default function Home() {
 
               {/* Right: Socials, Cart, Button */}
               <div className="flex items-center gap-4 justify-end">
-                <Link href="/cart" className="relative text-gray-300 hover:text-white transition">
-                  <ShoppingCart size={20} />
-                  {cartItemCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                      {cartItemCount}
-                    </span>
-                  )}
-                </Link>
+
                 <Link
                   href="/product"
                   className="bg-white text-black px-4 py-1.5 rounded-full text-sm font-medium hover:bg-gray-100 transition hidden sm:block"
@@ -265,279 +252,226 @@ export default function Home() {
               </h2>
             </motion.div>
 
-            {/* Dashboard feature tiles (screenshot-inspired marketing cards) */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-              {/* Card 1: Model Controls */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                className="md:col-span-6 relative"
-              >
-                <div className="p-6">
-                  <div className="text-center mb-10">
-                    <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Model controls</h3>
-                    <p className="mt-2 text-sm text-white/50 max-w-sm mx-auto">
-                      Pick your GPT model and max tokens. Adjust speed, accuracy, and answer length anytime.
+            {/* Combined Dashboard Mockup */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8 }}
+              className="relative mx-auto max-w-6xl w-full border border-white/10 rounded-[3rem] bg-white/[0.01] backdrop-blur-sm overflow-hidden"
+            >
+              {/* Card Header/Navigation Bar Mockup */}
+              <div className="flex items-center justify-between px-8 py-5 border-b border-white/5 bg-white/[0.02]">
+                <div className="flex items-center gap-6">
+                  <div className="flex gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                  </div>
+                  <div className="h-4 w-px bg-white/10" />
+                  <nav className="flex gap-6">
+                    <span className="text-xs font-medium text-white/80">Dashboard</span>
+                    <span className="text-xs font-medium text-white/30 hover:text-white/50 cursor-pointer transition-colors">History</span>
+                    <span className="text-xs font-medium text-white/30 hover:text-white/50 cursor-pointer transition-colors">Settings</span>
+                  </nav>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-24 h-6 rounded-lg bg-white/5 border border-white/5" />
+                  <div className="w-6 h-6 rounded-full bg-blue-500/20 border border-blue-500/30" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-12 divide-x divide-white/5 h-full">
+                {/* Left Side: Prompt History */}
+                <div className="md:col-span-7 p-8">
+                  <div className="mb-8">
+                    <h3 className="text-xl font-medium text-white mb-2">Recent activity</h3>
+                    <p className="text-xs text-white/40 font-light">
+                      Syncing with your device...
                     </p>
                   </div>
 
-                  <div
-                    className="relative w-fit mx-auto rounded-2xl border border-white/10 bg-black/20 backdrop-blur p-4 z-20"
-                    style={{
-                      maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
-                      WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)'
-                    }}
-                  >
-                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                  <DisplayCards cards={[
+                    {
+                      model: "GPT 5 mini",
+                      image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=300&fit=crop",
+                      answer: "x = 7, y = -3",
+                      date: "Just now",
+                    },
+                    {
+                      model: "Gemini 3.5",
+                      question: "Find the derivative of f(x) = 3x² + 2x - 5",
+                      answer: "f'(x) = 6x + 2",
+                      date: "2 mins ago",
+                    },
+                    {
+                      model: "Gemini 4.0",
+                      question: "What is the molecular formula of glucose?",
+                      answer: "C₆H₁₂O₆",
+                      date: "5 mins ago",
+                    },
+                  ]} />
+                </div>
 
-                    <div className="relative flex flex-col items-center">
-                      <div className="grid grid-cols-2 gap-8">
-                        <div className="space-y-4 min-w-[130px]">
-                          <div className="text-[10px] uppercase font-bold tracking-widest text-white/40 ml-1">GPT Model</div>
-                          <div className="flex flex-col gap-2">
-                            {[
-                              { name: "GPT 5.2", desc: "Accuracy", selected: true },
-                              { name: "GPT 5.1", desc: "Balanced", selected: false },
-                              { name: "GPT 5 mini", desc: "Fast", selected: false, skeleton: true },
-                              { name: "GPT 5 nano", desc: "Ultra fast", selected: false, skeleton: true },
-                            ].map((m) => (
-                              <button
-                                key={m.name}
-                                type="button"
-                                className={
-                                  "w-full rounded-xl border px-3 py-2 text-left transition-all duration-300 " +
-                                  (m.selected
-                                    ? "border-blue-400/40 bg-blue-500/10 text-blue-100 ring-1 ring-blue-400/20"
-                                    : m.skeleton
-                                      ? "border-white/5 bg-white/[0.02] text-white/40"
-                                      : "border-white/5 bg-white/[0.03] text-white/70 hover:bg-white/[0.06] hover:border-white/10")
-                                }
-                              >
-                                <div className="text-[11px] font-semibold leading-none">{m.name}</div>
-                                <div className={"mt-1 text-[10px] leading-none " + (m.selected ? "text-blue-100/70" : "text-white/40")}>
-                                  {m.desc}
-                                </div>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
+                {/* Right Side: Model Controls */}
+                <div className="md:col-span-5 flex flex-col h-full">
+                  <div className="p-8 border-b border-white/5">
+                    <h3 className="text-xl font-medium text-white mb-2">Model controls</h3>
+                    <p className="text-xs text-white/40 font-light italic">Powered by Advanced AI Engine</p>
+                  </div>
 
-                        <div className="space-y-4">
-                          <div className="text-[10px] uppercase font-bold tracking-widest text-white/40 ml-1">Max Tokens</div>
-                          <div className="flex flex-col gap-2">
-                            {[
-                              { name: "1k", desc: "Quick", selected: false },
-                              { name: "2k", desc: "Balanced", selected: true },
-                              { name: "4k", desc: "Long", selected: false },
-                              { name: "8k", desc: "Full steps", selected: false },
-                            ].map((t) => (
-                              <button
-                                key={t.name}
-                                type="button"
-                                className={
-                                  "w-full rounded-xl border px-3 py-2 text-left transition-all duration-300 " +
-                                  (t.selected
-                                    ? "border-blue-400/40 bg-blue-500/10 text-blue-100 ring-1 ring-blue-400/20"
-                                    : "border-white/5 bg-white/[0.03] text-white/70 hover:bg-white/[0.06] hover:border-white/10")
-                                }
-                              >
-                                <div className="text-[11px] font-semibold leading-none">{t.name}</div>
-                                <div className={"mt-1 text-[10px] leading-none " + (t.selected ? "text-blue-100/70" : "text-white/40")}>
-                                  {t.desc}
-                                </div>
-                              </button>
-                            ))}
+                  <div className="relative z-10 divide-y divide-white/5 border-none h-full overflow-hidden">
+                    {/* Feature Tile 1: AI Models */}
+                    <motion.div
+                      whileHover={{ backgroundColor: "rgba(255,255,255,0.02)" }}
+                      className="p-8 group/tile flex flex-col items-center text-center transition-colors px-10 h-1/3 justify-center"
+                    >
+                      <div className="flex items-center gap-3 mb-3">
+                        <Image src="/chatgpt-logo.svg" width={22} height={22} alt="GPT" className="invert opacity-95 group-hover/tile:opacity-100 transition-opacity" />
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="opacity-95 group-hover/tile:opacity-100 transition-opacity">
+                          <path d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" fill="#4285F4" />
+                        </svg>
+                      </div>
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-white/30 font-bold mb-3">Model Selection</p>
+
+                      <p className="text-sm text-white/50 leading-relaxed max-w-[240px]">
+                        Switch between <span className="text-white/90 font-medium">ChatGPT</span> and <span className="text-white/90 font-medium">Gemini</span> instantly.
+                      </p>
+                    </motion.div>
+
+                    {/* Feature Tile 2: Prompt Presets */}
+                    <motion.div
+                      whileHover={{ backgroundColor: "rgba(255,255,255,0.02)" }}
+                      className="p-8 group/tile relative overflow-hidden flex flex-col items-center text-center transition-colors px-10 h-1/3 justify-center"
+                    >
+                      <Sparkles className="w-5 h-5 text-purple-400 mb-2 opacity-80 group-hover/tile:opacity-100 transition-opacity" />
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-white/30 font-bold mb-3">Custom Presets</p>
+
+                      <p className="text-sm text-white/50 leading-relaxed max-w-[220px]">
+                        Save custom instructions or use <span className="text-white/90 font-medium">Built-in</span> presets.
+                      </p>
+
+                      {/* Animated Mockup */}
+                      <div className="absolute bottom-4 right-4 opacity-10 group-hover/tile:opacity-30 transition-opacity pointer-events-none scale-75">
+                        <div className="relative">
+                          <div className="px-3 py-1.5 rounded-lg border border-white/20 bg-white/5 flex items-center justify-between gap-3 w-32 backdrop-blur-md">
+                            <span className="text-[9px] text-white/60 font-medium truncate italic">Math Solver</span>
+                            <ChevronDown className="w-3 h-3 text-white/40" />
                           </div>
                         </div>
                       </div>
+                    </motion.div>
 
-                      {/* Small skeleton text bit at the bottom */}
-                      <div className="mt-6 w-full space-y-2 px-1">
-                        <div className="h-2 w-1/2 rounded bg-white/10" />
-                        <div className="h-2 w-1/3 rounded bg-white/5" />
+                    {/* Feature Tile 3: Depth Control */}
+                    <motion.div
+                      whileHover={{ backgroundColor: "rgba(255,255,255,0.02)" }}
+                      className="p-8 group/tile flex flex-col items-center text-center relative overflow-hidden transition-colors px-10 h-1/3 justify-center"
+                    >
+                      <Zap className="w-5 h-5 text-white mb-2 opacity-90 group-hover/tile:opacity-100 transition-opacity" />
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-white/30 font-bold mb-3">Token Management</p>
+
+                      <p className="text-sm text-white/50 leading-relaxed max-w-[240px]">
+                        Adjust <span className="text-white/90 font-medium">Token limits</span> to your desired length.
+                      </p>
+
+                      {/* Slider Animation Mockup */}
+                      <div className="mt-6 w-full max-w-[140px] opacity-30 group-hover/tile:opacity-60 transition-opacity">
+                        <div className="h-1 w-full bg-white/10 rounded-full relative">
+                          <motion.div
+                            className="absolute top-0 left-0 h-full bg-white/20 rounded-full"
+                            animate={{ width: ["20%", "80%", "20%"] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                          />
+                          <motion.div
+                            className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.4)] border border-white/20 z-10"
+                            animate={{ left: ["20%", "80%", "20%"] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                            style={{ x: "-50%" }}
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
+            </motion.div>
 
-              {/* Card 2: Prompt History */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="md:col-span-6 relative"
-              >
-                <div className="relative p-6">
-                  <div className="text-center mb-10">
-                    <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Prompt history</h3>
-                    <p className="mt-1.5 text-sm text-white/70 font-light tracking-tight">
-                      Recent questions & answers at a glance.
-                    </p>
-                  </div>
 
-                  <div className="relative mt-8 h-[550px] px-2" style={{ perspective: '1500px' }}>
-                    {[0, 1].map((idx) => {
-                      const items = [
-                        {
-                          type: 'image',
-                          label: 'Image',
-                          p: "Find the value of x",
-                          image: "https://images.unsplash.com/photo-1635372722656-389f87a941b7?auto=format&fit=crop&q=80&w=200&h=100",
-                          a: "Using the Pythagorean theorem:\nx² + 12² = 13²\nx² + 144 = 169\nx² = 25\nx = 5",
-                          loading: true
-                        },
-                        {
-                          type: 'text',
-                          label: 'Text',
-                          p: "Integrate: ∫(2x + 1) dx",
-                          a: "x² + x + C",
-                          loading: true
-                        },
-                      ];
-                      const row = items[idx];
+            {/* Card 3: Notes (Centered below) */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="md:col-span-12 relative py-12"
+            >
+              <div className="relative">
+                <div className="text-center mb-12">
+                  <h3 className="text-2xl sm:text-4xl font-light tracking-tight text-white inline-block">Notes</h3>
+                </div>
 
-                      return (
-                        <div
-                          key={idx}
-                          className="absolute inset-x-0 rounded-2xl border border-white/10 bg-[#0a0a0a] p-5 shadow-xl transition-all duration-500"
-                          style={{
-                            top: `${idx * 160}px`,
-                            zIndex: 20 + idx,
-                            transform: `rotateX(5deg) rotateY(-25deg) scale(0.95)`,
-                            transformStyle: 'preserve-3d',
-                            opacity: 1
-                          }}
+                <div className="flex flex-col items-center">
+                  <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-12 items-center max-w-6xl mx-auto px-4">
+                    {/* Note box (left) */}
+                    <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur p-5 sm:p-8 shadow-2xl">
+                      <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
+                      <div className="text-[10px] uppercase font-bold tracking-widest text-white/40 mb-4">Note Content</div>
+                      <textarea
+                        readOnly
+                        className="relative z-10 w-full min-h-[180px] bg-transparent px-0 py-0 text-sm sm:text-lg text-white/90 placeholder:text-white/30 focus:outline-none resize-none overflow-hidden font-mono leading-relaxed"
+                        defaultValue={`Quiz 3 review:\n- Chain rule practice\n- Solve: 2x + 5 = 15\n- derivative of x^2 is 2x\n- ∫2x dx = x^2 + C`}
+                      />
+                      <div className="relative z-10 mt-6 flex items-center justify-end">
+                        <button
+                          type="button"
+                          className="rounded-full border border-white/10 bg-blue-500/20 hover:bg-blue-500/30 text-blue-100 px-7 py-2.5 text-[11px] font-bold uppercase tracking-wider transition-colors flex items-center gap-2"
                         >
-                          <div className="flex justify-between items-start mb-2">
-                            <div className="text-[9px] text-blue-400/60 font-bold uppercase tracking-widest">{row.label}</div>
-                            <div className="text-[9px] text-white/20 font-mono">14:2{idx} PM</div>
-                          </div>
-
-                          {/* Render Image or Text Prompt */}
-                          <div className="flex gap-3 mb-3">
-                            {row.type === 'image' && (
-                              <div className="relative w-16 h-12 rounded-lg overflow-hidden border border-white/10 shrink-0">
-                                <Image src={row.image} alt="Problem" fill className="object-cover opacity-80" sizes="64px" />
-                              </div>
-                            )}
-                            <div className="text-sm text-white/90 font-medium self-center">{row.p}</div>
-                          </div>
-
-                          <div className="h-px w-full bg-white/5 mb-3" />
-                          <div className="text-[9px] text-white/40 mb-1 font-bold uppercase tracking-widest">Answer</div>
-                          {row.loading ? (
-                            <div className="mt-0.5">
-                              {/* Show first line of text */}
-                              <div className="text-sm text-blue-300 font-mono tracking-tight mb-2">
-                                {row.a.split('\n')[0]}
-                              </div>
-                              {/* Skeleton for the rest */}
-                              <div className="space-y-2">
-                                <div className="h-3 w-3/4 rounded bg-white/10" />
-                                <div className="h-3 w-2/3 rounded bg-white/10" />
-                                <div className="h-3 w-1/2 rounded bg-white/10" />
-                                {idx === 1 && (
-                                  <>
-                                    <div className="h-3 w-4/5 rounded bg-white/10" />
-                                    <div className="h-3 w-1/3 rounded bg-white/10" />
-                                  </>
-                                )}
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="text-sm text-blue-300 font-mono tracking-tight whitespace-pre-wrap">{row.a}</div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Card 3: Notes (Centered below) */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="md:col-span-12 relative py-12"
-              >
-                <div className="relative">
-                  <div className="text-center mb-12">
-                    <h3 className="text-2xl sm:text-4xl font-light tracking-tight text-white inline-block">Notes</h3>
-                  </div>
-
-                  <div className="flex flex-col items-center">
-                    <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-12 items-center max-w-6xl mx-auto px-4">
-                      {/* Note box (left) */}
-                      <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur p-5 sm:p-8 shadow-2xl">
-                        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent" />
-                        <div className="text-[10px] uppercase font-bold tracking-widest text-white/40 mb-4">Note Content</div>
-                        <textarea
-                          readOnly
-                          className="relative z-10 w-full min-h-[180px] bg-transparent px-0 py-0 text-sm sm:text-lg text-white/90 placeholder:text-white/30 focus:outline-none resize-none overflow-hidden font-mono leading-relaxed"
-                          defaultValue={`Quiz 3 review:\n- Chain rule practice\n- Solve: 2x + 5 = 15\n- derivative of x^2 is 2x\n- ∫2x dx = x^2 + C`}
-                        />
-                        <div className="relative z-10 mt-6 flex items-center justify-end">
-                          <button
-                            type="button"
-                            className="rounded-full border border-white/10 bg-blue-500/20 hover:bg-blue-500/30 text-blue-100 px-7 py-2.5 text-[11px] font-bold uppercase tracking-wider transition-colors flex items-center gap-2"
-                          >
-                            Send to Device
-                            <ArrowRight className="w-3 h-3" />
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Arrow Flow */}
-                      <div className="hidden lg:flex flex-col items-center justify-center text-blue-400/60 animate-pulse">
-                        <div className="h-px w-20 bg-gradient-to-r from-blue-400/0 via-blue-400 to-blue-400/0" />
-                        <ArrowRight className="w-10 h-10 -mt-5 bg-black rounded-full p-2 border border-blue-400/20" />
-                      </div>
-
-                      {/* Calculator Display Image Only (right) */}
-                      <div className="relative group flex items-center justify-center">
-                        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/60 p-2 aspect-[3/4] w-[260px] mx-auto flex flex-col items-center justify-center shadow-[0_0_50px_rgba(59,130,246,0.15)]">
-                          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/[0.02]" />
-                          <div className="relative z-10 w-[90%] h-[45%] bg-blue-500/10 border border-white/10 rounded-lg mb-4 flex flex-col p-4 overflow-hidden">
-                            <div className="text-[8px] uppercase tracking-wider text-white/30 mb-2">Preview</div>
-                            <div className="text-[7px] text-white/70 font-mono leading-tight whitespace-pre-wrap">
-                              Quiz 3 review:
-                              - Chain rule practice
-                              - Solve: 2x + 5 = 15
-                            </div>
-                          </div>
-                          <div className="text-white/20 text-sm font-medium uppercase tracking-[0.3em] text-center">
-                            Calculator
-                          </div>
-                        </div>
+                          Send to Device
+                          <ArrowRight className="w-3 h-3" />
+                        </button>
                       </div>
                     </div>
 
-                    <div className="mt-16 text-center max-w-2xl mx-auto px-4">
-                      <div className="text-base sm:text-lg text-white/50 font-light leading-relaxed">
-                        Write formulas once on your dashboard and access them instantly on your CalcAI device.
+                    {/* Arrow Flow */}
+                    <div className="hidden lg:flex flex-col items-center justify-center text-blue-400/60 animate-pulse">
+                      <div className="h-px w-20 bg-gradient-to-r from-blue-400/0 via-blue-400 to-blue-400/0" />
+                      <ArrowRight className="w-10 h-10 -mt-5 bg-black rounded-full p-2 border border-blue-400/20" />
+                    </div>
+
+                    {/* Calculator Display Image Only (right) */}
+                    <div className="relative group flex items-center justify-center">
+                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/60 p-2 aspect-[3/4] w-[260px] mx-auto flex flex-col items-center justify-center shadow-[0_0_50px_rgba(59,130,246,0.15)]">
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/[0.02]" />
+                        <div className="relative z-10 w-[90%] h-[45%] bg-blue-500/10 border border-white/10 rounded-lg mb-4 flex flex-col p-4 overflow-hidden">
+                          <div className="text-[8px] uppercase tracking-wider text-white/30 mb-2">Preview</div>
+                          <div className="text-[7px] text-white/70 font-mono leading-tight whitespace-pre-wrap">
+                            Quiz 3 review:
+                            - Chain rule practice
+                            - Solve: 2x + 5 = 15
+                          </div>
+                        </div>
+                        <div className="text-white/20 text-sm font-medium uppercase tracking-[0.3em] text-center">
+                          Calculator
+                        </div>
                       </div>
                     </div>
                   </div>
+
+                  <div className="mt-16 text-center max-w-2xl mx-auto px-4">
+                    <div className="text-base sm:text-lg text-white/50 font-light leading-relaxed">
+                      Write formulas once on your dashboard and access them instantly on your CalcAI device.
+                    </div>
+                  </div>
                 </div>
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
           </div>
         </section>
 
-        {/* Spotlight Features */}
-        <SpotlightSection />
-
-
-
+        <FeaturesSectionWithHoverEffects />
 
         {/* CTA Section */}
-        < section className="py-20" >
+        <section className="py-20">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -554,10 +488,10 @@ export default function Home() {
               <Link href="/community" className="btn-secondary rounded-2xl border border-white/5 hover:bg-white/5 text-slate-300 px-8 py-3 transition-all tracking-tight">Join Community</Link>
             </div>
           </motion.div>
-        </section >
+        </section>
 
         {/* Footer */}
-        < footer className="text-white py-12" >
+        <footer className="text-white py-12">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-4 gap-8">
               <div>
@@ -602,10 +536,10 @@ export default function Home() {
                   <Youtube className="w-6 h-6" />
                 </a>
               </div>
-              <div className="text-center text-sm text-gray-400">© 2026 CalcAI. All rights reserved.</div>
+              <div className="text-center text-sm text-gray-400">© 2025 CalcAI. All rights reserved.</div>
             </div>
           </div>
-        </footer >
+        </footer>
       </div >
     </div >
   )

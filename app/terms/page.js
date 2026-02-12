@@ -29,7 +29,7 @@ export default function Terms() {
             {/* Right: FAQ, Cart */}
             <div className="flex items-center gap-8 justify-end">
               <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
-              <Link href="/cart" className="text-gray-300 hover:text-white text-sm font-medium">Cart</Link>
+
             </div>
           </div>
         </div>

@@ -4,26 +4,10 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { ArrowRight, ShoppingCart, MessageCircle, Users, Video, Camera } from 'lucide-react'
+import { ArrowRight, MessageCircle, Users, Video, Camera } from 'lucide-react'
 
 export default function Community() {
-  const [cartItemCount, setCartItemCount] = useState(0)
 
-  useEffect(() => {
-    // Update cart count
-    const updateCartCount = () => {
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]')
-      const totalItems = cart.reduce((total, item) => total + item.quantity, 0)
-      setCartItemCount(totalItems)
-    }
-
-    updateCartCount()
-    window.addEventListener('storage', updateCartCount)
-
-    return () => {
-      window.removeEventListener('storage', updateCartCount)
-    }
-  }, [])
 
   const socialLinks = [
     {
@@ -86,15 +70,7 @@ export default function Community() {
             {/* Right: FAQ, Cart */}
             <div className="flex items-center gap-8 justify-end">
               <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
-              <Link href="/cart" className="relative flex items-center space-x-2 text-gray-300 hover:text-white">
-                <ShoppingCart className="w-4 h-4" />
-                <span className="hidden sm:inline text-sm">Cart</span>
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold">
-                    {cartItemCount}
-                  </span>
-                )}
-              </Link>
+
             </div>
           </div>
         </div>
