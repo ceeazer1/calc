@@ -319,7 +319,7 @@ export default function Home() {
                   muted
                   playsInline
                   className="w-full h-full object-cover object-center"
-                  style={{ transform: 'rotate(-90deg) scale(1.33)' }}
+                  style={{ transform: 'translateY(-10%) rotate(-90deg) scale(1.33)' }}
                 />
               </motion.div>
 
