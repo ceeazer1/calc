@@ -291,13 +291,13 @@ export default function Home() {
                 className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-white/10 relative order-1 md:order-2"
               >
                 <video
-                  src="/camera.mp4"
+                  src="/camera.mp4#t=5"
                   autoPlay
                   loop
                   muted
                   playsInline
                   className="w-full h-full object-cover object-center"
-                  style={{ transform: 'rotate(-90deg) scale(1.35)' }}
+                  style={{ transform: 'rotate(-90deg) scale(1.33)' }}
                 />
               </motion.div>
             </div>
@@ -319,7 +319,7 @@ export default function Home() {
                   muted
                   playsInline
                   className="w-full h-full object-cover object-center"
-                  style={{ transform: 'rotate(-90deg) scale(1.35)' }}
+                  style={{ transform: 'rotate(-90deg) scale(1.33)' }}
                 />
               </motion.div>
 
