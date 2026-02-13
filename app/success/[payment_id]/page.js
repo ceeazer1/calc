@@ -9,23 +9,6 @@ export default function SuccessPage({ params }) {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans">
-      <header className="border-b border-white/10 bg-black/70 backdrop-blur-md sticky top-0 z-50">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2 group">
-            <Image
-              src="/logo.png"
-              alt="CalcAI Logo"
-              width={200}
-              height={60}
-              className="h-6 w-auto transition-transform group-hover:scale-105"
-              priority
-            />
-          </Link>
-          <Link href="/help" className="text-sm text-gray-400 hover:text-white transition">
-            Need help?
-          </Link>
-        </div>
-      </header>
 
       <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:py-20 animate-in fade-in slide-in-from-bottom-4 duration-1000">
         <div className="text-center space-y-6">

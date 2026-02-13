@@ -9,34 +9,6 @@ export const metadata = {
 export default function HelpPage() {
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <header className={`bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 border-b border-white/10 sticky top-0 z-40`}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-3 items-center h-14">
-            {/* Left: Community, Specifications */}
-            <div className="hidden md:flex items-center gap-8 justify-start">
-              <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
-            </div>
-            {/* Center: Logo */}
-            <div className="flex items-center justify-center">
-              <Link href="/">
-                <Image
-                  src="/logo.png"
-                  alt="CalcAI Logo"
-                  width={200}
-                  height={60}
-                  className="h-5 sm:h-6 w-auto transform hover:scale-105 transition-transform duration-200"
-                />
-              </Link>
-            </div>
-            {/* Right: FAQ, Cart */}
-            <div className="flex items-center gap-8 justify-end">
-              <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
-
-            </div>
-          </div>
-        </div>
-      </header>
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Layout: Sidebar + Content */}

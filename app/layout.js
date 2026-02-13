@@ -3,14 +3,15 @@ import './globals.css'
 
 import { Space_Grotesk } from 'next/font/google'
 import ThemeBackground from '../components/ThemeBackground'
+import Navbar from '../components/Navbar'
 
 // Display-forward, modern font inspired by OrbAI aesthetics
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'CalcAI - TI-84 Plus with ChatGPT Integration',
-  description: 'Revolutionary TI-84 Plus calculator with discrete ChatGPT integration. Perfect for students who need advanced AI assistance.',
-  keywords: 'TI-84 Plus, ChatGPT, calculator, AI, student, math, discrete, modded',
+  title: 'CalcAI',
+  description: 'advanced AI calculator',
+  keywords: 'AI, calculator, advanced, math, student, assistant',
   authors: [{ name: 'CalcAI' }],
   metadataBase: new URL('https://calcai.cc'),
   icons: {
@@ -18,7 +19,7 @@ export const metadata = {
       { url: '/logo_icon.png', type: 'image/png', sizes: '16x16' },
       { url: '/logo_icon.png', type: 'image/png', sizes: '32x32' },
       { url: '/logo_icon.png', type: 'image/png', sizes: '96x96' },
-      { url: '/logo_icon.png', type: 'image/png', sizes: '192x192' }
+      { url: '/logo_icon.png', sizes: '192x192' }
     ],
     apple: [
       { url: '/logo_icon.png', sizes: '120x120' },
@@ -29,14 +30,14 @@ export const metadata = {
     shortcut: ['/logo_icon.png'],
   },
   openGraph: {
-    title: 'CalcAI - Smart Calculator with AI',
-    description: 'TI-84 Plus calculator with discrete ChatGPT integration',
+    title: 'CalcAI',
+    description: 'advanced AI calculator',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CalcAI - Smart Calculator with AI',
-    description: 'TI-84 Plus calculator with discrete ChatGPT integration',
+    title: 'CalcAI',
+    description: 'advanced AI calculator',
   },
 }
 
@@ -46,6 +47,7 @@ export default function RootLayout({ children }) {
       <body className={spaceGrotesk.className}>
         <ThemeBackground />
         <div className="min-h-screen relative">
+          <Navbar />
           {children}
         </div>
       </body>

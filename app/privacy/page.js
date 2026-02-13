@@ -6,34 +6,6 @@ import { PRIVACY_HTML } from '../../content/privacy'
 export default function Privacy() {
   return (
     <div className="min-h-screen bg-black">
-      {/* Navigation */}
-      <nav className={`fixed top-0 w-full bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 border-b border-white/10`}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-3 items-center h-14">
-            {/* Left: Community, Specifications */}
-            <div className="hidden md:flex items-center gap-8 justify-start">
-              <Link href="/community" className="text-gray-300 hover:text-white text-sm font-medium">Community</Link>
-            </div>
-            {/* Center: Logo */}
-            <div className="flex items-center justify-center">
-              <Link href="/">
-                <Image
-                  src="/logo.png"
-                  alt="CalcAI Logo"
-                  width={200}
-                  height={60}
-                  className="h-5 sm:h-6 w-auto transform hover:scale-105 transition-transform duration-200 cursor-pointer"
-                />
-              </Link>
-            </div>
-            {/* Right: FAQ, Cart */}
-            <div className="flex items-center gap-8 justify-end">
-              <Link href="/faq" className="text-gray-300 hover:text-white text-sm font-medium">FAQ</Link>
-
-            </div>
-          </div>
-        </div>
-      </nav>
 
       {/* Main Content */}
       <main className="pt-24 pb-16">
