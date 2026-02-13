@@ -296,7 +296,8 @@ export default function Home() {
                   loop
                   muted
                   playsInline
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-cover object-center rotate-90 scale-150"
+                  style={{ transform: 'rotate(90deg) scale(1.5)' }}
                 />
               </motion.div>
             </div>
@@ -312,12 +313,13 @@ export default function Home() {
                 className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-white/10 relative"
               >
                 <video
-                  src="/typing.mp4"
+                  src="/typing.mp4#t=62"
                   autoPlay
                   loop
                   muted
                   playsInline
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-cover object-center rotate-90 scale-150"
+                  style={{ transform: 'rotate(90deg) scale(1.5)' }}
                 />
               </motion.div>
 
