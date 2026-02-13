@@ -9,6 +9,7 @@ import CountdownBanner from '../components/CountdownBanner'
 import { ArrowRight, Instagram, Youtube, Maximize2, ChevronDown, Sparkles, Calculator, History, BookOpen, Zap } from 'lucide-react'
 import { MediaModal } from '@/components/ui/media-modal';
 import DisplayCards from '@/components/ui/display-cards';
+import { DashboardFeatures } from '@/components/ui/DashboardFeatures';
 import { FeaturesSectionWithHoverEffects } from '@/components/ui/feature-section-with-hover-effects';
 import {
   Dialog,
@@ -67,10 +68,6 @@ const TypewriterText = () => {
       await new Promise(r => setTimeout(r, 600));
 
       // 4. Delete "cheating"
-      // we need to delete mistake.length characters
-      // logic above for backspace is slightly off if I don't track full string correctly
-
-      // Simpler logic:
       const fullMistake = base + mistake;
       for (let i = fullMistake.length; i >= base.length; i--) {
         if (!isMounted) return;
@@ -293,16 +290,18 @@ export default function Home() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-white/10 relative order-1 md:order-2"
               >
-                <img
-                  src={`/cam-preview.gif?t=${Date.now()}`}
-                  alt="Camera preview"
-                  loading="lazy"
+                <video
+                  src="/camera.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   className="w-full h-full object-cover object-center"
                 />
               </motion.div>
             </div>
 
-            {/* 2. Chat Feature */}
+            {/* 2. Typing Feature */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               {/* VISUAL - Left on Desktop */}
               <motion.div
@@ -312,10 +311,12 @@ export default function Home() {
                 transition={{ duration: 0.8 }}
                 className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-white/10 relative"
               >
-                <img
-                  src={`/typing-preview.gif?t=${Date.now()}`}
-                  alt="Typing preview"
-                  loading="lazy"
+                <video
+                  src="/typing.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   className="w-full h-full object-cover object-center"
                 />
               </motion.div>
@@ -328,7 +329,7 @@ export default function Home() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="flex flex-col items-start gap-6 text-left md:pl-10"
               >
-                <h3 className="text-3xl md:text-5xl font-light tracking-tight text-white">Chat</h3>
+                <h3 className="text-3xl md:text-5xl font-light tracking-tight text-white">Typing</h3>
                 <p className="text-base md:text-lg text-gray-400 font-light leading-relaxed max-w-md">
                   Type naturally to ask questions or get help with complex topics. The AI understands context and nuances.
                 </p>
@@ -348,108 +349,7 @@ export default function Home() {
                 </h2>
               </motion.div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Recent Activity Card - No Box */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.8 }}
-                  className="relative w-full p-4 sm:p-6 flex flex-col h-full min-h-[400px]"
-                >
-                  <div className="mb-6 px-2">
-                    <h3 className="text-xl font-medium text-white mb-2">Prompt History</h3>
-                    <p className="text-xs text-white/50 leading-relaxed font-light">
-                      View your complete query history and captured images, synced instantly.
-                    </p>
-                  </div>
-
-                  <DisplayCards cards={[
-                    {
-                      model: "GPT 5 mini",
-                      image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=300&fit=crop",
-                      answer: "x = 7, y = -3",
-                      date: "Just now",
-                    },
-                    {
-                      model: "Gemini 3.5",
-                      question: "Find the derivative of f(x) = 3x² + 2x - 5",
-                      answer: "f'(x) = 6x + 2",
-                      date: "2 mins ago",
-                    },
-                    {
-                      model: "Gemini 4.0",
-                      question: "What is the molecular formula of glucose?",
-                      answer: "C₆H₁₂O₆",
-                      date: "5 mins ago",
-                    },
-                  ]} />
-                </motion.div>
-
-                {/* Model Controls Card - No Box */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="relative w-full p-4 sm:p-6 flex flex-col h-full min-h-[400px]"
-                >
-                  <div className="px-2 mb-6">
-                    <h3 className="text-xl font-medium text-white mb-1">Model controls</h3>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 flex-1">
-                    {/* Feature Tile 1: AI Models - Larger */}
-                    <div
-                      className="col-span-2 p-8 rounded-3xl bg-white/[0.03] hover:bg-white/[0.05] transition-colors flex flex-col items-center text-center justify-center group/tile"
-                    >
-                      <div className="flex items-center gap-6 mb-4">
-                        <Image src="/chatgpt-logo.svg" width={40} height={40} alt="GPT" className="invert opacity-95 group-hover/tile:opacity-100 transition-opacity" />
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="opacity-95 group-hover/tile:opacity-100 transition-opacity">
-                          <path d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" fill="#4285F4" />
-                        </svg>
-                      </div>
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-white/30 font-bold mb-2">Model Selection</p>
-
-                      <p className="text-sm text-white/50 leading-relaxed max-w-[250px]">
-                        Switch between <span className="text-white/90 font-medium">ChatGPT</span> and <span className="text-white/90 font-medium">Gemini</span>.
-                      </p>
-                    </div>
-
-                    {/* Feature Tile 2: Prompt Presets */}
-                    <div
-                      className="col-span-1 p-6 rounded-3xl bg-white/[0.03] hover:bg-white/[0.05] transition-colors flex flex-col items-center text-center justify-center group/tile"
-                    >
-                      <Sparkles className="w-5 h-5 text-purple-400 mb-3 opacity-80 group-hover/tile:opacity-100 transition-opacity" />
-                      <p className="text-[9px] uppercase tracking-[0.2em] text-white/30 font-bold mb-2">Presets</p>
-
-                      <p className="text-xs text-white/50 leading-relaxed">
-                        Instantly access your saved system instructions and favorite prompts for any subject.
-                      </p>
-                    </div>
-
-                    {/* Feature Tile 3: Token Management + Slider Animation */}
-                    <div
-                      className="col-span-1 p-6 rounded-3xl bg-white/[0.03] hover:bg-white/[0.05] transition-colors flex flex-col items-center text-center justify-center group/tile relative overflow-hidden"
-                    >
-                      <Zap className="w-5 h-5 text-white mb-3 opacity-90 group-hover/tile:opacity-100 transition-opacity" />
-                      <p className="text-[9px] uppercase tracking-[0.2em] text-white/30 font-bold mb-2">Tokens</p>
-
-                      <div className="w-16 h-1 bg-white/10 rounded-full mt-2 mb-4 overflow-hidden">
-                        <motion.div
-                          initial={{ x: "-100%" }}
-                          whileInView={{ x: "0%" }}
-                          transition={{ duration: 1.5, ease: "circOut", delay: 0.5 }}
-                          className="h-full w-[70%] bg-blue-500 rounded-full"
-                        />
-                      </div>
-                      <p className="text-xs text-white/50 leading-relaxed">
-                        Control response length and detail. Optimize for quick answers or deep explanations.
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
+              <DashboardFeatures />
             </div>
           </div>
         </section>
