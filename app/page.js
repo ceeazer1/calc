@@ -296,8 +296,8 @@ export default function Home() {
                   loop
                   muted
                   playsInline
-                  className="w-full h-full object-cover object-center rotate-90 scale-150"
-                  style={{ transform: 'rotate(90deg) scale(1.5)' }}
+                  className="w-full h-full object-cover object-center"
+                  style={{ transform: 'rotate(-90deg) scale(1.5)' }}
                 />
               </motion.div>
             </div>
@@ -318,8 +318,8 @@ export default function Home() {
                   loop
                   muted
                   playsInline
-                  className="w-full h-full object-cover object-center rotate-90 scale-150"
-                  style={{ transform: 'rotate(90deg) scale(1.5)' }}
+                  className="w-full h-full object-cover object-center"
+                  style={{ transform: 'rotate(-90deg) scale(1.5)' }}
                 />
               </motion.div>
 
